@@ -4,7 +4,7 @@ C++ benchmark tool. Practical, stable and fast.
 - stable - correctness and reproducibility is a goal
 - fast - if results are stable, they should be produced as soon as possible
 
-This tool is learning to gain about 5% measure stability (depends on function, input and context).
+This tool is learned to gain about 5% measure stability (depends on function, input and context).
 Of course, it cannot strongly guarantee 5% stability (some functions are unstable itself, nothing helps), but it tends to.
 
 
@@ -189,7 +189,7 @@ void my_function(MyFixture::Type& fix, const size_t& arg)
 	std::sort(fix.begin(), fix.end());
 }
 
-static const std::vector<NSortFunctionArg> my_args = { 100000, 110000, 120000 };
+static const std::vector<size_t> my_args = { 100000, 110000, 120000 };
 
 SLTBENCH_FUNCTION_WITH_FIXTURE_AND_ARGS(my_function, MyFixture, my_args);
 
