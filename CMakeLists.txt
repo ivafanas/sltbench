@@ -6,7 +6,7 @@ project (sltbench)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # sources
-set(SLTBENCH_SOURCES
+set(SLTBENCH_LIB_SOURCES
 	src/BenchApi.cpp
 	src/Config.cpp
 	src/Config.h
@@ -21,8 +21,14 @@ set(SLTBENCH_SOURCES
 	src/MeasureAlgo.h
 	src/ProcedureBenchmark.h
 	src/Runner.cpp
-	src/Runner.h
-	include/sltbench/Bench.h
+	src/Runner.h)
+
+# public headers
+set(SLTBENCH_LIB_PUBLIC_HEADERS
+	include/sltbench/Bench.h)
+
+# public implementation headers
+set(SLTBENCH_LIB_PUBLIC_IMPL_HEADERS
 	include/sltbench/impl/BenchApi.h
 	include/sltbench/impl/BenchmarksContainer.h
 	include/sltbench/impl/BenchmarkWithArgGenerator.h
@@ -61,7 +67,7 @@ set(SLTBENCH_HISTOGRAMMER_SOURCES
 	tools/histogrammer/main.cpp)
 
 # split source files into nested source groups by subfolder	
-foreach(source IN LISTS SLTBENCH_SOURCES)
+foreach(source IN LISTS SLTBENCH_LIB_SOURCES SLTBENCH_LIB_PUBLIC_HEADERS SLTBENCH_LIB_PUBLIC_IMPL_HEADERS)
     get_filename_component(source_path "${source}" PATH)
     string(REPLACE "/" "\\" source_path_msvc "${source_path}")
     source_group("${source_path_msvc}" FILES "${source}")
@@ -71,17 +77,35 @@ include_directories (${CMAKE_CURRENT_SOURCE_DIR}/src)
 include_directories (${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # lib
-add_library (${PROJECT_NAME} ${SLTBENCH_SOURCES})
-#target_link_libraries (${PROJECT_NAME} LINK_PUBLIC)
+add_library (sltbench_static
+	${SLTBENCH_LIB_SOURCES}
+	${SLTBENCH_LIB_PUBLIC_HEADERS}
+	${SLTBENCH_LIB_PUBLIC_IMPL_HEADERS})
 
 # examples
 add_executable(sltbench_examples ${SLTBENCH_EXAMPLES_SOURCES})
-target_link_libraries(sltbench_examples LINK_PUBLIC ${PROJECT_NAME})
+target_link_libraries(sltbench_examples LINK_PUBLIC sltbench_static)
 
 # autolearning tool
 add_executable(sltbench_autolearning ${SLTBENCH_AUTOLEARNING_SOURCES})
-target_link_libraries(sltbench_autolearning LINK_PUBLIC ${PROJECT_NAME})
+target_link_libraries(sltbench_autolearning LINK_PUBLIC sltbench_static)
 
 # histogrammer tool
 add_executable(sltbench_histogrammer ${SLTBENCH_HISTOGRAMMER_SOURCES})
-target_link_libraries(sltbench_histogrammer LINK_PUBLIC ${PROJECT_NAME})
+target_link_libraries(sltbench_histogrammer LINK_PUBLIC sltbench_static)
+
+# install static lib
+install(
+	TARGETS sltbench_static
+	LIBRARY DESTINATION lib
+	ARCHIVE DESTINATION lib
+	RUNTIME DESTINATION bin
+)
+install(
+	FILES ${SLTBENCH_LIB_PUBLIC_HEADERS}
+	DESTINATION include/sltbench
+)
+install(
+	FILES ${SLTBENCH_LIB_PUBLIC_IMPL_HEADERS}
+	DESTINATION include/sltbench/impl
+)
