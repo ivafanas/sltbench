@@ -28,6 +28,8 @@ public: // IConfig
 public: // IConfigPrivate
 	virtual std::unique_ptr<IMeasureAlgo> CreateMeasureAlgo() override;
 	virtual bool IsMeasureRequired(std::chrono::nanoseconds estimation_time) override;
+	virtual IFilter& GetFilter() override;
+	virtual void SetFilter(std::unique_ptr<IFilter> filter) override;
 
 public:
 	void SetMeasureAlgoConf(MeasureAlgo::Conf conf);
@@ -38,6 +40,7 @@ public:
 
 private:
 	std::unique_ptr<reporter::IReporter> reporter_;
+	std::unique_ptr<IFilter> filter_;
 	MeasureAlgo::Conf measure_conf_;
 	std::function<bool(std::chrono::nanoseconds)> is_measure_required_pred_;
 };

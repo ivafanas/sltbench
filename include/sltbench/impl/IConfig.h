@@ -1,5 +1,6 @@
 #pragma once
 
+#include "IFilter.h"
 #include "IMeasureAlgo.h"
 #include "IReporter.h"
 
@@ -28,7 +29,7 @@ struct IConfig
 
 
 /*!
-	Private config interface for autolearning,
+	Private config interface,
 	user should not use it
 */
 struct IConfigPrivate
@@ -37,6 +38,9 @@ struct IConfigPrivate
 
 	virtual std::unique_ptr<IMeasureAlgo> CreateMeasureAlgo() = 0;
 	virtual bool IsMeasureRequired(std::chrono::nanoseconds estimation_time) = 0;
+
+	virtual IFilter& GetFilter() = 0;
+	virtual void SetFilter(std::unique_ptr<IFilter> filter) = 0;
 };
 
 

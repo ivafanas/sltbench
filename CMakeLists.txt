@@ -15,6 +15,8 @@ set(SLTBENCH_LIB_SOURCES
 	src/CsvReporter.cpp
 	src/CsvReporter.h
 	src/Env.cpp
+	src/Filters.cpp
+	src/Filters.h
 	src/JsonReporter.cpp
 	src/JsonReporter.h
 	src/MeasureAlgo.cpp
@@ -37,6 +39,7 @@ set(SLTBENCH_LIB_PUBLIC_IMPL_HEADERS
 	include/sltbench/impl/Descriptor.h
 	include/sltbench/impl/Env.h
 	include/sltbench/impl/IConfig.h
+	include/sltbench/impl/IFilter.h
 	include/sltbench/impl/IMeasureAlgo.h
 	include/sltbench/impl/IReporter.h
 	include/sltbench/impl/IRunner.h

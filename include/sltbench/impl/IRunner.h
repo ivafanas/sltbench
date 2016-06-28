@@ -2,6 +2,7 @@
 
 #include "BenchmarksContainer.h"
 #include "IConfig.h"
+#include "IFilter.h"
 #include "IReporter.h"
 
 #include <memory>
@@ -15,7 +16,7 @@ struct IRunner
 {
 	virtual ~IRunner() = default;
 
-	virtual bool Run(reporter::IReporter& reporter) = 0;
+	virtual bool Run(reporter::IReporter& reporter, IFilter& filter) = 0;
 };
 using IRunnerPtr = std::shared_ptr<IRunner>;
 
@@ -141,17 +142,21 @@ private:
 
 public:
 	//! run all registered benchmarks of type BenchmarkT
-	virtual bool Run(reporter::IReporter& reporter) override
+	virtual bool Run(reporter::IReporter& reporter, IFilter& filter) override
 	{
 		auto& bms = BenchmarksContainer<BenchmarkT>::Instance().GetAll();
 
 		bool was_crash = false;
 		for (auto& name_and_bm: bms)
 		{
-			auto& bm = name_and_bm.second;
-			bool res = Run(bm, reporter);
-			if (!res)
-				was_crash = true;
+			const auto& name = name_and_bm.first;
+			if (filter.ShouldRunBenchmark(name))
+			{
+				auto& bm = name_and_bm.second;
+				bool res = Run(bm, reporter);
+				if (!res)
+					was_crash = true;
+			}
 		}
 		return !was_crash;
 	}

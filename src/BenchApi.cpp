@@ -61,10 +61,11 @@ int Run(const bool heatup_required)
 
 	bool was_crash = false;
 	auto& reporter = Config::Instance().GetReporter();
+	auto& filter = Config::Instance().GetFilter();
 	const auto runners = GetRunners();
 	for (const auto& runner : runners)
 	{
-		const bool crashed = runner->Run(reporter);
+		const bool crashed = runner->Run(reporter, filter);
 		if (crashed)
 			was_crash = true;
 	}

@@ -9,7 +9,6 @@
 
 
 namespace sltbench {
-namespace Private {
 namespace {
 
 std::map<std::string, IRunnerPtr>& Runners()
@@ -19,7 +18,6 @@ std::map<std::string, IRunnerPtr>& Runners()
 }
 
 } // namespace
-} // namespace Private
 } // namespace sltbench
 
 
@@ -27,7 +25,7 @@ namespace sltbench {
 
 void RegisterRunner(const char *tag, const IRunnerPtr& runner)
 {
-	auto& runners = Private::Runners();
+	auto& runners = Runners();
 	const std::string name(tag);
 	auto it = runners.find(name);
 	if (it == runners.end())
@@ -42,7 +40,7 @@ void RegisterRunner(const char *tag, const IRunnerPtr& runner)
 
 std::vector<IRunnerPtr> GetRunners()
 {
-	const auto& runners_map = Private::Runners();
+	const auto& runners_map = Runners();
 
 	std::vector<IRunnerPtr> rv;
 	rv.reserve(runners_map.size());

@@ -1,6 +1,7 @@
 #include "Config.h"
 
 #include "ConsoleReporter.h"
+#include "Filters.h"
 #include "MeasureAlgo.h"
 
 
@@ -74,6 +75,20 @@ bool Config::IsMeasureRequired(std::chrono::nanoseconds estimation_time)
 void Config::SetMeasureRequiredPred(std::function<bool(std::chrono::nanoseconds)> pred)
 {
 	is_measure_required_pred_ = std::move(pred);
+}
+
+IFilter& Config::GetFilter()
+{
+	if (!filter_)
+	{
+		filter_.reset(new NullFilter());
+	}
+	return *filter_;
+}
+
+void Config::SetFilter(std::unique_ptr<IFilter> filter)
+{
+	filter_ = std::move(filter);
 }
 
 } // namespace sltbench
