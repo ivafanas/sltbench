@@ -274,4 +274,16 @@ For windows follow [this instructions](http://www.howtogeek.com/121775/how-to-fo
 For linux use `taskset` and `KMP_AFFINITY`.
 
 
+# How to filter benchmarking items
 
+Sometimes limited set of functions need to be benchmarked per run
+(for example, if you are tuning one function, you do not need to measure
+all functions in benchmark per run, just the one you are interested in).
+It is possible to set filter by benchmark name:
+
+This example shows how to run all functions wich name contains `MyFunction` substring:
+```sh
+./my_benchmark.exe --filter=.*MyFunction.*
+```
+
+Filter regular expression format corresponds to [basic case of std::regex](http://en.cppreference.com/w/cpp/regex/syntax_option_type).
