@@ -47,7 +47,7 @@ Descriptor *RegisterBenchmark(const char *name, SLTFun func);
 template<typename FixtureT>
 Descriptor *RegisterBenchmarkWithFixture(
 	const char *name,
-	std::function<void(typename FixtureT::Type)> func)
+	std::function<void(typename FixtureT::Type&)> func)
 {
 	using BM = BenchmarkWithFixture<FixtureT>;
 	BenchmarksContainer<BM>::Instance().Add(BM(name, func));
