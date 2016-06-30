@@ -60,16 +60,16 @@ SLTBENCH_CONFIG().SetReporter(std::unique_ptr<LearningReporter>(new LearningRepo
 std::string TimeToHRStr(std::chrono::nanoseconds ns)
 {
 	const auto count = ns.count();
-	if (count < 1'000)
+	if (count < 1000)
 		return std::to_string(count) + " (ns)";
 
-	if (count < 1'000'000)
-		return std::to_string(count / 1'000) + " (mcs)";
+	if (count < 1000000)
+		return std::to_string(count / 1000) + " (mcs)";
 
-	if (count < 1'000'000'000)
-		return std::to_string(count / 1'000'000) + " (ms)";
+	if (count < 1000000000)
+		return std::to_string(count / 1000000) + " (ms)";
 
-	return std::to_string(count / 1'000'000'000) + " (s)";
+	return std::to_string(count / 1000000000) + " (s)";
 }
 
 

@@ -4,6 +4,7 @@
 #include "Filters.h"
 
 #include <cassert>
+#include <cstring>
 #include <map>
 #include <string>
 

@@ -10,6 +10,7 @@
 #include "StaticAssertsUtil.h"
 
 #include <functional>
+#include <type_traits>
 #include <vector>
 
 
@@ -206,4 +207,5 @@ Descriptor *RegisterBenchmarkWithFixtureAndArgsGenerator(
 #define SLTBENCH_PRIVATE_STATIC_ASSERT_IS_ARGS_VECTOR(args_vec) \
 	static_assert(sltbench::SLT_HasInnerTypedef_value_type<decltype(args_vec)>::value, "Arguments must be a vector"); \
 	static_assert(sltbench::SLT_HasInsertionOperator<decltype(args_vec)::value_type>::value, "Arguments must be insertable (operator <<)"); \
-	static_assert(std::is_same<std::vector<std::remove_const_t<decltype(args_vec)::value_type>>, std::remove_const_t<decltype(args_vec)>>::value, "Arguments must be a vector");
+	static_assert(std::is_same<std::vector<std::remove_const<decltype(args_vec)::value_type>::type>, std::remove_const<decltype(args_vec)>::type>::value, "Arguments must be a vector");
+
