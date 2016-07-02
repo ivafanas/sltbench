@@ -13,10 +13,10 @@ struct IReporter
 
 	/*!
 		Report timing result
-	 
-		\param name - benchmark name
-		\param params - input string representation
-		\param ok - whether timing succeeded or failed
+
+		\param name          - name
+		\param params        - input string representation
+		\param ok            - whether timing succeeded or failed
 		\param timing_result - timing result
 	 */
 	virtual void Report(

@@ -123,11 +123,11 @@ Descriptor *RegisterBenchmarkWithArgsGenerator(
 /*!
 	Register function with fixture and args for benchmarking
 
-	\param name - function name
-	\param func - function for benchmarking
+	\param name     - function name
+	\param func     - function for benchmarking
 	\param args_vec - vector of input values
 
-	\param FixtureT - fixture class
+	\param FixtureT  - fixture class
 	\param ArgumentT - type of input value
 */
 template<typename FixtureT, typename ArgumentT>
@@ -152,7 +152,7 @@ Descriptor *RegisterBenchmarkWithFixtureAndArgs(
 	\param name - function name
 	\param func - function for benchmarking
 
-	\param FixtureT - fixture class
+	\param FixtureT   - fixture class
 	\param GeneratorT - input values generator class
 */
 template<typename FixtureT, typename GeneratorT>
@@ -208,4 +208,3 @@ Descriptor *RegisterBenchmarkWithFixtureAndArgsGenerator(
 	static_assert(sltbench::SLT_HasInnerTypedef_value_type<decltype(args_vec)>::value, "Arguments must be a vector"); \
 	static_assert(sltbench::SLT_HasInsertionOperator<decltype(args_vec)::value_type>::value, "Arguments must be insertable (operator <<)"); \
 	static_assert(std::is_same<std::vector<std::remove_const<decltype(args_vec)::value_type>::type>, std::remove_const<decltype(args_vec)>::type>::value, "Arguments must be a vector");
-

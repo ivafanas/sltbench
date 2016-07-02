@@ -43,7 +43,7 @@
 		* initialization parameters set is known at compile time
 		* initialization parameters set is exactly one
 
-	\param func - function with the only argument of type fixture::Type
+	\param func    - function with the only argument of type fixture::Type
 	\param fixture - class of fixture
 
 	\pre fixture is default constructible
@@ -103,7 +103,7 @@
 		* many inputs should be tested
 		* input set is known at compile time
 
-	\param func - function with input argument of type 'const T&'
+	\param func    - function with input argument of type 'const T&'
 	\param arg_vec - variable of type 'std::vector<T>'
 
 	\pre 'std::ostream& operator << (std::ostream& os, const T& )' must be defined
@@ -142,10 +142,10 @@
 		* many inputs should be tested
 		* input set is NOT known at compile time
 		  (for example, input might be read from file,
-		   where filename is given at benchmark 
+		   where filename is given at benchmark
 		   command line parameters: argc, argv)
 
-	\param func - function with input signature 'void(const generator::ArgType&)'
+	\param func      - function with input signature 'void(const generator::ArgType&)'
 	\param generator - arguments generator class
 
 	\pre generator is default constructible
@@ -207,7 +207,7 @@
 		* initialization is required
 		* initialization parameters set is exactly one
 
-	\param func - function with signature 'void(fixture::Type&, const T&)'
+	\param func    - function with signature 'void(fixture::Type&, const T&)'
 	\param fixture - class of fixture
 	\param arg_vec - variable of type 'std::vector<T>'
 
@@ -281,8 +281,8 @@
 		   where filename is given at benchmark
 		   command line parameters: argc, argv)
 
-	\param func - function with signature 'void(fixture::Type&, const generator::ArgType&)'
-	\param fixture - class of fixture
+	\param func      - function with signature 'void(fixture::Type&, const generator::ArgType&)'
+	\param fixture   - class of fixture
 	\param generator - class of arguments generator
 
 	\pre fixture is default constructible
@@ -345,7 +345,7 @@
 		void my_function(MyFixture::Type& fix, const MyArgsGenerator::ArgType& arg)
 		{
 			assert(fix.size() == arg);
-			std::sort(fix.begin(), fix.end());			
+			std::sort(fix.begin(), fix.end());
 		}
 
 		SLTBENCH_FUNCTION_WITH_FIXTURE_AND_ARGS_GENERATOR(my_function, MyFixture, MyArgsGenerator);
