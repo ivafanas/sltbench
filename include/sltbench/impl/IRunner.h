@@ -31,7 +31,7 @@ class Runner : public IRunner
 public:
 	static void Register()
 	{
-		RegisterRunner(__FUNCTION__, Instance());
+		RegisterRunner(__PRETTY_FUNCTION__, Instance());
 	}
 
 	static const IRunnerPtr& Instance()
