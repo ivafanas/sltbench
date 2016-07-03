@@ -1,10 +1,10 @@
 # sltbench
-C++ benchmark tool. Practical, stable and fast.
-- practical - arised from daily production tasks. Usability matters
+C++ benchmark tool. Practical, stable and fast performance testing framework.
+- practical - came up from daily production tasks. Usability matters
 - stable - correctness and reproducibility is a goal
 - fast - if results are stable, they should be produced as soon as possible
 
-This tool is learned to gain about 5% measure stability (depends on function, input and context).
+This tool is trained to gain about 5% measure stability (depends on function, input and context).
 Of course, it cannot strongly guarantee 5% stability (some functions are unstable itself, nothing helps), but it tends to.
 
 
@@ -74,8 +74,8 @@ class MyFixture
 public:
 	typedef std::vector<size_t> Type;
 
-	MyFixture() {}	
-	
+	MyFixture() {}
+
 	Type& SetUp()
 	{
 		fixture_.resize(100000, 0);
@@ -170,8 +170,8 @@ class MyFixture
 public:
 	typedef std::vector<size_t> Type;
 
-	MyFixture() {}	
-	
+	MyFixture() {}
+
 	Type& SetUp(const size_t& arg)
 	{
 		fixture_.resize(arg, 0);
@@ -233,8 +233,8 @@ class MyFixture
 public:
 	typedef std::vector<size_t> Type;
 
-	MyFixture() {}	
-	
+	MyFixture() {}
+
 	Type& SetUp(const MyArgsGenerator::ArgType& arg)
 	{
 		fixture_.resize(arg, 0);
