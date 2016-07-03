@@ -6,6 +6,9 @@ project (sltbench)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
+# options
+option(BUILD_TESTS "BUILD_TESTS" OFF)
+
 # sources
 set(SLTBENCH_LIB_SOURCES
 	src/BenchApi.cpp
@@ -72,8 +75,16 @@ set(SLTBENCH_HISTOGRAMMER_SOURCES
 	tools/histogrammer/HistogramBuilder.h
 	tools/histogrammer/main.cpp)
 
+# tests sources
+set(SLTBENCH_TESTS_SOURCES
+	tests/FiltersTest.cpp
+	tests/main.cpp
+	tests/ProcedureBenchmarkTest.cpp
+	tests/ProgramOptionsTest.cpp
+	tests/RunnerTest.cpp)
+
 # split source files into nested source groups by subfolder
-foreach(source IN LISTS SLTBENCH_LIB_SOURCES SLTBENCH_LIB_PUBLIC_HEADERS SLTBENCH_LIB_PUBLIC_IMPL_HEADERS)
+foreach(source IN LISTS SLTBENCH_LIB_SOURCES SLTBENCH_LIB_PUBLIC_HEADERS SLTBENCH_LIB_PUBLIC_IMPL_HEADERS SLTBENCH_TESTS_SOURCES)
     get_filename_component(source_path "${source}" PATH)
     string(REPLACE "/" "\\" source_path_msvc "${source_path}")
     source_group("${source_path_msvc}" FILES "${source}")
@@ -115,3 +126,13 @@ install(
 	FILES ${SLTBENCH_LIB_PUBLIC_IMPL_HEADERS}
 	DESTINATION include/sltbench/impl
 )
+
+# unit tests
+if(BUILD_TESTS)
+	include_directories (${CMAKE_CURRENT_SOURCE_DIR}/tests/gtest/googletest/include)
+	include_directories (${CMAKE_CURRENT_SOURCE_DIR}/tests/gtest/googletest)
+
+	find_package (Threads)
+	add_executable(sltbench_unittests ${SLTBENCH_TESTS_SOURCES})
+	target_link_libraries(sltbench_unittests LINK_PUBLIC sltbench_static ${CMAKE_THREAD_LIBS_INIT})
+endif()
