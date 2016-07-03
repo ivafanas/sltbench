@@ -23,6 +23,8 @@ set(SLTBENCH_LIB_SOURCES
 	src/MeasureAlgo.cpp
 	src/MeasureAlgo.h
 	src/ProcedureBenchmark.h
+	src/ProgramOptions.cpp
+	src/ProgramOptions.h
 	src/Runner.cpp
 	src/Runner.h)
 
@@ -45,7 +47,7 @@ set(SLTBENCH_LIB_PUBLIC_IMPL_HEADERS
 	include/sltbench/impl/IReporter.h
 	include/sltbench/impl/IRunner.h
 	include/sltbench/impl/StaticAssertsUtil.h)
-	
+
 # examples sources
 set(SLTBENCH_EXAMPLES_SOURCES
 	examples/custom_reporter.cpp
@@ -58,19 +60,19 @@ set(SLTBENCH_EXAMPLES_SOURCES
 	examples/function_with_fixture_and_args_generator.cpp
 	examples/main.cpp
 	examples/simple_function.cpp)
-	
+
 # autolearning sources
 set(SLTBENCH_AUTOLEARNING_SOURCES
 	tools/autolearning/main.cpp
 	tools/autolearning/Samples.cpp)
-	
+
 # histogrammer sources
 set(SLTBENCH_HISTOGRAMMER_SOURCES
 	tools/histogrammer/HistogramBuilder.cpp
 	tools/histogrammer/HistogramBuilder.h
 	tools/histogrammer/main.cpp)
 
-# split source files into nested source groups by subfolder	
+# split source files into nested source groups by subfolder
 foreach(source IN LISTS SLTBENCH_LIB_SOURCES SLTBENCH_LIB_PUBLIC_HEADERS SLTBENCH_LIB_PUBLIC_IMPL_HEADERS)
     get_filename_component(source_path "${source}" PATH)
     string(REPLACE "/" "\\" source_path_msvc "${source_path}")
