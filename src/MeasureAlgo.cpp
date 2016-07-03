@@ -89,7 +89,15 @@ std::chrono::nanoseconds MeasureAlgo::GetResult()
 	else
 	{
 		// bad case - timeout or out of retry count
-		return accumulated_execution_time_ / results_ns_.size();
+		// then return best result
+		if (!results_ns_.empty())
+		{
+			return std::chrono::nanoseconds(*results_ns_.begin());
+		}
+
+		// looks someone wants to see result
+		// without timing, well...
+		return std::chrono::nanoseconds::zero();
 	}
 }
 

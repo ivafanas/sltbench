@@ -80,6 +80,7 @@ set(SLTBENCH_HISTOGRAMMER_SOURCES
 set(SLTBENCH_TESTS_SOURCES
 	tests/FiltersTest.cpp
 	tests/main.cpp
+	tests/MeasureAlgoTest.cpp
 	tests/ProcedureBenchmarkTest.cpp
 	tests/ProgramOptionsTest.cpp
 	tests/RunnerTest.cpp)
