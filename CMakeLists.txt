@@ -25,6 +25,7 @@ set(SLTBENCH_LIB_SOURCES
 	src/JsonReporter.h
 	src/MeasureAlgo.cpp
 	src/MeasureAlgo.h
+	src/ProcedureBenchmark.cpp
 	src/ProcedureBenchmark.h
 	src/ProgramOptions.cpp
 	src/ProgramOptions.h
