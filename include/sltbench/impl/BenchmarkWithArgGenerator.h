@@ -53,20 +53,23 @@ public:
 
 	void Prepare()
 	{
-		args_generator_.reset(new GeneratorT());
-
 		if (args_.empty())
 		{
 			const auto& env = Env::Instance();
+
+			args_generator_.reset(new GeneratorT());
 			args_ = args_generator_->Generate(env.GetArgc(), env.GetArgv());
 		}
 	}
 
 	void Finalize()
 	{
-		args_.clear();
-		args_.shrink_to_fit();
-		args_generator_.reset();
+		if (args_generator_)
+		{
+			args_.clear();
+			args_.shrink_to_fit();
+			args_generator_.reset();
+		}
 	}
 
 	size_t GetArgsCount()
