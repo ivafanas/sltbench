@@ -1,4 +1,5 @@
 # sltbench
+
 C++ benchmark tool. Practical, stable and fast performance testing framework.
 - practical - came up from daily production tasks. Usability matters
 - stable - correctness and reproducibility is a goal
@@ -287,3 +288,8 @@ This example shows how to run all functions wich name contains `MyFunction` subs
 ```
 
 Filter regular expression format corresponds to [basic case of std::regex](http://en.cppreference.com/w/cpp/regex/syntax_option_type).
+
+
+# License
+
+sltbench is released under the Apache 2.0 license
