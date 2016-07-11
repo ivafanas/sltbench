@@ -46,7 +46,7 @@ public:
 		const auto start_timepoint = std::chrono::high_resolution_clock::now();
 		function_(fix, arg);
 		const auto final_timepoint = std::chrono::high_resolution_clock::now();
-		const auto rv = 
+		const auto rv =
 			final_timepoint > start_timepoint
 			? std::chrono::duration_cast<std::chrono::nanoseconds>(final_timepoint - start_timepoint)
 			: std::chrono::nanoseconds(0);
@@ -59,11 +59,12 @@ public:
 	void Prepare()
 	{
 		fixture_.reset(new FixtureT());
-		args_generator_.reset(new GeneratorT());
 
 		if (args_.empty())
 		{
 			const auto& env = Env::Instance();
+
+			args_generator_.reset(new GeneratorT());
 			args_ = args_generator_->Generate(env.GetArgc(), env.GetArgv());
 		}
 	}
@@ -71,9 +72,13 @@ public:
 	void Finalize()
 	{
 		fixture_.reset();
-		args_.clear();
-		args_.shrink_to_fit();
-		args_generator_.reset();
+
+		if (args_generator_)
+		{
+			args_.clear();
+			args_.shrink_to_fit();
+			args_generator_.reset();
+		}
 	}
 
 	size_t GetArgsCount()
