@@ -32,7 +32,7 @@ public:
 	static void Register()
 	{
 		RegisterRunner(
-#ifdef __GUNC__
+#ifdef __GNUC__
 			__PRETTY_FUNCTION__
 #else
 			__FUNCTION__
