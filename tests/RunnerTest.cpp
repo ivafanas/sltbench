@@ -13,6 +13,7 @@ public:
         sltbench::reporter::IReporter&,
         sltbench::IFilter&) override
     {
+        return true;
     }
 };
 
