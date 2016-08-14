@@ -22,16 +22,29 @@ std::map<std::string, std::string> BuildProgramOptions(int argc, char **argv)
 
         // we are looking for "--option=value" case
         // or "--option value" case
+        //
+        // we are not interested in positional parameters
+        // and parameters like "-o" and "--option"
 
         char *it = std::find(arg, arg + arglen, '=');
         if (it == arg + arglen)
         {
-            // case "--option value"
             if (i + 1 < argc)
             {
-                rv[std::string(arg, arg + arglen)] = argv[i + 1];
-                ++i;
+                if (arglen > 2 && arg[0] == '-' && arg[1] == '-')
+                {
+                    char *next_arg = argv[i + 1];
+                    if (next_arg[0] != '-')
+                    {
+                        // case "--option value"
+                        rv[std::string(arg, arg + arglen)] = argv[i + 1];
+                        ++i;
+                    }
+                    // else - case "--option" without value -- skip it
+                }
+                // else - case of positional parameter or "-o" option -- skip it
             }
+            // else - case "-o" or "--option" without value -- skip it
         }
         else
         {
