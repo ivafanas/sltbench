@@ -40,7 +40,7 @@ Well, it is quite easy.
 
 Requirements:
 - function gets input value by const reference
-- input values are presented as std::vector
+- input values are presented as `std::vector`
 - type of input value provides `std::ostream <<` operator (if not, just implement it)
 
 ```c++
