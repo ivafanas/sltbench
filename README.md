@@ -269,7 +269,7 @@ First of all, make sure that (**all points are critical for stable performance r
 No browser is running, no background updates, no deamons / services (like databases, antivirus, background email fetching and so on).
 * There is no other users logged in to the computer.
 * Intel SpeedStep and Intel Turbo technologies are turned off (check your BIOS settings).
-* You are NOT running from Visual Studio (F5) or another IDE (open separate console).
+* You are NOT running from Visual Studio or another IDE (open separate console).
 * The benchmark process is pinned to a single CPU core and this is not #0 core.
 It is important to get rid of task switching between CPU cores, so pin your process.
 In some systems OS preferably occupies core #0, benchmark should avoid to struggle with OS for resources.
