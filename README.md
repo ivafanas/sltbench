@@ -1,5 +1,7 @@
 # sltbench
 
+[![Build Status](https://travis-ci.org/ivafanas/sltbench.svg)](https://travis-ci.org/ivafanas/sltbench)
+
 C++ benchmark tool. Practical, stable and fast performance testing framework.
 - practical - came up from daily production tasks. Usability matters
 - stable - correctness and reproducibility is a goal
