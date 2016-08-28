@@ -1,0 +1,32 @@
+version: '{build}'
+
+configuration:
+  - Debug
+  - Release
+
+environment:
+  matrix:
+    - compiler: msvc-14-seh
+      generator: "Visual Studio 14 2015"
+
+    - compiler: msvc-14-seh
+      generator: "Visual Studio 14 2015 Win64"
+
+matrix:
+  fast_finish: true
+
+build_script:
+  - git submodule update --init --recursive
+  - md build -Force
+  - cd build
+  - cmake "-DBUILD_TESTS=ON" "-DCMAKE_BUILD_TYPE=%configuration%" ..
+  - cmake --build . --config %configuration%
+  - cd ..
+
+test_script:
+  - cd build\%configuration%
+  - sltbench_unittests.exe
+
+artifacts:
+  - path: 'build/CMakeFiles/*.log'
+    name: logs
