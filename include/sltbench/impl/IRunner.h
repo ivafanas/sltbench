@@ -95,19 +95,19 @@ private:
 			};
 
 			// estimate execution time
-			const auto estimation_time = Estimate(measure_func);
+			const auto estimated_time = Estimate(measure_func);
 
 			// opt for autolearning: check whether we need to benchmark function
 			// in production it is always true
 			const auto bm_id = bm.GetName() + "_" + bm.ConvertArgToString(arg_index);
-			bool need_measure = GetConfig().GetPrivate().IsMeasureRequired(estimation_time);
+			bool need_measure = GetConfig().GetPrivate().IsMeasureRequired(estimated_time);
 			if (!need_measure)
 			{
 				rv.time_ns = std::chrono::nanoseconds(1);
 			}
 			else
 			{
-				rv.time_ns = Measure(measure_func, estimation_time);
+				rv.time_ns = Measure(measure_func, estimated_time);
 			}
 
 			rv.ok = true;
