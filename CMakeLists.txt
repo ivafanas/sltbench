@@ -84,6 +84,7 @@ set(SLTBENCH_HISTOGRAMMER_SOURCES
 # tests sources
 set(SLTBENCH_TESTS_SOURCES
 	tests/BenchmarkWithArgGeneratorTest.cpp
+	tests/BenchmarkWithFixtureAndArgGeneratorTest.cpp
 	tests/BenchmarkWithFixtureAndLazyArgGeneratorTest.cpp
 	tests/BenchmarkWithLazyArgGeneratorTest.cpp
 	tests/FiltersTest.cpp
