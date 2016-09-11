@@ -249,23 +249,23 @@ Descriptor *RegisterBenchmarkWithFixtureAndLazyArgsGenerator(
 // whether fun is a member function of type 'return_t()'
 #define SLT_IS_MEMFUN_ARG0(fun, return_t) \
     std::is_member_function_pointer<decltype(&fun)>::value && \
-    std::is_same<SLT_FUN_RETT(fun), typename return_t>::value && \
+    std::is_same<SLT_FUN_RETT(fun), return_t>::value && \
     SLT_FUN_ARITY(fun) == 1
 
 // whether fun is a member function of type 'return_t(arg_t)'
 #define SLT_IS_MEMFUN_ARG1(fun, return_t, arg_t) \
 	std::is_member_function_pointer<decltype(&fun)>::value && \
     SLT_FUN_ARITY(fun) == 2 && \
-    std::is_same<SLT_FUN_RETT(fun), typename return_t>::value && \
-    std::is_same<SLT_FUN_ARGT(fun, 1), typename arg_t>::value
+    std::is_same<SLT_FUN_RETT(fun), return_t>::value && \
+    std::is_same<SLT_FUN_ARGT(fun, 1), arg_t>::value
 
 // whether fun is a member function of type 'return_t(arg1_t, arg2_t)'
 #define SLT_IS_MEMFUN_ARG2(fun, return_t, arg1_t, arg2_t) \
 	std::is_member_function_pointer<decltype(&fun)>::value && \
     SLT_FUN_ARITY(fun) == 3 && \
-    std::is_same<SLT_FUN_RETT(fun),  typename return_t>::value && \
-    std::is_same<SLT_FUN_ARGT(fun, 1), typename arg1_t>::value && \
-    std::is_same<SLT_FUN_ARGT(fun, 2), typename arg2_t>::value
+    std::is_same<SLT_FUN_RETT(fun),  return_t>::value && \
+    std::is_same<SLT_FUN_ARGT(fun, 1), arg1_t>::value && \
+    std::is_same<SLT_FUN_ARGT(fun, 2), arg2_t>::value
 
 #define SLT_STATIC_ASSERT_IS_FIXTURE(fixture) \
 	static_assert(std::is_class<fixture>::value, "Fixture must be a class"); \
