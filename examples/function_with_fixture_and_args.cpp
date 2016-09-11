@@ -5,53 +5,56 @@
 #include <vector>
 
 
+namespace {
 
-struct NSortFunctionArg
+struct Arg
 {
-	size_t size;
-	size_t ncalls;
+    size_t size;
+    size_t ncalls;
 };
 
-std::ostream& operator << (std::ostream& oss, const NSortFunctionArg& arg)
+std::ostream& operator << (std::ostream& oss, const Arg& arg)
 {
-	return oss << arg.size << '/' << arg.ncalls;
+    return oss << arg.size << '/' << arg.ncalls;
 }
 
-class NSortFunctionFixture
+class Fixture
 {
 public:
-	typedef std::vector<size_t> Type;
+    typedef std::vector<size_t> Type;
 
-	NSortFunctionFixture() {}	
-	
-	Type& SetUp(const NSortFunctionArg& arg)
-	{
-		const size_t size = arg.size;
-		fixture_.resize(size, 0);
-		for (size_t i = 0; i < size; ++i)
-		{
-			fixture_[i] = size - i;
-		}
-		return fixture_;
-	}
+    Fixture() {}
 
-	void TearDown() {}
+    Type& SetUp(const Arg& arg)
+    {
+        fixture_.resize(arg.size, 0);
+        for (size_t i = 0; i < arg.size; ++i)
+            fixture_[i] = i;
+        return fixture_;
+    }
+
+    void TearDown() {}
 
 private:
-	Type fixture_;
+    Type fixture_;
 };
 
-void NSortFunction(NSortFunctionFixture::Type& fixture, const NSortFunctionArg& arg)
+void Shuffle(Fixture::Type& fix, const Arg& arg)
 {
-	// some useful work here based on fixture and arg
-	for (size_t i = 0; i < arg.ncalls; ++i)
-	{
-		std::sort(fixture.begin(), fixture.end());
-	}
+    // some useful work here based on fixture and arg
+    for (size_t i = 0; i < arg.ncalls; ++i)
+    {
+        std::random_shuffle(fix.begin(), fix.end());
+    }
 }
-static const std::vector<NSortFunctionArg> nsortfunctions_args = {
-	{ 100000, 5 },
-	{ 110000, 4 },
-	{ 120000, 3 }
+static const std::vector<Arg> args = {
+    { 100000, 1 },
+    { 200000, 2 },
+    { 300000, 3 }
 };
-SLTBENCH_FUNCTION_WITH_FIXTURE_AND_ARGS(NSortFunction, NSortFunctionFixture, nsortfunctions_args);
+
+static_assert(std::is_same<sltbench::function_traits<decltype(&Fixture::SetUp)>::argument<1>::type, std::add_lvalue_reference<std::add_const<decltype(args)::value_type>::type>::type>::value, "hmm 1");
+
+SLTBENCH_FUNCTION_WITH_FIXTURE_AND_ARGS(Shuffle, Fixture, args);
+
+} // namespace
