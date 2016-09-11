@@ -83,6 +83,7 @@ set(SLTBENCH_HISTOGRAMMER_SOURCES
 
 # tests sources
 set(SLTBENCH_TESTS_SOURCES
+	tests/BenchmarkWithLazyArgGeneratorTest.cpp
 	tests/FiltersTest.cpp
 	tests/main.cpp
 	tests/MeasureAlgoTest.cpp
