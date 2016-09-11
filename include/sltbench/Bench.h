@@ -27,7 +27,7 @@
 
 	\warning
 		Further functions registered with the same name
-		even in another .cpp files will be ignored.
+		even in other source files will be ignored.
 		sltbench ensures unique name for functions to
 		guarantee the same functions order per run.
 */
@@ -86,7 +86,7 @@
 		Function name is generated as func##fixture.
 
 		Further functions registered with the same name
-		even in another .cpp files will be ignored.
+		even in other source files will be ignored.
 		sltbench ensures unique name for functions to
 		guarantee the same functions order per run.
 */
@@ -125,7 +125,7 @@
 
 	\warning
 		Further functions registered with the same name
-		even in another .cpp files will be ignored.
+		even in other source files will be ignored.
 		sltbench ensures unique name for functions to
 		guarantee the same functions order per run.
 */
@@ -260,7 +260,7 @@
 		Function name is generated as func##fixture.
 
 		Further functions registered with the same name
-		even in another .cpp files will be ignored.
+		even in other source files will be ignored.
 		sltbench ensures unique name for functions to
 		guarantee the same functions order per run.
 */
