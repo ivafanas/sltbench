@@ -28,16 +28,16 @@ public:
 		return name_;
 	}
 
-	std::chrono::nanoseconds Measure(size_t)
+	std::chrono::nanoseconds Measure()
 	{
 		auto& fix = fixture_->SetUp();
 
-		const auto start_timepoint = std::chrono::high_resolution_clock::now();
+		const auto start_ts = std::chrono::high_resolution_clock::now();
 		function_(fix);
-		const auto final_timepoint = std::chrono::high_resolution_clock::now();
+		const auto final_ts = std::chrono::high_resolution_clock::now();
 		const auto rv = 
-			final_timepoint > start_timepoint
-			? std::chrono::duration_cast<std::chrono::nanoseconds>(final_timepoint - start_timepoint)
+			final_ts > start_ts
+			? std::chrono::duration_cast<std::chrono::nanoseconds>(final_ts - start_ts)
 			: std::chrono::nanoseconds(0);
 
 		fixture_->TearDown();
@@ -48,6 +48,7 @@ public:
 	void Prepare()
 	{
 		fixture_.reset(new FixtureT());
+        measured_ = false;
 	}
 
 	void Finalize()
@@ -55,20 +56,26 @@ public:
 		fixture_.reset();
 	}
 
-	size_t GetArgsCount()
-	{
-		return 1;
-	}
+    bool HasArgsToProcess()
+    {
+        return !measured_;
+    }
 
-	std::string ConvertArgToString(size_t)
-	{
-		return{};
-	}
+    void OnArgProcessed()
+    {
+        measured_ = true;
+    }
+
+    std::string CurrentArgAsString()
+    {
+        return{};
+    }
 
 private:
 	std::string name_;
 	std::unique_ptr<FixtureT> fixture_;
 	FunctionT function_;
+    bool measured_ = false;
 };
 
 } // namespace sltbench

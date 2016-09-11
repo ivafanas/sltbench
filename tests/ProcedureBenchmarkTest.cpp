@@ -10,18 +10,27 @@ TEST(ProcedureBenchmark, GetNameReturnsBenchmarkName)
     EXPECT_EQ("name", bm.GetName());
 }
 
-TEST(ProcedureBenchmark, GetArgsCountReturnsOne)
+TEST(ProcedureBenchmark, HasArgsToProcessReturnsTrue)
 {
     sltbench::ProcedureBenchmark bm("name", [](){});
 
-    EXPECT_EQ(1, bm.GetArgsCount());
+    EXPECT_TRUE(bm.HasArgsToProcess());
+}
+
+TEST(ProcedureBenchmark, HasArgsToProcessReturnsFalseAfterProcess)
+{
+    sltbench::ProcedureBenchmark bm("name", []() {});
+
+    bm.OnArgProcessed();
+
+    EXPECT_FALSE(bm.HasArgsToProcess());
 }
 
 TEST(ProcedureBenchmark, ConvertArgToStringReturnsEmptyString)
 {
     sltbench::ProcedureBenchmark bm("name", [](){});
 
-    EXPECT_TRUE(bm.ConvertArgToString(0).empty());
+    EXPECT_TRUE(bm.CurrentArgAsString().empty());
 }
 
 TEST(ProcedureBenchmark, MeasureShouldCallFunctionOnce)
@@ -29,7 +38,7 @@ TEST(ProcedureBenchmark, MeasureShouldCallFunctionOnce)
     size_t n_calls = 0;
     sltbench::ProcedureBenchmark bm("name", [&](){ ++n_calls; });
 
-    bm.Measure(0);
+    bm.Measure();
 
     EXPECT_EQ(1, n_calls);
 }

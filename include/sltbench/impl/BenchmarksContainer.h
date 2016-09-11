@@ -32,7 +32,7 @@ public:
 		}
 		else
 		{
-			std::cerr << "WARNING: Benchmark with name " << name << " is already registered." << std::endl;
+			std::cerr << "WARNING: Benchmark with name " << name << " is already registered.\n";
 			std::cerr << "Namesake benchmarks are ignored!!" << std::endl;
 			assert(false);
 		}

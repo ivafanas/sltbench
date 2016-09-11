@@ -16,15 +16,17 @@ public:
 
 public:
 	const std::string& GetName() const;
-	std::chrono::nanoseconds Measure(size_t);
+	std::chrono::nanoseconds Measure();
 	void Prepare();
 	void Finalize();
-	size_t GetArgsCount();
-	std::string ConvertArgToString(size_t);
+    bool HasArgsToProcess();
+    void OnArgProcessed();
+    std::string CurrentArgAsString();
 
 private:
 	std::string name_;
 	SLTFun function_;
+    bool measured_ = false;
 };
 
 } // namespace sltbenh

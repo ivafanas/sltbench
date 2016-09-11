@@ -17,7 +17,7 @@ const std::string& ProcedureBenchmark::GetName() const
 	return name_;
 }
 
-nanoseconds ProcedureBenchmark::Measure(size_t)
+nanoseconds ProcedureBenchmark::Measure()
 {
 	const auto start_tp = high_resolution_clock::now();
 	function_();
@@ -30,20 +30,26 @@ nanoseconds ProcedureBenchmark::Measure(size_t)
 
 void ProcedureBenchmark::Prepare()
 {
+    measured_ = false;
 }
 
 void ProcedureBenchmark::Finalize()
 {
 }
 
-size_t ProcedureBenchmark::GetArgsCount()
+bool ProcedureBenchmark::HasArgsToProcess()
 {
-	return 1;
+    return !measured_;
 }
 
-std::string ProcedureBenchmark::ConvertArgToString(size_t)
+void ProcedureBenchmark::OnArgProcessed()
 {
-	return{};
+    measured_ = true;
+}
+
+std::string ProcedureBenchmark::CurrentArgAsString()
+{
+    return{};
 }
 
 } // namespace sltbenh

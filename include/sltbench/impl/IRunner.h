@@ -82,7 +82,7 @@ private:
 		bool ok = false;
 		std::chrono::nanoseconds time_ns;
 	};
-	RunResult Run(BenchmarkT& bm, const size_t arg_index)
+	RunResult Run(BenchmarkT& bm)
 	{
 		RunResult rv;
 
@@ -90,8 +90,8 @@ private:
 		// we should fail gracefully
 		try
 		{
-			const auto measure_func = [&bm, arg_index]() -> std::chrono::nanoseconds {
-				return bm.Measure(arg_index);
+			const auto measure_func = [&bm]() -> std::chrono::nanoseconds {
+				return bm.Measure();
 			};
 
 			// estimate execution time
@@ -99,7 +99,6 @@ private:
 
 			// opt for autolearning: check whether we need to benchmark function
 			// in production it is always true
-			const auto bm_id = bm.GetName() + "_" + bm.ConvertArgToString(arg_index);
 			bool need_measure = GetConfig().GetPrivate().IsMeasureRequired(estimated_time);
 			if (!need_measure)
 			{
@@ -126,20 +125,21 @@ private:
 		bm.Prepare();
 
 		bool ok = true;
-		const size_t args_count = bm.GetArgsCount();
-		for (size_t i = 0; i < args_count; ++i)
-		{
-			const auto res = Run(bm, i);
+        while (bm.HasArgsToProcess())
+        {
+            const auto res = Run(bm);
 
-			reporter.Report(
-				bm.GetName(),
-				bm.ConvertArgToString(i),
-				res.ok,
-				res.time_ns);
+            reporter.Report(
+                bm.GetName(),
+                bm.CurrentArgAsString(),
+                res.ok,
+                res.time_ns);
 
-			if (!res.ok)
-				ok = false;
-		}
+            if (!res.ok)
+                ok = false;
+
+            bm.OnArgProcessed();
+        }
 
 		bm.Finalize();
 

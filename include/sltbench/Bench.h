@@ -32,7 +32,7 @@
 		guarantee the same functions order per run.
 */
 #define SLTBENCH_FUNCTION(func) \
-	static SLTBENCH_PRIVATE_DECLARE_UNIQUE_DESCRIPTOR_FUNCTION(func) = SLTBENCH_PRIVATE_REGISTER_FUNCTION(func);
+	static SLT_DECLARE_UNIQUE_DESCRIPTOR_FUNCTION(func) = SLT_REGISTER_FUNCTION(func);
 
 
 /*!
@@ -91,8 +91,8 @@
 		guarantee the same functions order per run.
 */
 #define SLTBENCH_FUNCTION_WITH_FIXTURE(func, fixture) \
-	SLTBENCH_PRIVATE_STATIC_ASSERT_IS_FIXTURE(fixture); \
-	static SLTBENCH_PRIVATE_DECLARE_UNIQUE_DESCRIPTOR_FUNCTION_WITH_FIXTURE(func, fixture) = SLTBENCH_PRIVATE_REGISTER_FUNCTION_WITH_FIXTURE(func, fixture);
+	SLT_STATIC_ASSERT_IS_FIXTURE(fixture); \
+	static SLT_DECLARE_UNIQUE_DESCRIPTOR_FUNCTION_WITH_FIXTURE(func, fixture) = SLT_REGISTER_FUNCTION_WITH_FIXTURE(func, fixture);
 
 
 /*!
@@ -130,8 +130,8 @@
 		guarantee the same functions order per run.
 */
 #define SLTBENCH_FUNCTION_WITH_ARGS(func, args_vec) \
-	SLTBENCH_PRIVATE_STATIC_ASSERT_IS_ARGS_VECTOR(args_vec); \
-	static SLTBENCH_PRIVATE_DECLARE_UNIQUE_DESCRIPTOR_FUNCTION(func) = SLTBENCH_PRIVATE_REGISTER_FUNCTION_WITH_ARGS(func, args_vec);
+	SLT_STATIC_ASSERT_IS_ARGS_VECTOR(args_vec); \
+	static SLT_DECLARE_UNIQUE_DESCRIPTOR_FUNCTION(func) = SLT_REGISTER_FUNCTION_WITH_ARGS(func, args_vec);
 
 
 /*!
@@ -156,12 +156,12 @@
 	\example
 	\code
 
-		class MyArgsGenerator
+		class Generator
 		{
 		public:
 			typedef std::vector<int> ArgType;
 
-			MyArgsGenerator() {}
+			Generator() {}
 
 			std::vector<ArgType> Generate(int argc, char **argv)
 			{
@@ -171,17 +171,17 @@
 			}
 		};
 
-		std::ostream& operator << (std::ostream& os, const MyArgsGenerator::ArgType& rhs)
+		std::ostream& operator << (std::ostream& os, const Generator::ArgType& rhs)
 		{
 			// ... provide string representation for argument
 			return os;
 		}
 
-		void my_function(const MyArgsGenerator::ArgType& arg)
+		void my_function(const Generator::ArgType& arg)
 		{
 			// some stuff with arg here to benchmark
 		}
-		SLTBENCH_FUNCTION_WITH_ARGS_GENERATOR(my_function, MyArgsGenerator);
+		SLTBENCH_FUNCTION_WITH_ARGS_GENERATOR(my_function, Generator);
 
 	\endcode
 
@@ -189,13 +189,76 @@
 		Function name is generated as func##generator.
 
 		Further functions registered with the same name
-		even in another .cpp files will be ignored.
+		even in other source files will be ignored.
 		sltbench ensures unique name for functions to
 		guarantee the same functions order per run.
 */
 #define SLTBENCH_FUNCTION_WITH_ARGS_GENERATOR(func, generator) \
-	SLTBENCH_PRIVATE_STATIC_ASSERT_IS_GENERATOR(generator); \
-	static SLTBENCH_PRIVATE_DECLARE_UNIQUE_DESCRIPTOR_FUNCTION(func) = SLTBENCH_PRIVATE_REGISTER_FUNCTION_WITH_ARGS_GENERATOR(func, generator);
+	SLT_STATIC_ASSERT_IS_GENERATOR(generator); \
+	static SLT_DECLARE_UNIQUE_DESCRIPTOR_FUNCTION(func) = SLT_REGISTER_FUNCTION_WITH_ARGS_GENERATOR(func, generator);
+
+
+/*!
+    Register function with lazy generator for input set to benchmark
+
+    This benchmark is preferable if:
+        * many inputs should be tested
+        * input set is memory-consuming and should be exactly one per each run
+
+    \param func      - function with signature 'void(const generator::ArgType&)'
+    \param generator - class of lazy arguments generator
+
+    \pre generator has constructor from int, char**
+    \pre generator has inner typedef 'ArgType'
+    \pre 'ArgType' must be default-constructible or move-constructible
+    \pre 'std::ostream& operator << (std::ostream& os, const generator::ArgType& )' must be defined
+    \pre generator has member function 'ArgType Generate()', which generates argument or throws
+         StopGenerationException to stop testing
+
+    \example
+    \code
+
+        class Generator
+        {
+        public:
+            typedef MemoryConsumingStruct ArgType;
+
+            Generator(int, char **) {}
+
+            ArgType Generate()
+            {
+                if (count_ >= 5)
+                    throw sltbench::StopGenerationException();
+
+                ++count_;
+
+                return MemoryConsumingStruct(count_);
+            }
+
+        private:
+            size_t count_ = 0;
+        };
+
+        void my_function(const Generator::ArgType& arg)
+        {
+            // some useful work here ...
+        }
+
+        SLTBENCH_FUNCTION_WITH_LAZY_ARGS_GENERATOR(my_function, Generator);
+
+    \endcode
+
+    \warning
+        Function name is generated as 'func'.
+
+        Further functions registered with the same name
+        even in other source files will be ignored.
+        sltbench ensures unique name for functions to
+        guarantee the same functions order per run.
+*/
+#define SLTBENCH_FUNCTION_WITH_LAZY_ARGS_GENERATOR(func, generator) \
+	SLT_STATIC_ASSERT_IS_LAZY_GENERATOR(generator); \
+	static SLT_DECLARE_UNIQUE_DESCRIPTOR_FUNCTION(func) = SLT_REGISTER_FUNCTION_WITH_LAZY_ARGS_GENERATOR(func, generator);
 
 
 /*!
@@ -265,9 +328,9 @@
 		guarantee the same functions order per run.
 */
 #define SLTBENCH_FUNCTION_WITH_FIXTURE_AND_ARGS(func, fixture, args_vec) \
-	SLTBENCH_PRIVATE_STATIC_ASSERT_IS_FIXTURE(fixture); \
-	SLTBENCH_PRIVATE_STATIC_ASSERT_IS_ARGS_VECTOR(args_vec); \
-	static SLTBENCH_PRIVATE_DECLARE_UNIQUE_DESCRIPTOR_FUNCTION_WITH_FIXTURE(func, fixture) = SLTBENCH_PRIVATE_REGISTER_FUNCTION_WITH_FIXTURE_AND_ARGS(func, fixture, args_vec);
+	SLT_STATIC_ASSERT_IS_ARGS_VECTOR(args_vec); \
+    SLT_STATIC_ASSERT_IS_ARG_FIXTURE(fixture, decltype(args_vec)::value_type); \
+	static SLT_DECLARE_UNIQUE_DESCRIPTOR_FUNCTION_WITH_FIXTURE(func, fixture) = SLT_REGISTER_FUNCTION_WITH_FIXTURE_AND_ARGS(func, fixture, args_vec);
 
 
 /*!
@@ -357,14 +420,108 @@
 		Function name is generated as func##fixture.
 
 		Further functions registered with the same name
-		even in another .cpp files will be ignored.
+		even in other source files will be ignored.
 		sltbench ensures unique name for functions to
 		guarantee the same functions order per run.
 */
 #define SLTBENCH_FUNCTION_WITH_FIXTURE_AND_ARGS_GENERATOR(func, fixture, generator) \
-	SLTBENCH_PRIVATE_STATIC_ASSERT_IS_FIXTURE(fixture); \
-	SLTBENCH_PRIVATE_STATIC_ASSERT_IS_GENERATOR(generator); \
-	static SLTBENCH_PRIVATE_DECLARE_UNIQUE_DESCRIPTOR_FUNCTION_WITH_FIXTURE(func, fixture) = SLTBENCH_PRIVATE_REGISTER_FUNCTION_WITH_FIXTURE_AND_ARGS_GENERATOR(func, fixture, generator);
+    SLT_STATIC_ASSERT_IS_GENERATOR(generator); \
+	SLT_STATIC_ASSERT_IS_ARG_FIXTURE(fixture, generator::ArgType); \
+	static SLT_DECLARE_UNIQUE_DESCRIPTOR_FUNCTION_WITH_FIXTURE(func, fixture) = SLT_REGISTER_FUNCTION_WITH_FIXTURE_AND_ARGS_GENERATOR(func, fixture, generator);
+
+
+/*!
+    Register function with fixture and input set lazy generator to benchmark
+
+    This benchmark is preferable if:
+        * initialization is required
+        * many inputs should be tested
+        * input set is memory-consuming and should be exactly one per each run
+
+    \param func      - function with signature 'void(fixture::Type&, const generator::ArgType&)'
+    \param fixture   - class of fixture
+    \param generator - class of lazy arguments generator
+
+    \pre fixture is default constructible
+    \pre fixture has inner typedef Type
+    \pre fixture has member function 'Type& Setup(const generator::ArgType&)' (which returns _mutable reference_!)
+    \pre fixture has member function 'void TearDown()'
+    \pre generator has constructor from int, char**
+    \pre generator has inner typedef 'ArgType'
+    \pre 'ArgType' must be default-constructible or move-constructible
+    \pre 'std::ostream& operator << (std::ostream& os, const generator::ArgType& )' must be defined
+    \pre generator has member function 'ArgType Generate()', which generates argument or throws
+         StopGenerationException to stop testing
+
+    \example
+    \code
+
+        class Generator
+        {
+        public:
+            typedef size_t ArgType;
+
+            Generator(int, char **) {}
+
+            size_t Generate()
+            {
+                if (count_ >= 5)
+                    throw sltbench::StopGenerationException();
+
+                ++count_;
+
+                return count_ * 10000;
+            }
+
+        private:
+            size_t count_ = 0;
+        };
+
+        class Fixture
+        {
+        public:
+            typedef std::vector<size_t> Type;
+
+            Fixture() {}
+
+            Type& SetUp(const Generator::ArgType& arg)
+            {
+                fixture_.clear();
+                fixture_.reserve(arg);
+                for (size_t i = 0; i < arg; ++i)
+                    fixture_.push_back(i % (arg / 10));
+                return fixture_;
+            }
+
+            void TearDown() {}
+
+        private:
+            Type fixture_;
+        };
+
+        void my_function(Fixture::Type& fix, const Generator::ArgType& arg)
+        {
+            assert(fix.size() == arg);
+            std::sort(fix.begin(), fix.end());
+        }
+
+        SLTBENCH_FUNCTION_WITH_FIXTURE_AND_LAZY_ARGS_GENERATOR(my_function, Fixture, Generator);
+
+
+    \endcode
+
+    \warning
+        Function name is generated as func##fixture.
+
+        Further functions registered with the same name
+        even in other source files will be ignored.
+        sltbench ensures unique name for functions to
+        guarantee the same functions order per run.
+*/
+#define SLTBENCH_FUNCTION_WITH_FIXTURE_AND_LAZY_ARGS_GENERATOR(func, fixture, generator) \
+    SLT_STATIC_ASSERT_IS_LAZY_GENERATOR(generator); \
+	SLT_STATIC_ASSERT_IS_ARG_FIXTURE(fixture, generator::ArgType); \
+	static SLT_DECLARE_UNIQUE_DESCRIPTOR_FUNCTION_WITH_FIXTURE(func, fixture) = SLT_REGISTER_FUNCTION_WITH_FIXTURE_AND_LAZY_ARGS_GENERATOR(func, fixture, generator);
 
 
 /*!
@@ -385,4 +542,4 @@
 //
 
 #define SLTBENCH_CONFIG() \
-	SLTBENCH_PRIVATE_DECLARE_UNIQUE_CONFIG() = ::sltbench::GetConfig()
+	SLT_DECLARE_UNIQUE_CONFIG() = ::sltbench::GetConfig()
