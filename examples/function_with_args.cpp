@@ -2,45 +2,47 @@
 
 #include <algorithm>
 #include <ostream>
+#include <set>
 #include <sstream>
 #include <vector>
 
 
-void SortFunctionWithArg(const size_t& arg)
+namespace {
+
+void InsertToSetWithArg(const size_t& arg)
 {
-	std::vector<size_t> vec(arg, 0);
-	for (size_t i = 0; i < vec.size(); ++i)
-	{
-		vec[i] = vec.size() - i;
-	}
-	std::sort(vec.begin(), vec.end());
+    std::set<size_t> s;
+    for (size_t i = 0; i < arg; ++i)
+        s.insert(i);
 }
-static const std::vector<size_t> sort_function_args{ 100000, 110000, 120000, 130000, 140000, 150000 };
-SLTBENCH_FUNCTION_WITH_ARGS(SortFunctionWithArg, sort_function_args);
+const std::vector<size_t> sort_args{ 100000, 110000, 120000, 130000, 140000, 150000 };
+SLTBENCH_FUNCTION_WITH_ARGS(InsertToSetWithArg, sort_args);
 
 
 
-struct StringMultFunctionArg
+struct StringMultArg
 {
-	size_t n;
-	std::string src;
+    size_t n;
+    std::string src;
 };
 
-std::ostream& operator << (std::ostream& oss, const StringMultFunctionArg& rhs)
+std::ostream& operator << (std::ostream& oss, const StringMultArg& rhs)
 {
-	return oss << rhs.n << '/' << rhs.src;
+    return oss << rhs.n << '/' << rhs.src;
 }
 
-void StringMultFunction(const StringMultFunctionArg& arg)
+void StringMult(const StringMultArg& arg)
 {
-	std::string rv;
-	for (size_t i = 0; i < arg.n; ++i)
-		rv += arg.src;
+    std::string rv;
+    for (size_t i = 0; i < arg.n; ++i)
+        rv += arg.src;
 }
 
-static std::vector<StringMultFunctionArg> string_mult_args{
-	{ 100000, "do not worry" },
-	{ 200000, "be happy" }
+const std::vector<StringMultArg> string_mult_args{
+    { 100000, "do not worry" },
+    { 200000, "be happy" }
 };
 
-SLTBENCH_FUNCTION_WITH_ARGS(StringMultFunction, string_mult_args);
+SLTBENCH_FUNCTION_WITH_ARGS(StringMult, string_mult_args);
+
+} // namespace
