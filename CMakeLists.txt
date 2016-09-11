@@ -86,6 +86,7 @@ set(SLTBENCH_TESTS_SOURCES
 	tests/BenchmarkWithArgGeneratorTest.cpp
 	tests/BenchmarkWithFixtureAndArgGeneratorTest.cpp
 	tests/BenchmarkWithFixtureAndLazyArgGeneratorTest.cpp
+	tests/BenchmarkWithFixtureTest.cpp
 	tests/BenchmarkWithLazyArgGeneratorTest.cpp
 	tests/FiltersTest.cpp
 	tests/main.cpp
