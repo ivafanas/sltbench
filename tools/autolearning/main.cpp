@@ -217,7 +217,7 @@ std::unique_ptr<MeasureAlgo::Conf> GenerateCandidateConf(
 std::ostream& operator << (std::ostream& os, const MeasureAlgo::Conf& conf)
 {
 	os << "{\n";
-	os << "  precision_percents: " << conf.precision_percents << '\n';
+	os << "  precision_percents: " << static_cast<unsigned>(conf.precision_percents) << '\n';
 	os << "  min_execution_time: " << TimeToHRStr(conf.min_execution_time) << '\n';
 	os << "  max_execution_time: " << TimeToHRStr(conf.max_execution_time) << '\n';
 	os << "  dot_params: {\n";
