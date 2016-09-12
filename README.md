@@ -262,6 +262,124 @@ SLTBENCH_MAIN();
 ```
 
 
+## Function with input values lazy generator
+
+If input value consumes a lot memory and
+whole values set doesnot fit into RAM,
+lazy generator should be used.
+
+Requirements:
+- generator is constructible from `(int argc, char** argv)`
+- generator has inner typedef `ArgType`
+- operator `std::ostream <<` is defined for `ArgType`
+- `ArgType` has copy constructor or (better) move constructor
+- generator has member function `ArgType Generate()`
+- `Generate` member function either returns value for testing
+either throws `sltbench::StopGenerationException`
+
+```c++
+class Generator
+{
+public:
+	typedef HugeMemoryConsumingStruct ArgType;
+
+	MyArgsGenerator(int argc, char **argv) { /* ... */ }
+
+	ArgType Generate()
+	{
+		bool continue_generation = /*...*/;
+		if (!continue_generation)
+			throw sltbench::StopGenerationException();
+			
+		return HugeMemoryConsumingStruct(/*...*/);
+	}
+};
+
+void my_function(const HugeMemoryConsumingStruct& arg)
+{
+	/*
+	 * process arg here
+	 * ...
+	 */
+}
+
+SLTBENCH_FUNCTION_WITH_LAZY_ARGS_GENERATOR(my_function, Generator);
+
+SLTBENCH_MAIN();
+```
+
+
+## Function with fixture and input values lazy generator
+
+If input value consumes a lot memory and
+whole values set doesnot fit into RAM,
+lazy generator should be used.
+
+Requirements:
+- fixture class is default constructible
+- fixture has inner typedef `Type`
+- fixture has member function `Type& Setup(const generator::ArgType&)`
+- fixture has member function `void TearDown()`
+- generator is constructible from `(int argc, char** argv)`
+- generator has inner typedef `ArgType`
+- operator `std::ostream <<` is defined for `ArgType`
+- `ArgType` has copy constructor or (better) move constructor
+- generator has member function `ArgType Generate()`
+- `Generate` member function either returns value for testing
+either throws `sltbench::StopGenerationException`
+
+```c++
+class Generator
+{
+public:
+	typedef HugeMemoryConsumingStruct ArgType;
+
+	Generator(int argc, char **argv) { /* ... */ }
+
+	ArgType Generate()
+	{
+		bool continue_generation = /*...*/;
+		if (!continue_generation)
+			throw sltbench::StopGenerationException();
+			
+		return HugeMemoryConsumingStruct(/*...*/);
+	}
+};
+
+class Fixture
+{
+public:
+	typedef std::vector<size_t> Type;
+
+	Fixture() {}
+
+	Type& SetUp(const Generator::ArgType& arg)
+	{
+		/* ... */
+		return fixture_;
+	}
+
+	void TearDown() {}
+
+private:
+	Type fixture_;
+};
+
+void my_function(Fixture::Type& fix, const HugeMemoryConsumingStruct& arg)
+{
+	/*
+	 * process fix and arg here
+	 * ...
+	 */
+}
+
+SLTBENCH_FUNCTION_WITH_FIXTURE_AND_LAZY_ARGS_GENERATOR(my_function, Generator);
+
+SLTBENCH_MAIN();
+```
+
+
+
 # How to benchmark
 
 Producing stable performance results is a quite tricky task.
