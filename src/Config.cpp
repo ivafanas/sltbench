@@ -12,7 +12,7 @@ Config::Config()
 {
 	measure_conf_.precision_percents = 5;
 	measure_conf_.max_execution_time = std::chrono::minutes(1);
-	measure_conf_.min_execution_time = std::chrono::milliseconds(250);
+	measure_conf_.min_execution_time = std::chrono::milliseconds(200);
 	measure_conf_.dot_params = {
 		{ std::chrono::seconds(3), 1 },
 		{ std::chrono::milliseconds(100), 3 },
