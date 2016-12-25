@@ -3,7 +3,6 @@
 #include <sltbench/impl/BenchApi.h>
 
 #include <chrono>
-#include <functional>
 #include <string>
 
 

@@ -3,7 +3,6 @@
 #include <sltbench/impl/IMeasureAlgo.h>
 
 #include <cstdint>
-#include <memory>
 #include <set>
 #include <vector>
 

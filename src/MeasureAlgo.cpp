@@ -1,8 +1,6 @@
 #include "MeasureAlgo.h"
 
 #include <algorithm>
-#include <cassert>
-#include <iostream>
 
 
 namespace sltbench {

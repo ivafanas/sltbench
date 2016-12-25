@@ -4,10 +4,7 @@
 #include "Filters.h"
 #include "ProgramOptions.h"
 
-#include <cassert>
 #include <memory>
-#include <map>
-#include <string>
 
 
 namespace sltbench {
@@ -50,13 +47,11 @@ void Env::SetArgs(const int argc, char **argv)
 
 int Env::GetArgc() const
 {
-	assert(argc_ != 0);
 	return argc_;
 }
 
 char **Env::GetArgv() const
 {
-	assert(argv_ != 0);
 	return argv_;
 }
 
