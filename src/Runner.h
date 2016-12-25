@@ -2,7 +2,6 @@
 
 #include <sltbench/impl/IRunner.h>
 
-#include <unordered_set>
 #include <vector>
 
 
