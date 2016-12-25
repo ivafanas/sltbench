@@ -17,7 +17,7 @@ Of course, it cannot strongly guarantee 5% stability (some functions are unstabl
 
 ## Linux
 
-```
+```bash
 # clone git repo
 git clone https://github.com/ivafanas/sltbench.git
 git submodule init
@@ -321,7 +321,7 @@ public:
 		bool continue_generation = /*...*/;
 		if (!continue_generation)
 			throw sltbench::StopGenerationException();
-			
+
 		return HugeMemoryConsumingStruct(/*...*/);
 	}
 };
@@ -372,7 +372,7 @@ public:
 		bool continue_generation = /*...*/;
 		if (!continue_generation)
 			throw sltbench::StopGenerationException();
-			
+
 		return HugeMemoryConsumingStruct(/*...*/);
 	}
 };
