@@ -12,6 +12,37 @@ This tool is trained to gain about 5% measure stability (depends on function, in
 Of course, it cannot strongly guarantee 5% stability (some functions are unstable itself, nothing helps), but it tends to.
 
 
+# Build instructions
+
+
+## Linux
+
+```
+# clone git repo
+git clone https://github.com/ivafanas/sltbench.git
+git submodule init
+git submodule update
+
+# create temp directories for building
+mkdir build install
+
+# uncomment this lines to build with clang instead of gcc
+# export CC=/usr/bin/clang
+# export CXX=/usr/bin/clang++
+
+# generate, build, install
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=${PWD}/../install -DBUILD_TESTS=ON ${PWD}/../sltbench -DCMAKE_BUILD_TYPE=Release
+make install
+
+# run unittests (just to make shure)
+./sltbench_unittests
+
+# prepared sltbench lib is here:
+# ${PWD}/../install
+```
+
+
 # Examples
 
 
