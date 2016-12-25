@@ -1,8 +1,8 @@
 #pragma once
 
-#include <cassert>
 #include <iostream>
 #include <map>
+#include <string>
 
 
 namespace sltbench {
@@ -34,7 +34,6 @@ public:
 		{
 			std::cerr << "WARNING: Benchmark with name " << name << " is already registered.\n";
 			std::cerr << "Namesake benchmarks are ignored!!" << std::endl;
-			assert(false);
 		}
 	}
 

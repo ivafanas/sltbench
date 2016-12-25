@@ -7,6 +7,7 @@
 #include "ProcedureBenchmark.h"
 #include "Runner.h"
 
+#include <chrono>
 #include <vector>
 
 
@@ -50,7 +51,6 @@ void Init(int argc, char **argv)
 	Env::Instance().SetArgs(argc, argv);
 }
 
-
 int Run(const bool heatup_required)
 {
 	if (heatup_required)
@@ -72,7 +72,6 @@ int Run(const bool heatup_required)
 	return was_crash ? 1 : 0;
 }
 
-
 Descriptor* RegisterBenchmark(const char *name, SLTFun func)
 {
 	using BM = ProcedureBenchmark;
@@ -83,7 +82,6 @@ Descriptor* RegisterBenchmark(const char *name, SLTFun func)
 	static Descriptor dscr;
 	return &dscr;
 }
-
 
 IConfig& GetConfig()
 {
