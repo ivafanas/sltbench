@@ -1,13 +1,13 @@
 #pragma once
 
+#include "Env.h"
+#include "StopGenerationException.h"
+
 #include <chrono>
 #include <functional>
 #include <memory>
 #include <sstream>
 #include <string>
-
-#include "Env.h"
-#include "StopGenerationException.h"
 
 
 namespace sltbench {
@@ -92,7 +92,7 @@ private:
 private:
 	std::string name_;
 	FunctionT function_;
-	std::unique_ptr<GeneratorT> generator_;    
+	std::unique_ptr<GeneratorT> generator_;
     std::unique_ptr<ArgT> arg_;
 };
 

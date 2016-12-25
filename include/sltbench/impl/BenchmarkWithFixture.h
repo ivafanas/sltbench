@@ -6,7 +6,6 @@
 #include <string>
 
 
-
 namespace sltbench {
 
 template<typename FixtureT>
@@ -35,7 +34,7 @@ public:
 		const auto start_ts = std::chrono::high_resolution_clock::now();
 		function_(fix);
 		const auto final_ts = std::chrono::high_resolution_clock::now();
-		const auto rv = 
+		const auto rv =
 			final_ts > start_ts
 			? std::chrono::duration_cast<std::chrono::nanoseconds>(final_ts - start_ts)
 			: std::chrono::nanoseconds(0);

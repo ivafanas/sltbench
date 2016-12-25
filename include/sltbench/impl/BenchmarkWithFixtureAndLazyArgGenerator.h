@@ -1,12 +1,12 @@
 #pragma once
 
+#include "Env.h"
+#include "StopGenerationException.h"
+
 #include <chrono>
 #include <functional>
 #include <sstream>
 #include <string>
-
-#include "Env.h"
-#include "StopGenerationException.h"
 
 
 namespace sltbench {
