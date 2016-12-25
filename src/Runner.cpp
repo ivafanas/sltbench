@@ -2,8 +2,7 @@
 
 #include <sltbench/impl/IRunner.h>
 
-#include <cassert>
-#include <chrono>
+#include <iostream>
 #include <map>
 #include <string>
 
@@ -34,7 +33,7 @@ void RegisterRunner(const char *tag, const IRunnerPtr& runner)
 	}
 	else
 	{
-		assert(it->second == runner);
+		std::cerr << "ERROR: runner " << name << " already registered\n";
 	}
 }
 
