@@ -5,6 +5,7 @@
 
 #include "MeasureAlgo.h"
 
+#include <functional>
 #include <memory>
 
 
