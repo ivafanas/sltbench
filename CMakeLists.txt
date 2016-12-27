@@ -23,6 +23,8 @@ set(SLTBENCH_LIB_SOURCES
 	src/Filters.h
 	src/JsonReporter.cpp
 	src/JsonReporter.h
+	src/MAResultsContainer.cpp
+	src/MAResultsContainer.h
 	src/MeasureAlgo.cpp
 	src/MeasureAlgo.h
 	src/ProcedureBenchmark.cpp
@@ -90,6 +92,7 @@ set(SLTBENCH_TESTS_SOURCES
 	tests/BenchmarkWithLazyArgGeneratorTest.cpp
 	tests/FiltersTest.cpp
 	tests/main.cpp
+	tests/MAResultsContainerTest.cpp
 	tests/MeasureAlgoTest.cpp
 	tests/ProcedureBenchmarkTest.cpp
 	tests/ProgramOptionsTest.cpp

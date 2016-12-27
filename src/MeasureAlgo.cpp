@@ -1,101 +1,96 @@
 #include "MeasureAlgo.h"
 
-#include <algorithm>
+#include "MAResultsContainer.h"
+
+
+using namespace std::chrono;
+
+
+namespace sltbench {
+namespace {
+
+size_t CalcRequiredSpotSize(
+	const MeasureAlgo::Conf& conf,
+	nanoseconds first_res) noexcept
+{
+	size_t rv = 0;
+	for (const auto& dot_param : conf.dot_params)
+	{
+		if (first_res >= dot_param.min_time)
+		{
+			rv = dot_param.required_spot_size;
+			break;
+		}
+	}
+	const size_t c_default_spot_size = 26;
+	return !rv ? c_default_spot_size : rv;
+}
+
+} // namespace
+} // namespace sltbench
 
 
 namespace sltbench {
 
-MeasureAlgo::MeasureAlgo(Conf conf)
+MeasureAlgo::MeasureAlgo(Conf conf) noexcept
 	: conf_(std::move(conf))
 	, required_spot_size_(0)
 	, result_(0)
-	, accumulated_execution_time_(std::chrono::nanoseconds::zero())
+	, accumulated_execution_time_(nanoseconds::zero())
 {
 }
 
-void MeasureAlgo::SetFirstTimingResult(std::chrono::nanoseconds time_ns)
-{
-	for (const auto& dot_param : conf_.dot_params)
-	{
-		if (time_ns >= dot_param.min_time)
-		{
-			required_spot_size_ = dot_param.required_spot_size;
-			break;
-		}
-	}
+MeasureAlgo::~MeasureAlgo() noexcept
+{}
 
-	// fallback to default
-	if (required_spot_size_ == 0)
-		required_spot_size_ = 26;
+void MeasureAlgo::SetFirstTimingResult(nanoseconds time_ns)
+{
+	required_spot_size_ = CalcRequiredSpotSize(conf_, time_ns);
+
+	results_container_.reset(new MAResultsContainer);
 
 	AddTimingResult(time_ns);
 }
 
 bool MeasureAlgo::NeedMoreTiming()
 {
-	const auto results_count = results_ns_.size();
-
 	if (accumulated_execution_time_ > conf_.max_execution_time)
 		return false;
 
 	if (accumulated_execution_time_ < conf_.min_execution_time)
 		return true;
 
-	if (results_count < required_spot_size_)
-		return true;
-
-	auto it = results_ns_.begin();
-	for (size_t i = 0; i <= results_count - required_spot_size_; ++i, ++it)
-	{
-		const auto ref_result = *it;
-		bool fits = true;
-		auto jt = std::next(it);
-		for (size_t j = 1; j < required_spot_size_; ++j, ++jt)
-		{
-			const auto check_result = *jt;
-			if (check_result - ref_result > (ref_result / 100) * conf_.precision_percents)
-			{
-				fits = false;
-				break;
-			}
-		}
-		if (fits)
-		{
-			result_ = ref_result;
-			break;
-		}
-	}
+	result_ = results_container_->GetMinSpotValue(
+		required_spot_size_,
+		conf_.precision_percents);
 
 	return result_ == 0;
 }
 
-void MeasureAlgo::AddTimingResult(std::chrono::nanoseconds nanoseconds)
+void MeasureAlgo::AddTimingResult(nanoseconds nanoseconds)
 {
 	accumulated_execution_time_ += nanoseconds;
 
-	const auto value = nanoseconds.count();
-	results_ns_.insert(value);
+	results_container_->Add(nanoseconds.count());
 }
 
-std::chrono::nanoseconds MeasureAlgo::GetResult()
+nanoseconds MeasureAlgo::GetResult()
 {
 	if (result_ != 0)
 	{
 		// normal case - we found quite stable result!
-		return std::chrono::nanoseconds(result_);
+		return nanoseconds(result_);
 	}
 	else
 	{
 		// bad case - timeout or out of retry count
 		// then return best result
-		if (!results_ns_.empty())
-		{
-			return std::chrono::nanoseconds(*results_ns_.begin());
-		}
+		if (results_container_)
+			return nanoseconds(results_container_->GetBest());
 
 		// looks someone wants to see result
 		// without timing, well...
-		return std::chrono::nanoseconds::zero();
+		return nanoseconds::zero();
 	}
 }
 

@@ -2,12 +2,13 @@
 
 #include <sltbench/impl/IMeasureAlgo.h>
 
-#include <cstdint>
-#include <set>
+#include <memory>
 #include <vector>
 
 
 namespace sltbench {
+
+class MAResultsContainer;
 
 class MeasureAlgo final : public IMeasureAlgo
 {
@@ -29,7 +30,8 @@ public:
 	};
 
 public:
-	MeasureAlgo(Conf conf);
+	MeasureAlgo(Conf conf) noexcept;
+	~MeasureAlgo() noexcept;
 
 public: // IMeasureAlgo
 	virtual void SetFirstTimingResult(std::chrono::nanoseconds nanoseconds) override;
@@ -40,9 +42,9 @@ public: // IMeasureAlgo
 private:
 	Conf conf_;
 	size_t required_spot_size_;
-	std::multiset<uint64_t> results_ns_;
 	std::chrono::nanoseconds accumulated_execution_time_;
 	uint64_t result_;
+	std::unique_ptr<MAResultsContainer> results_container_;
 };
 
 } // namespace sltbench
