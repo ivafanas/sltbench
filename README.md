@@ -20,8 +20,10 @@ Of course, it cannot strongly guarantee 5% stability (some functions are unstabl
 ```bash
 # clone git repo
 git clone https://github.com/ivafanas/sltbench.git
+cd sltbench
 git submodule init
 git submodule update
+cd ..
 
 # create temp directories for building
 mkdir build install
