@@ -31,7 +31,7 @@ void RegisterRunner(const char *tag, const IRunnerPtr& runner)
 	{
 		runners[name] = runner;
 	}
-	else
+	else if (it->second != runner)
 	{
 		std::cerr << "ERROR: runner " << name << " already registered\n";
 	}
