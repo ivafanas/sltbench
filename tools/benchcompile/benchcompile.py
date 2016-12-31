@@ -10,7 +10,7 @@ import time
 
 # TODO: add HOWTO doc
 # TODO: split implementation
-# TODO: implement suites: lazy_generator + fixture_*
+# TODO: implement suites: fixture_args, fixture_generator, fixture_lazy_generator
 SUITE_SIMPLE_FUNCTION = 'simple'
 SUITE_ARGS = 'args'
 SUITE_GENERATOR = 'generator'
@@ -71,6 +71,10 @@ class SLTBenchBackend:
             return self._gen_suite_code_args(test_id)
         if suite == SUITE_GENERATOR:
             return self._gen_suite_code_generator(test_id)
+        if suite == SUITE_LAZY_GENERATOR:
+            return self._gen_suite_code_lazy_generator(test_id)
+        if suite == SUITE_FIXTURE_ARGS:
+            return self._gen_suite_code_fixture_args(test_id)
         raise RuntimeError('Unsupported suite: {}'.format(suite))
 
     def _gen_suite_code_simple(self, test_id):
@@ -89,8 +93,7 @@ class SLTBenchBackend:
             '''.format(func_name=func_name)
 
     def _gen_suite_code_fixture(self, test_id):
-        fixt_name = 'Fixture_{}'.format(test_id)
-        func_name = 'Function_{}'.format(test_id)
+        func_name = 'FunctionFixt_{}'.format(test_id)
         return '''
             #include <sltbench/Bench.h>
 
@@ -99,25 +102,25 @@ class SLTBenchBackend:
 
             namespace {{
 
-            class {fixt_name}
+            class Fixture
             {{
             public:
                 typedef std::vector<size_t> Type;
-                {fixt_name}() {{}}
+                Fixture() {{}}
                 Type& SetUp() {{ fixture_.resize(1000, 0); }}
                 void TearDown() {{}}
             private:
                 Type fixture_;
             }};
 
-            void {func_name}({fixt_name}::Type& fix)
+            void {func_name}(Fixture::Type& fix)
             {{
                 std::sort(fix.begin(), fix.end());
             }}
-            SLTBENCH_FUNCTION_WITH_FIXTURE({func_name}, {fixt_name});
+            SLTBENCH_FUNCTION_WITH_FIXTURE({func_name}, Fixture);
 
             }}
-            '''.format(fixt_name=fixt_name, func_name=func_name)
+            '''.format(func_name=func_name)
 
     def _gen_suite_code_args(self, test_id):
         func_name = 'FunctionArgs_{}'.format(test_id)
@@ -193,6 +196,104 @@ class SLTBenchBackend:
                     rv += arg.src;
             }}
             SLTBENCH_FUNCTION_WITH_ARGS_GENERATOR({func_name}, Generator);
+            }}
+            '''.format(func_name=func_name)
+
+    def _gen_suite_code_lazy_generator(self, test_id):
+        func_name = 'FunctionLazyGenerator_{}'.format(test_id)
+        return '''
+            #include <sltbench/Bench.h>
+
+            #include <algorithm>
+            #include <ostream>
+            #include <vector>
+
+            namespace {{
+
+            class Generator
+            {{
+            public:
+                struct ArgType
+                {{
+                    size_t size;
+                    size_t ncalls;
+                }};
+
+                Generator(int, char **) {{}}
+
+                ArgType Generate()
+                {{
+                    if (generated_count_ >= 3)
+                        throw sltbench::StopGenerationException();
+
+                    ++generated_count_;
+
+                    // the only instance of ArgType is in the memory during measurement
+                    return{{ generated_count_ * 100000, generated_count_ }};
+                }}
+
+            private:
+                size_t generated_count_ = 0;
+            }};
+
+            std::ostream& operator << (std::ostream& os, const Generator::ArgType& rhs)
+            {{
+                return os << rhs.size << '/' << rhs.ncalls;
+            }}
+
+            void {func_name}(const Generator::ArgType& arg)
+            {{
+                // let's propose we are going to do something useful computations here
+                std::vector<size_t> vec(arg.size, 0);
+                for (size_t i = 0; i < arg.ncalls; ++i)
+                    std::random_shuffle(vec.begin(), vec.end());
+            }}
+            SLTBENCH_FUNCTION_WITH_LAZY_ARGS_GENERATOR({func_name}, Generator);
+            }}
+            '''.format(func_name=func_name)
+
+    def _gen_suite_code_fixture_args(self, test_id):
+        func_name = 'FunctionFixtArgs_{}'.format(test_id)
+        return '''
+            #include <sltbench/Bench.h>
+
+            #include <algorithm>
+            #include <ostream>
+            #include <vector>
+
+            namespace {{
+
+            struct Arg
+            {{
+                size_t size;
+                size_t ncalls;
+            }};
+
+            std::ostream& operator << (std::ostream& oss, const Arg& arg)
+            {{
+                return oss << arg.size << '/' << arg.ncalls;
+            }}
+
+            class Fixture
+            {{
+            public:
+                typedef std::vector<size_t> Type;
+                Fixture() {{}}
+                Type& SetUp(const Arg& arg)
+                {{
+                    return fixture_;
+                }}
+                void TearDown() {{}}
+            private:
+                Type fixture_;
+            }};
+
+            void {func_name}(Fixture::Type& fix, const Arg& arg)
+            {{
+                // some useful work here based on fixture and arg
+            }}
+            static const std::vector<Arg> args = {{ {{ 100000, 1 }} }};
+            SLTBENCH_FUNCTION_WITH_FIXTURE_AND_ARGS({func_name}, Fixture, args);
             }}
             '''.format(func_name=func_name)
 
