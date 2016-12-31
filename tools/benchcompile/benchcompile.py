@@ -8,7 +8,9 @@ import subprocess
 import tempfile
 import time
 
-# TODO: implement suites: args, generator, lazy_generator + fixture_*
+# TODO: add HOWTO doc
+# TODO: split implementation
+# TODO: implement suites: lazy_generator + fixture_*
 SUITE_SIMPLE_FUNCTION = 'simple'
 SUITE_ARGS = 'args'
 SUITE_GENERATOR = 'generator'
@@ -67,6 +69,8 @@ class SLTBenchBackend:
             return self._gen_suite_code_fixture(test_id)
         if suite == SUITE_ARGS:
             return self._gen_suite_code_args(test_id)
+        if suite == SUITE_GENERATOR:
+            return self._gen_suite_code_generator(test_id)
         raise RuntimeError('Unsupported suite: {}'.format(suite))
 
     def _gen_suite_code_simple(self, test_id):
@@ -145,6 +149,50 @@ class SLTBenchBackend:
 
             const std::vector<Arg> string_mult_args{{ {{1, "a"}}, {{2, "b"}} }};
             SLTBENCH_FUNCTION_WITH_ARGS({func_name}, string_mult_args);
+            }}
+            '''.format(func_name=func_name)
+
+    def _gen_suite_code_generator(self, test_id):
+        func_name = 'FunctionGen_{}'.format(test_id)
+        return '''
+            #include <sltbench/Bench.h>
+
+            #include <algorithm>
+            #include <ostream>
+            #include <string>
+            #include <vector>
+
+            namespace {{
+
+            class Generator
+            {{
+            public:
+                struct ArgType
+                {{
+                    std::string src;
+                    size_t n;
+                }};
+
+                Generator() {{}}
+
+                std::vector<ArgType> Generate(int argc, char **argv)
+                {{
+                    return{{ {{"knowledge", 100000}}, {{"power", 200000}} }};
+                }}
+            }};
+
+            std::ostream& operator << (std::ostream& os, const Generator::ArgType& rhs)
+            {{
+                return os << rhs.n << '/' << rhs.src;
+            }}
+
+            void {func_name}(const Generator::ArgType& arg)
+            {{
+                std::string rv;
+                for (size_t i = 0; i < arg.n; ++i)
+                    rv += arg.src;
+            }}
+            SLTBENCH_FUNCTION_WITH_ARGS_GENERATOR({func_name}, Generator);
             }}
             '''.format(func_name=func_name)
 
