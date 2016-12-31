@@ -65,6 +65,8 @@ class SLTBenchBackend:
             return self._gen_suite_code_simple(test_id)
         if suite == SUITE_FIXTURE:
             return self._gen_suite_code_fixture(test_id)
+        if suite == SUITE_ARGS:
+            return self._gen_suite_code_args(test_id)
         raise RuntimeError('Unsupported suite: {}'.format(suite))
 
     def _gen_suite_code_simple(self, test_id):
@@ -112,6 +114,39 @@ class SLTBenchBackend:
 
             }}
             '''.format(fixt_name=fixt_name, func_name=func_name)
+
+    def _gen_suite_code_args(self, test_id):
+        func_name = 'FunctionArgs_{}'.format(test_id)
+        return '''
+            #include <sltbench/Bench.h>
+
+            #include <ostream>
+            #include <string>
+
+            namespace {{
+
+            struct Arg
+            {{
+                size_t n;
+                std::string src;
+            }};
+
+            std::ostream& operator << (std::ostream& oss, const Arg& rhs)
+            {{
+                return oss << rhs.n << '/' << rhs.src;
+            }}
+
+            void {func_name}(const Arg& arg)
+            {{
+                std::string rv;
+                for (size_t i = 0; i < arg.n; ++i)
+                    rv += arg.src;
+            }}
+
+            const std::vector<Arg> string_mult_args{{ {{1, "a"}}, {{2, "b"}} }};
+            SLTBENCH_FUNCTION_WITH_ARGS({func_name}, string_mult_args);
+            }}
+            '''.format(func_name=func_name)
 
     def static_lib_name(self):
         return 'sltbench_static'
@@ -212,7 +247,7 @@ def create_bench_context(args):
 def create_backend(args):
     if args.backend == BACKEND_SLTBENCH:
         return SLTBenchBackend()
-    elif args.backend == BACKEND_GOOGLEBENCH:
+    if args.backend == BACKEND_GOOGLEBENCH:
         return GoogleBenchBackend()
     raise RuntimeError('Unrecognized backend: {}'.format(args.backend))
 
