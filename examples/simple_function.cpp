@@ -1,7 +1,6 @@
 #include <sltbench/Bench.h>
 
-#include <algorithm>
-#include <vector>
+#include <string>
 
 
 void SimpleFunction()
