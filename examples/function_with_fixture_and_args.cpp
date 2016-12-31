@@ -53,8 +53,6 @@ static const std::vector<Arg> args = {
     { 300000, 3 }
 };
 
-static_assert(std::is_same<sltbench::function_traits<decltype(&Fixture::SetUp)>::argument<1>::type, std::add_lvalue_reference<std::add_const<decltype(args)::value_type>::type>::type>::value, "hmm 1");
-
 SLTBENCH_FUNCTION_WITH_FIXTURE_AND_ARGS(Shuffle, Fixture, args);
 
 } // namespace
