@@ -8,8 +8,7 @@ import subprocess
 import tempfile
 import time
 
-# TODO: googlebench does not support lazy generators
-#       need to exclude this subset from compare results
+# TODO: implement suites: args, generator, lazy_generator + fixture_*
 SUITE_SIMPLE_FUNCTION = 'simple'
 SUITE_ARGS = 'args'
 SUITE_GENERATOR = 'generator'
@@ -20,11 +19,7 @@ SUITE_FIXTURE_GENERATOR = 'fixture_generator'
 SUITE_FIXTURE_LAZY_GENERATOR = 'fixture_lazy_generator'
 SUITES_ALL = [
     SUITE_SIMPLE_FUNCTION,
-    SUITE_ARGS,
-    SUITE_GENERATOR,
     SUITE_FIXTURE,
-    SUITE_FIXTURE_ARGS,
-    SUITE_FIXTURE_GENERATOR,
 ]
 SUITES_EXT = [
     SUITE_SIMPLE_FUNCTION,
@@ -65,7 +60,14 @@ class SLTBenchBackend:
             SLTBENCH_MAIN();
             '''
 
-    def gen_simple_code(self, test_id):
+    def gen_suite_code(self, suite, test_id):
+        if suite == SUITE_SIMPLE_FUNCTION:
+            return self._gen_suite_code_simple(test_id)
+        if suite == SUITE_FIXTURE:
+            return self._gen_suite_code_fixture(test_id)
+        raise RuntimeError('Unsupported suite: {}'.format(suite))
+
+    def _gen_suite_code_simple(self, test_id):
         func_name = 'SimpleFunction_{}'.format(test_id)
         return '''
             #include <sltbench/Bench.h>
@@ -79,6 +81,37 @@ class SLTBenchBackend:
             }}
             SLTBENCH_FUNCTION({func_name});
             '''.format(func_name=func_name)
+
+    def _gen_suite_code_fixture(self, test_id):
+        fixt_name = 'Fixture_{}'.format(test_id)
+        func_name = 'Function_{}'.format(test_id)
+        return '''
+            #include <sltbench/Bench.h>
+
+            #include <algorithm>
+            #include <vector>
+
+            namespace {{
+
+            class {fixt_name}
+            {{
+            public:
+                typedef std::vector<size_t> Type;
+                {fixt_name}() {{}}
+                Type& SetUp() {{ fixture_.resize(1000, 0); }}
+                void TearDown() {{}}
+            private:
+                Type fixture_;
+            }};
+
+            void {func_name}({fixt_name}::Type& fix)
+            {{
+                std::sort(fix.begin(), fix.end());
+            }}
+            SLTBENCH_FUNCTION_WITH_FIXTURE({func_name}, {fixt_name});
+
+            }}
+            '''.format(fixt_name=fixt_name, func_name=func_name)
 
     def static_lib_name(self):
         return 'sltbench_static'
@@ -99,7 +132,14 @@ class GoogleBenchBackend:
             BENCHMARK_MAIN();
             '''
 
-    def gen_simple_code(self, test_id):
+    def gen_suite_code(self, suite, test_id):
+        if suite == SUITE_SIMPLE_FUNCTION:
+            return self._gen_suite_code_simple(test_id)
+        if suite == SUITE_FIXTURE:
+            return self._gen_suite_code_fixture(test_id)
+        raise RuntimeError('Unsupported suite: {}'.format(suite))
+
+    def _gen_suite_code_simple(self, test_id):
         func_name = 'SimpleFunction_{}'.format(test_id)
         return '''
             #include <benchmark/benchmark.h>
@@ -114,6 +154,29 @@ class GoogleBenchBackend:
                     std::string rv;
                     for (size_t i = 0; i < 100000; ++i)
                         rv += "simple function";
+                }}
+            }}
+            BENCHMARK({func_name});
+            '''.format(func_name=func_name)
+
+    def _gen_suite_code_fixture(self, test_id):
+        func_name = 'FixtFunction_{}'.format(test_id)
+        return '''
+            #include <benchmark/benchmark.h>
+
+            #include <algorithm>
+            #include <vector>
+
+            static void {func_name}(benchmark::State& state)
+            {{
+                std::vector<size_t> v;
+                while (state.KeepRunning())
+                {{
+                    state.PauseTiming();
+                    v.resize(1000, 0);
+                    state.ResumeTiming();
+
+                    std::sort(v.begin(), v.end());
                 }}
             }}
             BENCHMARK({func_name});
@@ -174,6 +237,7 @@ def benchmark(context):
     runner_dir = os.path.dirname(os.path.abspath(__file__))
     os.chdir(runner_dir)
 
+    # TODO: make context management, try-finally is not correct here
     # create temp directory
     temp_dir = tempfile.mkdtemp(dir=runner_dir)
     try:
@@ -193,7 +257,7 @@ def benchmark(context):
 
 
 def generate_project(context, path):
-    FUNCTIONS_COUNT_PER_SUITE = 100
+    FUNCTIONS_COUNT_PER_SUITE = 50
     backend = context.backend
 
     os.chdir(path)
@@ -205,11 +269,11 @@ def generate_project(context, path):
     sources.append('main.cpp')
 
     # build sources
-    # TODO: support suites
-    for i in range(FUNCTIONS_COUNT_PER_SUITE):
-        filename = 'test_{}.cpp'.format(i)
-        print_to_file(filename, backend.gen_simple_code(i))
-        sources.append(filename)
+    for suite in context.dataset:
+        for i in range(FUNCTIONS_COUNT_PER_SUITE):
+            filename = 'test_{}_{}.cpp'.format(suite, i)
+            print_to_file(filename, backend.gen_suite_code(suite, i))
+            sources.append(filename)
 
     # build cmake
     # TODO: support toolsets
