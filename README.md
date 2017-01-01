@@ -28,10 +28,6 @@ cd ..
 # create temp directories for building
 mkdir build install
 
-# uncomment this lines to build with clang instead of gcc
-# export CC=/usr/bin/clang
-# export CXX=/usr/bin/clang++
-
 # generate, build, install
 cd build
 cmake -DCMAKE_INSTALL_PREFIX=${PWD}/../install -DBUILD_TESTS=ON ${PWD}/../sltbench -DCMAKE_BUILD_TYPE=Release
