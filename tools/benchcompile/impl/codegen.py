@@ -59,7 +59,7 @@ class Fixture
 public:
     typedef std::vector<size_t> Type;
     Fixture() {{}}
-    Type& SetUp() {{ fixture_.resize(1000, 0); }}
+    Type& SetUp() {{ return fixture_; }}
     void TearDown() {{}}
 private:
     Type fixture_;
