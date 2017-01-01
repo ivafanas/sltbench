@@ -12,6 +12,8 @@ class _SLTBenchBackend:
 
     def __init__(self, install_path):
         self.install_path = install_path
+        self.static_lib_name = 'sltbench_static'
+        self.required_static_libs = []
 
     def gen_main_cpp_code(self):
         return codegen.gen_sltbench_cppmain()
@@ -35,17 +37,13 @@ class _SLTBenchBackend:
             return codegen.gen_sltbench_test_fixture_lazy_generator(test_id)
         raise RuntimeError('Unsupported suite: {}'.format(suite))
 
-    def static_lib_name(self):
-        return 'sltbench_static'
-
-    def required_static_libs(self):
-        return []
-
 
 class _GoogleBenchBackend:
 
     def __init__(self, install_path):
         self.install_path = install_path
+        self.static_lib_name = 'benchmark'
+        self.required_static_libs = ['pthread']
 
     def gen_main_cpp_code(self):
         return codegen.gen_googlebench_cppmain()
@@ -56,12 +54,6 @@ class _GoogleBenchBackend:
         if suite == dataset.FIXTURE:
             return codegen.gen_googlebench_test_fixture(test_id)
         raise RuntimeError('Unsupported suite: {}'.format(suite))
-
-    def static_lib_name(self):
-        return 'benchmark'
-
-    def required_static_libs(self):
-        return ['pthread']
 
 
 def create(args):

@@ -433,5 +433,5 @@ def gen_cmakelists(sources, backend):
         '''.format(
             sources_list=' '.join(sources),
             backend_install_path=backend.install_path,
-            backend_static_lib=backend.static_lib_name(),
-            required_static_libs=' '.join(backend.required_static_libs()))
+            backend_static_lib=backend.static_lib_name,
+            required_static_libs=' '.join(backend.required_static_libs))
