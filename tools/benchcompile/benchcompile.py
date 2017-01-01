@@ -7,8 +7,6 @@ import impl.benchcc as benchcc
 import impl.dataset as dataset
 import impl.toolset as toolset
 
-# TODO: add HOWTO doc
-
 
 def _parse_args():
     import argparse
