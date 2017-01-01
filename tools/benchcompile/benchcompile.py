@@ -15,7 +15,7 @@ def _parse_args():
     parser = argparse.ArgumentParser(description='benchcompile utility')
     parser.add_argument('--backend', default=backend.SLTBENCH, choices=backend.ALL)
     parser.add_argument('--backend_install_path', required=True)
-    parser.add_argument('--dataset', default=dataset.COMPARABLE, choices=dataset.ALL_INPUT)
+    parser.add_argument('--dataset', default='comparable', choices=dataset.ALL_INPUT)
     parser.add_argument('--toolset', default=toolset.CLANG, choices=toolset.ALL)
     return parser.parse_args()
 
