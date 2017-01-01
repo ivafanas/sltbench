@@ -34,7 +34,7 @@ def _generate_project(context, path):
             filename = 'test_{}_{}.cpp'.format(suite, i)
             _print_to_file(filename, backend.gen_suite_code(suite, i))
             sources.append(filename)
-    _print_to_file('main.cpp', backend.gen_main_cpp_code())
+    _print_to_file('main.cpp', backend.maincpp_code)
     sources.append('main.cpp')
 
     # build makefile
