@@ -24,6 +24,7 @@ def _make_temp_dir(parent_dir):
 def _generate_project(context, path):
     TESTS_COUNT_PER_SUITE = 50
     backend = context.backend
+    toolset = context.toolset
     os.chdir(path)
 
     # build sources
@@ -38,8 +39,8 @@ def _generate_project(context, path):
 
     # build makefile
     _print_to_file('CMakeLists.txt', codegen.gen_cmakelists(sources, backend))
-    subprocess.call('cd {} && cmake -DCMAKE_BUILD_TYPE=Release'.format(path),
-        shell=True)
+    subprocess.call('cd {} && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER={} -DCMAKE_CXX_COMPILER={}'
+        .format(path, toolset.c_compiler, toolset.cxx_compiler), shell=True)
 
 
 def _run_make(context, path):

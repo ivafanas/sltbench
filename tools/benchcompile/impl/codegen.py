@@ -407,7 +407,6 @@ def gen_googlebench_test_fixture(uid):
 
 
 def gen_cmakelists(sources, backend):
-    # TODO: support toolset
     return '''
         cmake_minimum_required (VERSION 2.8.0)
 
