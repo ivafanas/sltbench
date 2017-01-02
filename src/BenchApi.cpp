@@ -51,9 +51,9 @@ void Init(int argc, char **argv)
 	Env::Instance().SetArgs(argc, argv);
 }
 
-int Run(const bool heatup_required)
+int Run()
 {
-	if (heatup_required)
+	if (GetConfig().GetPrivate().IsHeatupRequired())
 	{
 		// some kind of dark magic: heatup core and scheduler
 		heatup();

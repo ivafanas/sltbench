@@ -23,14 +23,17 @@ private:
 	virtual ~Config() override;
 
 public: // IConfig
-	virtual IConfig& SetReporter(std::unique_ptr<reporter::IReporter> reporter) override;
-	virtual IConfigPrivate& GetPrivate() override;
+	IConfig& SetReporter(std::unique_ptr<reporter::IReporter> reporter) override;
+	IConfigPrivate& GetPrivate() override;
 
 public: // IConfigPrivate
-	virtual std::unique_ptr<IMeasureAlgo> CreateMeasureAlgo() override;
-	virtual bool IsMeasureRequired(std::chrono::nanoseconds estimation_time) override;
-	virtual IFilter& GetFilter() override;
-	virtual void SetFilter(std::unique_ptr<IFilter> filter) override;
+	std::unique_ptr<IMeasureAlgo> CreateMeasureAlgo() override;
+	bool IsMeasureRequired(std::chrono::nanoseconds estimation_time) override;
+	IFilter& GetFilter() override;
+	void SetFilter(std::unique_ptr<IFilter> filter) override;
+	void SetHeatupRequired(bool heatup_required) override;
+	bool IsHeatupRequired() override;
+
 
 public:
 	void SetMeasureAlgoConf(MeasureAlgo::Conf conf);
@@ -44,6 +47,7 @@ private:
 	std::unique_ptr<IFilter> filter_;
 	MeasureAlgo::Conf measure_conf_;
 	std::function<bool(std::chrono::nanoseconds)> is_measure_required_pred_;
+	bool is_heatup_required_ = true;
 };
 
 } // namespace sltbench

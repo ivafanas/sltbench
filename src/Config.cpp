@@ -45,7 +45,7 @@ reporter::IReporter& Config::GetReporter()
 {
 	if (!reporter_)
 	{
-		// fallback to default 
+		// fallback to default
 		reporter_.reset(new reporter::ConsoleReporter());
 	}
 
@@ -89,6 +89,16 @@ IFilter& Config::GetFilter()
 void Config::SetFilter(std::unique_ptr<IFilter> filter)
 {
 	filter_ = std::move(filter);
+}
+
+void Config::SetHeatupRequired(bool heatup_required)
+{
+	is_heatup_required_ = heatup_required;
+}
+
+bool Config::IsHeatupRequired()
+{
+	return is_heatup_required_;
 }
 
 } // namespace sltbench

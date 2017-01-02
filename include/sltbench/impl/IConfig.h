@@ -40,6 +40,9 @@ struct IConfigPrivate
 
 	virtual IFilter& GetFilter() = 0;
 	virtual void SetFilter(std::unique_ptr<IFilter> filter) = 0;
+
+	virtual void SetHeatupRequired(bool heatup_required) = 0;
+	virtual bool IsHeatupRequired() = 0;
 };
 
 

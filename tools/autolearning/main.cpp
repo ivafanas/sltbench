@@ -22,7 +22,7 @@ namespace {
 
 using TimingMap = std::map<std::string, std::chrono::nanoseconds>;
 
-// do not report anything to stdout, collect resutls 
+// do not report anything to stdout, collect resutls
 class LearningReporter
 	: public reporter::IReporter
 {
@@ -77,7 +77,7 @@ std::string TimeToHRStr(std::chrono::nanoseconds ns)
 TimingMap CollectResultsForRun(LearningReporter& reporter)
 {
 	reporter.Clear();
-	Run(false);
+	Run();
 	return reporter.GetResults();
 }
 
@@ -267,6 +267,10 @@ int main(int argc, char **argv)
 	// some kind of dark magic: heatup core and scheduler
 	std::cout << "heating up..." << std::endl;
 	heatup();
+
+	// we did the custom heatup, so
+	// heatup-per-run is not required
+	GetConfig().GetPrivate().SetHeatupRequired(false);
 
 	MeasureAlgo::Conf stable_conf;
 	stable_conf.precision_percents = 5;

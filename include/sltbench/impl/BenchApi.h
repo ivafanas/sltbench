@@ -27,7 +27,7 @@ void Init(int argc, char **argv);
 
 
 //! run benchmarking tool
-int Run(bool heatup = true);
+int Run();
 
 
 /*!

@@ -23,6 +23,10 @@ void InitConfig(const int argc, char **argv)
 		auto filter = std::unique_ptr<IFilter>(new RegexFilter(std::move(re)));
 		GetConfig().GetPrivate().SetFilter(std::move(filter));
 	}
+
+	const auto heatup_value = options_to_values["--heatup"];
+	if (heatup_value == "off" || heatup_value == "OFF")
+		GetConfig().GetPrivate().SetHeatupRequired(false);
 }
 
 } // namespace

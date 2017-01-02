@@ -423,6 +423,18 @@ SLTBENCH_MAIN();
 ```
 
 
+# Heatup
+
+Benchmark "heatups" OS and hardware before timing. This process takes about
+5 seconds (may be less). If you do not want to wait, just add a `--heatup off`
+command line option to your benchmark. Be careful, disabling heatup may lead to
+unstable results for the first test cases.
+```bash
+# Skip heatup stage, run tests ASAP.
+# May lead to unstable first test cases.
+./my_benchmark.exe --heatup off
+```
+
 
 # How to benchmark
 
