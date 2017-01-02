@@ -1,9 +1,4 @@
 
-_SLTBENCH_CPPMAIN = '''
-#include <sltbench/Bench.h>
-SLTBENCH_MAIN();
-'''
-
 _SLTBENCH_TEST_TMPL_SIMPLE = '''
 #include <sltbench/Bench.h>
 #include <string>
@@ -313,11 +308,6 @@ SLTBENCH_FUNCTION_WITH_FIXTURE_AND_LAZY_ARGS_GENERATOR(func_fix_lazygen_{uid}, F
 }}
 '''
 
-_GOOGLEBENCH_CPPMAIN = '''
-#include <benchmark/benchmark.h>
-BENCHMARK_MAIN();
-'''
-
 _GOOGLEBENCH_TEST_TMPL_SIMPLE = '''
 #include <benchmark/benchmark.h>
 
@@ -358,10 +348,6 @@ BENCHMARK(func_fix_{uid});
 '''
 
 
-def gen_sltbench_cppmain():
-    return _SLTBENCH_CPPMAIN
-
-
 def gen_sltbench_test_simple(uid):
     return _SLTBENCH_TEST_TMPL_SIMPLE.format(uid=uid)
 
@@ -394,44 +380,9 @@ def gen_sltbench_test_fixture_lazy_generator(uid):
     return _SLTBENCH_TEST_TMPL_FIXTURE_LAZY_GENERATOR.format(uid=uid)
 
 
-def gen_googlebench_cppmain():
-    return _GOOGLEBENCH_CPPMAIN
-
-
 def gen_googlebench_test_simple(uid):
     return _GOOGLEBENCH_TEST_TMPL_SIMPLE.format(uid=uid)
 
 
 def gen_googlebench_test_fixture(uid):
     return _GOOGLEBENCH_TEST_TMPL_FIXTURE.format(uid=uid)
-
-
-def gen_cmakelists(sources, backend):
-    return '''
-        cmake_minimum_required (VERSION 2.8.0)
-
-        project (benchcompile)
-
-        # setup env
-        set(CMAKE_INCLUDE_CURRENT_DIR ON)
-        set(CMAKE_CXX_FLAGS "${{CMAKE_CXX_FLAGS}} -std=c++11")
-
-        # sources
-        set(BC_SOURCES {sources_list})
-
-        # include backend
-        include_directories({backend_install_path}/include)
-        link_directories({backend_install_path}/lib)
-
-        # build exe-file
-        add_executable(benchcompile ${{BC_SOURCES}})
-
-        # link with sltbench
-        target_link_libraries(benchcompile LINK_PUBLIC
-            {backend_static_lib}
-            {required_static_libs})
-        '''.format(
-            sources_list=' '.join(sources),
-            backend_install_path=backend.install_path,
-            backend_static_lib=backend.static_lib_name,
-            required_static_libs=' '.join(backend.required_static_libs))

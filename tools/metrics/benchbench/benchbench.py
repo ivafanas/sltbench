@@ -1,10 +1,9 @@
-'''
-Benchmark for performance tests compilation time
-'''
+# TODO: measure dispersion
+# TODO: add HOWTO doc
 
-# TODO: update README, it is not runnable more from its folder
 from utils.backend import SLTBENCH as BACKEND_SLTBENCH
-from utils.backend import ALL as BACKENDS_ALL
+from utils.backend import ALL as BACKEND_ALL
+
 import impl.backend as backend
 import impl.benchcc as benchcc
 import impl.dataset as dataset
@@ -13,10 +12,11 @@ import utils.toolset as toolset
 
 def _parse_args():
     import argparse
-    parser = argparse.ArgumentParser(description='benchcompile utility')
-    parser.add_argument('--backend', default=BACKEND_SLTBENCH, choices=BACKENDS_ALL)
+    parser = argparse.ArgumentParser(description='benchmark for benchmark utility.')
+    parser.add_argument('--backend', default=BACKEND_SLTBENCH, choices=BACKEND_ALL)
     parser.add_argument('--backend_install_path', required=True)
-    parser.add_argument('--dataset', default='comparable', choices=dataset.ALL_INPUT)
+    parser.add_argument('--sizes', default='all', choices=dataset.SIZES_INPUT_ALL)
+    parser.add_argument('--kinds', default='all', choices=dataset.KINDS_INPUT_ALL)
     parser.add_argument('--toolset', default=toolset.CLANG, choices=toolset.ALL)
     return parser.parse_args()
 
@@ -40,7 +40,7 @@ def _main():
     result = benchcc.benchmark(context)
 
     # print result
-    print('{{ "compilation_time_sec": {} }}'.format(result))
+    print('{{ "benchmark_time_sec": {} }}'.format(result))
 
 
 if __name__ == "__main__":

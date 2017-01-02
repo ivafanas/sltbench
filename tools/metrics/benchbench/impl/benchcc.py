@@ -1,37 +1,37 @@
 
 from utils.cmakegen import gen_cmakelists
 from utils.fs import make_temp_dir, print_to_file
-from backend import gen_suite_code
+from backend import gen_code
 
 import os
 import subprocess
 
 
 def _generate_project(context, path):
-    TESTS_COUNT_PER_SUITE = 50
-    backend = context.backend
-    toolset = context.toolset
     os.chdir(path)
 
     # build sources
     sources = []
-    for suite in context.dataset:
-        for i in range(TESTS_COUNT_PER_SUITE):
-            filename = 'test_{}_{}.cpp'.format(suite, i)
-            print_to_file(filename, gen_suite_code(backend, suite, i))
+    for size in context.dataset.sizes:
+        for kind in context.dataset.kinds:
+            filename = 'test_{}_{}.cpp'.format(size, kind)
+            print_to_file(filename, gen_code(context.backend, size, kind))
             sources.append(filename)
-    print_to_file('main.cpp', backend.maincpp_code)
+    print_to_file('main.cpp', context.backend.maincpp_code)
     sources.append('main.cpp')
 
     # build makefile
-    print_to_file('CMakeLists.txt', gen_cmakelists(sources, backend))
+    print_to_file('CMakeLists.txt', gen_cmakelists(sources, context.backend))
     subprocess.call('cd {} && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER={} -DCMAKE_CXX_COMPILER={}'
-        .format(path, toolset.c_compiler, toolset.cxx_compiler), shell=True)
+        .format(path, context.toolset.c_compiler, context.toolset.cxx_compiler), shell=True)
 
 
 def _run_make(context, path):
-    os.chdir(path)
-    subprocess.call(['make'], shell=True)
+    subprocess.call(['cd {} && make'.format(path)], shell=True)
+
+
+def _run_runner(path):
+    subprocess.call(['cd {} && ./runner'.format(path)], shell=True)
 
 
 def benchmark(context):
@@ -43,8 +43,11 @@ def benchmark(context):
         # create sources, cmake, makefiles etc
         _generate_project(context, temp_dir)
 
-        # measure compilation time
+        # build runner_dir
+        _run_make(context, temp_dir)
+
+        # measure benchmark time
         import time
         start_make_ts = time.time()
-        _run_make(context, temp_dir)
+        _run_runner(temp_dir)
         return time.time() - start_make_ts
