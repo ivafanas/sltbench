@@ -31,5 +31,3 @@ private:
 } // namespace
 
 SLTBENCH_CONFIG().SetReporter(std::unique_ptr<MyReporter>(new MyReporter()));
-
-
