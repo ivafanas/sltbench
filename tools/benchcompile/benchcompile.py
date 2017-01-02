@@ -37,7 +37,7 @@ def _main():
     result = benchcc.benchmark(context)
 
     # print result
-    print('compilation time: {} sec'.format(result))
+    print('{{ "compilation_time_sec": {} }}'.format(result))
 
 
 if __name__ == "__main__":
