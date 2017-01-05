@@ -3,6 +3,7 @@ from utils.cmakegen import gen_cmakelists
 from utils.fs import make_temp_dir, print_to_file
 from backend import gen_code
 
+from collections import namedtuple
 import os
 import subprocess
 
@@ -30,8 +31,55 @@ def _run_make(context, path):
     subprocess.call(['cd {} && make'.format(path)], shell=True)
 
 
-def _run_runner(path):
-    subprocess.call(['cd {} && ./runner'.format(path)], shell=True)
+def _run_runner(backend, path):
+    outfile = os.path.abspath('{path}/output.json'.format(path=path))
+    command = 'cd {path} && ./runner {options} > {outfile}'.format(
+        path=path,
+        options=backend.option_json_reporter,
+        outfile=outfile)
+
+    import time
+    start_ts = time.time()
+    subprocess.call([command], shell=True)
+    final_ts = time.time()
+
+    RT = namedtuple('_run_runner_res', 'result,time')
+    return RT(
+        result=backend.result_parser.parse(outfile),
+        time=final_ts - start_ts)
+
+
+def _collect_stat(rr_results):
+    bench_results = [x.result for x in rr_results]
+    func_to_values = {}
+    for bench_res in bench_results:
+        for func_res in bench_res:
+            if func_res.name not in func_to_values:
+                func_to_values[func_res.name] = [func_res.time]
+            else:
+                func_to_values[func_res.name].append(func_res.time)
+
+    ItemT = namedtuple('FunctionStat', 'name,avr,err')
+    items = []
+    mean_err = 0.0
+    for name, values in func_to_values.iteritems():
+        f_min = min(values)
+        f_max = max(values)
+        f_avr = sum(values) / len(values)
+        f_err = 0
+        if f_avr:
+            f_err = max(
+                float(f_avr - f_min) / f_avr,
+                float(f_max - f_avr) / f_avr)
+        mean_err += f_err
+        items.append(ItemT(name=name, avr=f_avr, err=f_err))
+    mean_err /= len(items)
+
+    RT = namedtuple('_collect_stat_res', 'functions,mean_err,bench_time')
+    return RT(
+        functions=items,
+        mean_err=mean_err,
+        bench_time=min([x.time for x in rr_results]))
 
 
 def benchmark(context):
@@ -46,8 +94,12 @@ def benchmark(context):
         # build runner_dir
         _run_make(context, temp_dir)
 
-        # measure benchmark time
-        import time
-        start_make_ts = time.time()
-        _run_runner(temp_dir)
-        return time.time() - start_make_ts
+        # run benchmark several times
+        rr_results = []
+        n_runs = 4
+        for i in range(n_runs):
+            print('run {} of {}'.format(i + 1, n_runs))
+            rr_results.append(_run_runner(context.backend, temp_dir))
+
+        # collect statistics
+        return _collect_stat(rr_results)
