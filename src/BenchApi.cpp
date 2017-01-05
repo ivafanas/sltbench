@@ -8,6 +8,8 @@
 #include "Runner.h"
 
 #include <chrono>
+#include <iostream>
+#include <stdexcept>
 #include <vector>
 
 
@@ -45,6 +47,23 @@ void heatup()
 
 namespace sltbench {
 
+int Main(int argc, char **argv)
+{
+	try
+	{
+		Init(argc, argv);
+		return Run();
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << "ERROR: " << e.what() << std::endl;
+	}
+	catch(...)
+	{
+		std::cerr << "ERROR: unknown exception" << std::endl;
+	}
+	return 1;
+}
 
 void Init(int argc, char **argv)
 {

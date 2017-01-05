@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <memory>
+#include <stdexcept>
 
 
 namespace sltbench {
@@ -44,7 +45,10 @@ void InitConfig(const int argc, char **argv)
 		else if (heatup_value == "on" || heatup_value == "ON")
 			GetConfig().GetPrivate().SetHeatupRequired(true);
 		else
+        {
 			std::cerr << "ERROR: Unknown heatup option value: " << heatup_value << '\n';
+            throw std::runtime_error("invalid command line options");
+        }
 	}
 
 	// setup output format
@@ -58,7 +62,10 @@ void InitConfig(const int argc, char **argv)
 		else if (reporter_value == "console")
 			GetConfig().SetReporter(make_uniq<reporter::ConsoleReporter>());
 		else
+        {
 			std::cerr << "ERROR: unknown reporter: " << reporter_value << '\n';
+            throw std::runtime_error("invalid command line options");
+        }
 	}
 }
 

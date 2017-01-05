@@ -22,6 +22,10 @@ namespace sltbench {
 using SLTFun = std::function<void()>;
 
 
+//! calls Init and Run
+int Main(int argc, char **argv);
+
+
 //! initialize benchmark from command line options
 void Init(int argc, char **argv);
 

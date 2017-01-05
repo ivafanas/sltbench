@@ -532,8 +532,7 @@
 #define SLTBENCH_MAIN() \
 	int main(int argc, char **argv) \
 	{ \
-		::sltbench::Init(argc, argv); \
-		return ::sltbench::Run(); \
+		return ::sltbench::Main(argc, argv); \
 	}
 
 
