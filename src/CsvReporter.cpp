@@ -6,9 +6,13 @@
 namespace sltbench {
 namespace reporter {
 
-CsvReporter::CsvReporter()
+void CsvReporter::ReportBenchmarkStarted()
 {
 	std::cout << "benchmark,arg,status,time(ns)\n";
+}
+
+void CsvReporter::ReportBenchmarkFinished()
+{
 }
 
 void CsvReporter::Report(
@@ -17,7 +21,11 @@ void CsvReporter::Report(
 	bool ok,
 	std::chrono::nanoseconds timing_result)
 {
-	std::cout << name << ',' << params << ',' << (ok ? "ok" : "CRASHED") << ',' << timing_result.count() << std::endl;
+	std::cout
+		<< name << ','
+		<< params << ','
+		<< (ok ? "ok" : "CRASHED") << ','
+		<< timing_result.count() << std::endl;
 }
 
 } // namespace repoerter

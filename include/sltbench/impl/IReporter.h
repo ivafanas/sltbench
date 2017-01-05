@@ -12,7 +12,20 @@ struct IReporter
 	virtual ~IReporter() {}
 
 	/*!
-		Report timing result
+		Report timing started.
+		Called once per exe-run.
+	 */
+	virtual void ReportBenchmarkStarted() = 0;
+
+	/*!
+		Report timing finished.
+		Called once per exe-run.
+	 */
+	virtual void ReportBenchmarkFinished() = 0;
+
+	/*!
+		Report timing result.
+		Called between ReportBenchmarkStarted and ReportBenchmarkStarted.
 
 		\param name          - name
 		\param params        - input string representation

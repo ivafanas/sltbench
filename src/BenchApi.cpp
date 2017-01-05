@@ -62,6 +62,8 @@ int Run()
 	bool was_crash = false;
 	auto& reporter = Config::Instance().GetReporter();
 	auto& filter = Config::Instance().GetFilter();
+
+	reporter.ReportBenchmarkStarted();
 	const auto runners = GetRunners();
 	for (const auto& runner : runners)
 	{
@@ -69,6 +71,7 @@ int Run()
 		if (crashed)
 			was_crash = true;
 	}
+	reporter.ReportBenchmarkFinished();
 	return was_crash ? 1 : 0;
 }
 

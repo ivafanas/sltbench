@@ -6,12 +6,12 @@
 namespace sltbench {
 namespace reporter {
 
-JsonReporter::JsonReporter()
+void JsonReporter::ReportBenchmarkStarted()
 {
-	std::cout << "[" << std::endl;
+	std::cout << "[\n";
 }
 
-JsonReporter::~JsonReporter()
+void JsonReporter::ReportBenchmarkFinished()
 {
 	std::cout << "]" << std::flush;
 }
@@ -27,12 +27,13 @@ void JsonReporter::Report(
 		std::cout << ",\n";
 	}
 
-	std::cout << "{\n";
-	std::cout << "  \"name\": \"" << name << "\",\n";
-	std::cout << "  \"arg\": \"" << params << "\",\n";
-	std::cout << "  \"status\": \"" << (ok ? "ok" : "CRASHED") << "\",\n";
-	std::cout << "  \"time(ns)\": " << timing_result.count() << '\n';
-	std::cout << "}" << std::endl;
+	std::cout
+		<< "{\n"
+		<< "  \"name\": \"" << name << "\",\n"
+		<< "  \"arg\": \"" << params << "\",\n"
+		<< "  \"status\": \"" << (ok ? "ok" : "CRASHED") << "\",\n"
+		<< "  \"time(ns)\": " << timing_result.count() << '\n'
+		<< "}" << std::endl;
 
 	is_any_result_reported_ = true;
 }

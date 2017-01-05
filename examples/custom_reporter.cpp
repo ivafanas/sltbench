@@ -14,18 +14,28 @@ public:
 	virtual ~MyReporter() override = default;
 
 public:
-	virtual void Report(
+	void ReportBenchmarkStarted() override
+	{
+		console_reporter_.ReportBenchmarkStarted();
+	}
+
+	void ReportBenchmarkFinished() override
+	{
+		console_reporter_.ReportBenchmarkFinished();
+	}
+
+	void Report(
 		const std::string& name,
 		const std::string& params,
 		bool ok,
 		std::chrono::nanoseconds timing_result) override
 	{
 		// std::cout << name << params << ok << timing_result.count() << std::endl;
-		consoleReporter_.Report(name, params, ok, timing_result);
+		console_reporter_.Report(name, params, ok, timing_result);
 	}
 
 private:
-	sltbench::reporter::ConsoleReporter consoleReporter_;
+	sltbench::reporter::ConsoleReporter console_reporter_;
 };
 
 } // namespace

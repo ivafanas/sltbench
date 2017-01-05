@@ -9,11 +9,10 @@ namespace reporter {
 class ConsoleReporter
 	: public IReporter
 {
-public:
-	ConsoleReporter();
-
 public: // IReporter
-	virtual void Report(
+	void ReportBenchmarkStarted() override;
+	void ReportBenchmarkFinished() override;
+	void Report(
 		const std::string& name,
 		const std::string& params,
 		bool ok,

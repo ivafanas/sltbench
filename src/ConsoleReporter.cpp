@@ -7,13 +7,17 @@
 namespace sltbench {
 namespace reporter {
 
-ConsoleReporter::ConsoleReporter()
+void ConsoleReporter::ReportBenchmarkStarted()
 {
 	std::cout
 		<< std::left << std::setw(60) << "benchmark"
 		<< std::left << std::setw(25) << "arg"
 		<< std::left << std::setw(9) << "status"
 		<< std::right << std::setw(20) << "time(ns)" << std::endl;
+}
+
+void ConsoleReporter::ReportBenchmarkFinished()
+{
 }
 
 void ConsoleReporter::Report(

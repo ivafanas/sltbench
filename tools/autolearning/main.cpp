@@ -27,9 +27,6 @@ class LearningReporter
 	: public reporter::IReporter
 {
 public:
-	LearningReporter() {}
-
-public:
 	void Clear()
 	{
 		test_2_res_.clear();
@@ -41,7 +38,9 @@ public:
 	}
 
 public: // IReporter
-	virtual void Report(
+	void ReportBenchmarkStarted() override {}
+	void ReportBenchmarkFinished() override {}
+	void Report(
 		const std::string& name,
 		const std::string& param,
 		bool ok,

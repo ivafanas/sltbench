@@ -9,10 +9,9 @@ namespace reporter {
 class CsvReporter
 	: public IReporter
 {
-public:
-	CsvReporter();
-
 public: // IReporter
+	void ReportBenchmarkStarted() override;
+	void ReportBenchmarkFinished() override;
 	virtual void Report(
 		const std::string& name,
 		const std::string& params,
