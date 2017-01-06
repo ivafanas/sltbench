@@ -1,4 +1,7 @@
 
+from utils.fs import print_to_file, make_abspath_from_cwd
+
+
 FMT_JSON = 'json'
 FMT_CSV = 'csv'
 FMT_READABLE = 'readable'
@@ -15,37 +18,52 @@ def _report_json(result, options):
         for func in result.functions:
             item = {'name': func.name, 'avr': func.avr, 'err': func.err}
             res['functions'].append(item)
-    print(json.dumps(res, sort_keys=True, indent=2))
+    return json.dumps(res, sort_keys=True, indent=2)
 
 
 def _report_csv(result, options):
-    print('bench_time_sec,{}'.format(result.bench_time))
-    print('mean_err_percent,{}'.format(result.mean_err))
+    lines = []
+    lines.append('bench_time_sec,{}'.format(result.bench_time))
+    lines.append('mean_err_percent,{}'.format(result.mean_err))
     if options.moreinfo:
         for f in result.functions:
-            print('{},{},{}'.format(f.name, f.avr, f.err))
+            lines.append('{},{},{}'.format(f.name, f.avr, f.err))
+    return '\n'.join(lines)
 
 
 def _report_readable(result, options):
-    print('bench_time_sec: {}'.format(result.bench_time))
-    print('mean_err_percent: {}'.format(result.mean_err))
+    lines = []
+    lines.append('bench_time_sec: {}'.format(result.bench_time))
+    lines.append('mean_err_percent: {}'.format(result.mean_err))
     if options.moreinfo:
         for f in result.functions:
-            print('{:<30}{:>15}{:>8.4f}'.format(f.name, f.avr, f.err))
+            lines.append('{:<30}{:>15}{:>8.4f}'.format(f.name, f.avr, f.err))
+    return '\n'.join(lines)
 
 
 def report(result, options):
+    content = ''
     if options.fmt == FMT_JSON:
-        _report_json(result, options)
+        content = _report_json(result, options)
     if options.fmt == FMT_CSV:
-        _report_csv(result, options)
+        content = _report_csv(result, options)
     if options.fmt == FMT_READABLE:
-        _report_readable(result, options)
+        content = _report_readable(result, options)
+
+    print(content)
+    if options.outfile:
+        print_to_file(options.outfile, content)
 
 
 def create_options(args):
+
+    outfile = None
+    if args.outfile:
+        outfile = make_abspath_from_cwd(args.outfile)
+
     from collections import namedtuple
-    RT = namedtuple('ReportOptions', 'moreinfo,fmt')
+    RT = namedtuple('ReportOptions', 'moreinfo,fmt,outfile')
     return RT(
         moreinfo=args.moreinfo is not None,
-        fmt=args.report_format)
+        fmt=args.report_format,
+        outfile=outfile)

@@ -18,6 +18,7 @@ def _parse_args():
     parser.add_argument('--toolset', default=toolset.CLANG, choices=toolset.ALL)
     parser.add_argument('--moreinfo', nargs='*', help='detailed output')
     parser.add_argument('--report_format', default=reports.FMT_READABLE, choices=reports.FMT_ALL)
+    parser.add_argument('--outfile', default=None, help='output file to save report')
     return parser.parse_args()
 
 

@@ -91,7 +91,7 @@ def benchmark(context):
         # create sources, cmake, makefiles etc
         _generate_project(context, temp_dir)
 
-        # build runner_dir
+        # build runner
         _run_make(context, temp_dir)
 
         # run benchmark several times
