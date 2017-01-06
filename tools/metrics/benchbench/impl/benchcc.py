@@ -83,11 +83,7 @@ def _collect_stat(rr_results):
 
 
 def benchmark(context):
-    # get runner directory and jump into it
-    runner_dir = os.path.dirname(os.path.abspath(__file__))
-    os.chdir(runner_dir)
-
-    with make_temp_dir(runner_dir) as temp_dir:
+    with make_temp_dir() as temp_dir:
         # create sources, cmake, makefiles etc
         _generate_project(context, temp_dir)
 

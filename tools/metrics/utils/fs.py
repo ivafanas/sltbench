@@ -3,17 +3,24 @@ import os
 
 
 @contextmanager
-def make_temp_dir(parent_dir):
+def make_temp_dir(parent_dir=None):
+    # choose parent dir
+    target_dir = None
+    if parent_dir:
+        target_dir = parent_dir
+    else:
+        target_dir = os.getcwd()
+
     # create temp directory
     import tempfile
-    temp_dir = tempfile.mkdtemp(dir=parent_dir)
+    temp_dir = tempfile.mkdtemp(dir=target_dir)
 
     # return temporary directory
     yield temp_dir
 
     # cleanup parent directory
     import shutil
-    os.chdir(parent_dir)
+    os.chdir(target_dir)
     shutil.rmtree(temp_dir)
 
 
