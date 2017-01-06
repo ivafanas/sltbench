@@ -74,6 +74,7 @@ def _collect_stat(rr_results):
         mean_err += f_err
         items.append(ItemT(name=name, avr=f_avr, err=f_err))
     mean_err /= len(items)
+    items.sort(key=lambda x: x.name)
 
     RT = namedtuple('_collect_stat_res', 'functions,mean_err,bench_time')
     return RT(
