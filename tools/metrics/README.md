@@ -34,7 +34,7 @@ behaviour in both `sltbench` and `googlebench`. Some problems may be reproduced
 only for fixed subset of sizes. The default value is `all`.
 * `--kinds` - set of testing function kinds. Introduced for the same reason as
 `--sizes` argument. The default value is `all`.
-* `--moreinfo`, `--report_format`, `--outfile` - options for developer needs.
+* `--moreinfo`, `--report_format`, `--outfile`, `--runcount` - options for developer needs.
 
 
 # benchcompile
