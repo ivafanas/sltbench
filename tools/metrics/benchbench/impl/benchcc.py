@@ -28,7 +28,7 @@ def _generate_project(context, path):
 
 
 def _run_make(context, path):
-    subprocess.call(['cd {} && make'.format(path)], shell=True)
+    subprocess.call(['cd {} && make -j'.format(path)], shell=True)
 
 
 def _run_runner(backend, path):
