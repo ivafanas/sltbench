@@ -31,12 +31,17 @@ def _run_make(context, path):
     subprocess.call(['cd {} && make -j'.format(path)], shell=True)
 
 
-def _run_runner(backend, path):
+def _run_runner(context, path):
     outfile = os.path.abspath('{path}/output.json'.format(path=path))
-    command = 'cd {path} && ./runner {options} > {outfile}'.format(
+    cmd_pincpu = ''
+    if context.benchcc.pincpu:
+        cmd_pincpu = 'taskset -c {}'.format(context.benchcc.pincpu)
+    command = 'cd {path} && {cmd_pincpu} ./runner {options} > {outfile}'.format(
         path=path,
-        options=backend.option_json_reporter,
+        cmd_pincpu=cmd_pincpu,
+        options=context.backend.option_json_reporter,
         outfile=outfile)
+    print(command)
 
     import time
     start_ts = time.time()
@@ -45,7 +50,7 @@ def _run_runner(backend, path):
 
     RT = namedtuple('_run_runner_res', 'result,time')
     return RT(
-        result=backend.result_parser.parse(outfile),
+        result=context.backend.result_parser.parse(outfile),
         time=final_ts - start_ts)
 
 
@@ -95,12 +100,14 @@ def benchmark(context):
         rr_results = []
         for i in range(context.benchcc.runcount):
             print('run {} of {}'.format(i + 1, context.benchcc.runcount))
-            rr_results.append(_run_runner(context.backend, temp_dir))
+            rr_results.append(_run_runner(context, temp_dir))
 
         # collect statistics
         return _collect_stat(rr_results)
 
 
 def create_options(args):
-    RT = namedtuple('create_run_options_res', 'runcount')
-    return RT(runcount=max(1, args.runcount))
+    RT = namedtuple('create_run_options_res', 'runcount,pincpu')
+    return RT(
+        runcount=max(1, args.runcount),
+        pincpu=args.pincpu)

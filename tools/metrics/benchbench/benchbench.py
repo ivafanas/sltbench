@@ -20,6 +20,7 @@ def _parse_args():
     parser.add_argument('--report_format', default=reports.FMT_READABLE, choices=reports.FMT_ALL)
     parser.add_argument('--outfile', default=None, help='output file to save report')
     parser.add_argument('--runcount', default=4, type=int, help='count of benchmark runs to collect statistics')
+    parser.add_argument('--pincpu', default=None, help='input arguments to taskset to pin benchmark to the cpu')
     return parser.parse_args()
 
 
