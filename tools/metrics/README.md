@@ -30,7 +30,7 @@ python -m benchbench.benchbench --backend=googlebench --backend_install_path=<pa
 Options:
 * `--backend` - which backend to test (`sltbench` or `googlebench`)
 * `--backend_install_path` - where backend is installed (with headers and static libs)
-* `--pincpu` - cpu id to pin process (argument of `taskset -c`). Leave
+* `--pincpu` - cpu id to pin process (argument of `taskset -c`).
 * `--toolset` - flag to switch compiler (`gcc`|`clang`)
 * `--sizes` - set of sizes to test. Different problems sizes has different
 behaviour in both `sltbench` and `googlebench`. Some problems may be reproduced
