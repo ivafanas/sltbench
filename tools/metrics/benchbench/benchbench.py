@@ -12,7 +12,7 @@ def _parse_args():
     import argparse
     parser = argparse.ArgumentParser(description='benchmark for benchmark utility.')
     parser.add_argument('--backend', default=BACKEND_SLTBENCH, choices=BACKEND_ALL)
-    parser.add_argument('--backend_install_path', required=True)
+    parser.add_argument('--backend_install_path', required=True, help='path to installed backend with headers and static libs')
     parser.add_argument('--sizes', default='all', choices=dataset.SIZES_INPUT_ALL)
     parser.add_argument('--kinds', default='all', choices=dataset.KINDS_INPUT_ALL)
     parser.add_argument('--toolset', default=toolset.CLANG, choices=toolset.ALL)
