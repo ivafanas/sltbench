@@ -19,16 +19,18 @@ def _parse_args():
     parser.add_argument('--moreinfo', nargs='*', help='detailed output')
     parser.add_argument('--report_format', default=reports.FMT_READABLE, choices=reports.FMT_ALL)
     parser.add_argument('--outfile', default=None, help='output file to save report')
+    parser.add_argument('--runcount', default=4, type=int, help='count of benchmark runs to collect statistics')
     return parser.parse_args()
 
 
 def _create_context(args):
     from collections import namedtuple
-    return namedtuple('Context', 'backend,dataset,toolset,reports')(
+    return namedtuple('Context', 'backend,dataset,toolset,reports,benchcc')(
         backend=backend.create(args),
         dataset=dataset.create(args),
         toolset=toolset.create(args),
-        reports=reports.create_options(args))
+        reports=reports.create_options(args),
+        benchcc=benchcc.create_options(args))
 
 
 def _main():

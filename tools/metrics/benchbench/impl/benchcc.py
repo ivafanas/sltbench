@@ -93,10 +93,14 @@ def benchmark(context):
 
         # run benchmark several times
         rr_results = []
-        n_runs = 4
-        for i in range(n_runs):
-            print('run {} of {}'.format(i + 1, n_runs))
+        for i in range(context.benchcc.runcount):
+            print('run {} of {}'.format(i + 1, context.benchcc.runcount))
             rr_results.append(_run_runner(context.backend, temp_dir))
 
         # collect statistics
         return _collect_stat(rr_results)
+
+
+def create_options(args):
+    RT = namedtuple('create_run_options_res', 'runcount')
+    return RT(runcount=max(1, args.runcount))
