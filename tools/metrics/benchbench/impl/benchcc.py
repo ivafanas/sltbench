@@ -68,7 +68,7 @@ def _collect_stat(rr_results):
         f_avr = sum(values) / len(values)
         f_err = 0
         if f_avr:
-            f_err = max(
+            f_err = 100 * max(
                 float(f_avr - f_min) / f_avr,
                 float(f_max - f_avr) / f_avr)
         mean_err += f_err
