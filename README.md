@@ -471,8 +471,8 @@ Filter regular expression format corresponds to [basic case of std::regex](http:
 # How to compare performance results
 
 `sltbench` project contains tool to compare performance results.
- Utility is located at `tools` directory. It accepts benchmarks output in json
- format. `sltbench` and `googlebench` backends are supported.
+ Utility is located at `tools` directory. It accepts benchmarks output **in json
+ format**. `sltbench` and `googlebench` backends are supported.
 
  Usage:
 ```bash
