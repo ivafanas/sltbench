@@ -1,5 +1,3 @@
-# TODO: add HOWTO doc
-
 import metrics.utils.backend as backend
 
 from collections import namedtuple
