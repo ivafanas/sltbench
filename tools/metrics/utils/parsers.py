@@ -29,7 +29,6 @@ class PerfResultsParserGoogleBench:
 
     def parse(self, file):
         with open(file, 'r') as f:
-
             import json
             root = json.load(f)['benchmarks']
             return [_Res(name=x['name'], time=x['real_time']) for x in root]
