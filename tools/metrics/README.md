@@ -20,11 +20,11 @@ Instruction:
 * Install benchmark backend for timing (`sltbench` or `googlebench`)
 * run `sltbench` with default parameters:
 ```bash
-python -m benchbench.benchbench --backend=sltbench --backend_install_path=<path_to_sltbench_installed> --pincpu 1
+python -m benchbench.main --backend=sltbench --backend_install_path=<path_to_sltbench_installed> --pincpu 1
 ```
 * run `googlebench` with default parameters:
 ```bash
-python -m benchbench.benchbench --backend=googlebench --backend_install_path=<path_to_googlebench_installed> --pincpu 1
+python -m benchbench.main --backend=googlebench --backend_install_path=<path_to_googlebench_installed> --pincpu 1
 ```
 
 Options:
@@ -49,11 +49,11 @@ Instruction:
 * Install benchmark backend for timing (`sltbench` or `googlebench`)
 * run `sltbench` with default parameters:
 ```bash
-python -m benchcompile.benchcompile --backend=sltbench --backend_install_path=<path_to_sltbench_installed>
+python -m benchcompile.main --backend=sltbench --backend_install_path=<path_to_sltbench_installed>
 ```
 * run `googlebench` with default parameters:
 ```bash
-python -m benchcompile.benchcompile --backend=googlebench --backend_install_path=<path_to_googlebench_installed>
+python -m benchcompile.main --backend=googlebench --backend_install_path=<path_to_googlebench_installed>
 ```
 
 Additional options:
