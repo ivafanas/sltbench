@@ -63,6 +63,7 @@ def _report_json(compare_result):
 
 
 def _report_readable(compare_result):
+    print('{:<30}{:>15}{:>15}{:>8}'.format('function', 'prev_ns', 'next_ns', 'ratio'))
     for item in compare_result:
         print('{:<30}{:>15}{:>15}{:>8.3f}'.
             format(item.name, item.prev, item.next, item.ratio))
