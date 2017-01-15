@@ -48,6 +48,8 @@ void Shuffle(Fixture::Type& fix, const Arg& arg)
     }
 }
 static const std::vector<Arg> args = {
+    { 1, 1 },
+    { 2, 1 },
     { 100000, 1 },
     { 200000, 2 },
     { 300000, 3 }

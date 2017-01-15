@@ -15,7 +15,7 @@ void InsertToSetWithArg(const size_t& arg)
     for (size_t i = 0; i < arg; ++i)
         s.insert(i);
 }
-const std::vector<size_t> sort_args{ 100000, 110000, 120000, 130000, 140000, 150000 };
+const std::vector<size_t> sort_args{ 1, 2, 3, 4, 5, 100000, 110000, 120000, 130000, 140000, 150000 };
 SLTBENCH_FUNCTION_WITH_ARGS(InsertToSetWithArg, sort_args);
 
 
