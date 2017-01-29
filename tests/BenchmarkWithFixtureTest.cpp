@@ -24,6 +24,22 @@ private:
     int fixture_;
 };
 
+void stub_func(int&) {}
+
+size_t g_calls_count = false;
+
+void inc_calls_count(int&)
+{
+    ++g_calls_count;
+}
+
+int g_arg = 0;
+
+void set_arg(int& arg)
+{
+    g_arg = arg;
+}
+
 } // namespace
 
 template<typename Fixture>
@@ -31,36 +47,47 @@ using BM = sltbench::BenchmarkWithFixture<Fixture>;
 
 TEST(BenchmarkWithFixture, GetNameShouldReturnBenchmarkName)
 {
-    BM<Fixture> bm("name", [](int&) {});
+    BM<Fixture> bm("name", &stub_func);
 
     EXPECT_EQ("name", bm.GetName());
 }
 
 TEST(BenchmarkWithFixture, MeasureCallsFunction)
 {
-    bool called = false;
-    BM<Fixture> bm("name", [&](int&) { called = true;  });
+    g_calls_count = 0;
+    BM<Fixture> bm("name", &inc_calls_count);
 
     bm.Prepare();
-    bm.Measure();
+    bm.Measure(1u);
 
-    EXPECT_TRUE(called);
+    EXPECT_EQ(1u, g_calls_count);
+}
+
+TEST(BenchmarkWithFixture, MeasureCallsFunctionExactlyOnce)
+{
+	g_calls_count = 0;
+	BM<Fixture> bm("name", &inc_calls_count);
+
+	bm.Prepare();
+	bm.Measure(3u);
+
+	EXPECT_EQ(1u, g_calls_count);
 }
 
 TEST(BenchmarkWithFixture, MeasureCallsFunctionWithFixtureValue)
 {
-    int arg;
-    BM<Fixture> bm("name", [&](int& fix) { arg = fix; });
+    g_arg;
+    BM<Fixture> bm("name", &set_arg);
 
     bm.Prepare();
-    bm.Measure();
+    bm.Measure(1u);
 
-    EXPECT_EQ(42, arg);
+    EXPECT_EQ(42, g_arg);
 }
 
 TEST(BenchmarkWithFixture, HasArgsToProcessReturnsTrueAfterPrepare)
 {
-    BM<Fixture> bm("name", [](int& fix){});
+    BM<Fixture> bm("name", &stub_func);
 
     bm.Prepare();
 
@@ -69,7 +96,7 @@ TEST(BenchmarkWithFixture, HasArgsToProcessReturnsTrueAfterPrepare)
 
 TEST(BenchmarkWithFixture, HasArgsToProcessReturnsFalseAfterArgProcessed)
 {
-    BM<Fixture> bm("name", [](int& fix){});
+    BM<Fixture> bm("name", &stub_func);
 
     bm.Prepare();
     bm.OnArgProcessed();
@@ -79,7 +106,7 @@ TEST(BenchmarkWithFixture, HasArgsToProcessReturnsFalseAfterArgProcessed)
 
 TEST(BenchmarkWithFixture, CurrentArgAsString)
 {
-    BM<Fixture> bm("name", [](int& fix){});
+    BM<Fixture> bm("name", &stub_func);
 
     bm.Prepare();
 

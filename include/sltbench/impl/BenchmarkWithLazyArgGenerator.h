@@ -4,7 +4,6 @@
 #include "StopGenerationException.h"
 
 #include <chrono>
-#include <functional>
 #include <memory>
 #include <sstream>
 #include <string>
@@ -17,12 +16,12 @@ class BenchmarkWithLazyArgGenerator
 {
 public:
     typedef typename GeneratorT::ArgType ArgT;
-    using FunctionT = std::function<void(const ArgT &)>;
+    typedef void (*FunctionT)(const ArgT &);
 
 public:
     BenchmarkWithLazyArgGenerator(const char *name, FunctionT function)
 		: name_(name)
-		, function_(std::move(function))
+		, function_(function)
 	{
 	}
 
@@ -32,16 +31,22 @@ public:
 		return name_;
 	}
 
-	std::chrono::nanoseconds Measure()
+	std::chrono::nanoseconds Measure(size_t calls_count)
 	{
 		const auto& arg = *arg_;
 
 		const auto start_ts = std::chrono::high_resolution_clock::now();
-		function_(arg);
+		for (size_t i = 0; i < calls_count; ++i)
+			function_(arg);
 		const auto final_ts = std::chrono::high_resolution_clock::now();
 		return final_ts > start_ts
 			? std::chrono::duration_cast<std::chrono::nanoseconds>(final_ts - start_ts)
 			: std::chrono::nanoseconds(0);
+	}
+
+	bool SupportsMulticall() const
+	{
+		return true;
 	}
 
 	void Prepare()

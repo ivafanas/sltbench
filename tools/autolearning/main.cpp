@@ -7,7 +7,6 @@
 #include <algorithm>
 #include <chrono>
 #include <fstream>
-#include <functional>
 #include <numeric>
 #include <string>
 #include <set>
@@ -43,7 +42,7 @@ public: // IReporter
 	void Report(
 		const std::string& name,
 		const std::string& param,
-		bool ok,
+		Verdict verdict,
 		std::chrono::nanoseconds result) override
 	{
 		test_2_res_[name + "_" + param] = result;

@@ -11,7 +11,7 @@ class MyReporter : public sltbench::reporter::IReporter
 {
 public:
 	MyReporter() = default;
-	virtual ~MyReporter() override = default;
+	~MyReporter() override = default;
 
 public:
 	void ReportBenchmarkStarted() override
@@ -27,11 +27,11 @@ public:
 	void Report(
 		const std::string& name,
 		const std::string& params,
-		bool ok,
+		sltbench::Verdict verdict,
 		std::chrono::nanoseconds timing_result) override
 	{
 		// std::cout << name << params << ok << timing_result.count() << std::endl;
-		console_reporter_.Report(name, params, ok, timing_result);
+		console_reporter_.Report(name, params, verdict, timing_result);
 	}
 
 private:

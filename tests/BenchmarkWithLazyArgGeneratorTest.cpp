@@ -23,6 +23,22 @@ private:
     size_t i_ = 0;
 };
 
+void stub_func(const size_t&) {}
+
+size_t g_calls_count = 0;
+
+void inc_calls_count(const size_t&)
+{
+	++g_calls_count;
+}
+
+std::vector<size_t> g_call_args;
+
+void push_back_arg(const size_t& arg)
+{
+    g_call_args.push_back(arg);
+}
+
 } // namespace
 
 template<typename Generator>
@@ -30,43 +46,54 @@ using BM = sltbench::BenchmarkWithLazyArgGenerator<Generator>;
 
 TEST(BenchmarkWithLazyArgGenerator, GetNameReturnsBenchmarkName)
 {
-    BM<IncGenerator> bm("name", [](const size_t&) {});
+    BM<IncGenerator> bm("name", &stub_func);
     EXPECT_EQ("name", bm.GetName());
 }
 
 TEST(BenchmarkWithLazyArgGenerator, MeasureCallsFunction)
 {
-    bool called = false;
-    BM<IncGenerator> bm("name", [&](const size_t&) { called = true;  });
+	g_calls_count = 0;
+    BM<IncGenerator> bm("name", &inc_calls_count);
 
     bm.Prepare();
-    bm.Measure();
+    bm.Measure(1u);
 
-    EXPECT_TRUE(called);
+    EXPECT_EQ(1u, g_calls_count);
+}
+
+TEST(BenchmarkWithLazyArgGenerator, MeasureCallsFunctionRequiredNumberOfTimes)
+{
+	g_calls_count = 0;
+	BM<IncGenerator> bm("name", &inc_calls_count);
+
+	bm.Prepare();
+	bm.Measure(3u);
+
+	EXPECT_EQ(3u, g_calls_count);
 }
 
 TEST(BenchmarkWithLazyArgGenerator, MeasureCallsFunctionWithGeneratedArg)
 {
-    std::vector<size_t> call_args;
-    BM<IncGenerator> bm("name", [&](const size_t& arg) { call_args.push_back(arg);  });
+    g_call_args;
+    BM<IncGenerator> bm("name", &push_back_arg);
 
     bm.Prepare();
-    bm.Measure();
+    bm.Measure(1u);
     bm.OnArgProcessed();
-    bm.Measure();
+    bm.Measure(1u);
     bm.OnArgProcessed();
-    bm.Measure();
+    bm.Measure(1u);
     bm.OnArgProcessed();
 
-    ASSERT_EQ(3, call_args.size());
-    EXPECT_EQ(1, call_args[0]);
-    EXPECT_EQ(2, call_args[1]);
-    EXPECT_EQ(3, call_args[2]);
+    ASSERT_EQ(3, g_call_args.size());
+    EXPECT_EQ(1, g_call_args[0]);
+    EXPECT_EQ(2, g_call_args[1]);
+    EXPECT_EQ(3, g_call_args[2]);
 }
 
 TEST(BenchmarkWithLazyArgGenerator, CurrentArgAsString)
 {
-    BM<IncGenerator> bm("name", [&](const size_t&) {});
+    BM<IncGenerator> bm("name", &stub_func);
 
     bm.Prepare();
 

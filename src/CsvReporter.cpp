@@ -18,13 +18,13 @@ void CsvReporter::ReportBenchmarkFinished()
 void CsvReporter::Report(
 	const std::string& name,
 	const std::string& params,
-	bool ok,
+	Verdict verdict,
 	std::chrono::nanoseconds timing_result)
 {
 	std::cout
 		<< name << ','
 		<< params << ','
-		<< (ok ? "ok" : "CRASHED") << ','
+		<< ToString(verdict) << ','
 		<< timing_result.count() << std::endl;
 }
 

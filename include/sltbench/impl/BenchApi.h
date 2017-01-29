@@ -12,14 +12,13 @@
 #include "StaticAssertsUtil.h"
 #include "StopGenerationException.h"
 
-#include <functional>
 #include <type_traits>
 #include <vector>
 
 
 namespace sltbench {
 
-using SLTFun = std::function<void()>;
+typedef void(*SLTFun)();
 
 
 //! calls Init and Run
@@ -52,9 +51,7 @@ Descriptor *RegisterBenchmark(const char *name, SLTFun func);
 	\param FixtureT - fixture class
 */
 template<typename FixtureT>
-Descriptor *RegisterBenchmarkWithFixture(
-	const char *name,
-	std::function<void(typename FixtureT::Type&)> func)
+Descriptor *RegisterBenchmarkWithFixture(const char *name, void (*func)(typename FixtureT::Type&))
 {
 	using BM = BenchmarkWithFixture<FixtureT>;
 	BenchmarksContainer<BM>::Instance().Add(BM(name, func));
@@ -90,9 +87,9 @@ public:
 */
 template<typename ArgumentT>
 Descriptor *RegisterBenchmarkWithArgs(
-	const char *name,
-	std::function<void(const ArgumentT &)> func,
-	std::vector<ArgumentT> args)
+    const char *name,
+    void (*func)(const ArgumentT &),
+    std::vector<ArgumentT> args)
 {
 	using BM = BenchmarkWithArgGenerator<EmptyArgsGenerator<ArgumentT>>;
 	BenchmarksContainer<BM>::Instance().Add(BM(name, func, std::move(args)));
@@ -114,8 +111,8 @@ Descriptor *RegisterBenchmarkWithArgs(
 */
 template<typename GeneratorT>
 Descriptor *RegisterBenchmarkWithArgsGenerator(
-	const char *name,
-	std::function<void(const typename GeneratorT::ArgType)> func)
+    const char *name,
+    void (*func)(const typename GeneratorT::ArgType&))
 {
 	using BM = BenchmarkWithArgGenerator<GeneratorT>;
 	BenchmarksContainer<BM>::Instance().Add(BM(name, func));
@@ -138,7 +135,7 @@ Descriptor *RegisterBenchmarkWithArgsGenerator(
 template<typename GeneratorT>
 Descriptor *RegisterBenchmarkWithLazyArgsGenerator(
     const char *name,
-    std::function<void(const typename GeneratorT::ArgType)> func)
+    void (*func)(const typename GeneratorT::ArgType&))
 {
     using BM = BenchmarkWithLazyArgGenerator<GeneratorT>;
     BenchmarksContainer<BM>::Instance().Add(BM(name, func));
@@ -163,7 +160,7 @@ Descriptor *RegisterBenchmarkWithLazyArgsGenerator(
 template<typename FixtureT, typename ArgumentT>
 Descriptor *RegisterBenchmarkWithFixtureAndArgs(
 	const char *name,
-	std::function<void(typename FixtureT::Type&, const ArgumentT&)> func,
+	void (*func)(typename FixtureT::Type&, const ArgumentT&),
 	std::vector<ArgumentT> args_vec)
 {
 	using BM = BenchmarkWithFixtureAndArgGenerator<FixtureT, EmptyArgsGenerator<ArgumentT>>;
@@ -188,7 +185,7 @@ Descriptor *RegisterBenchmarkWithFixtureAndArgs(
 template<typename FixtureT, typename GeneratorT>
 Descriptor *RegisterBenchmarkWithFixtureAndArgsGenerator(
 	const char *name,
-	std::function<void(typename FixtureT::Type&, const typename GeneratorT::ArgType&)> func)
+	void (*func)(typename FixtureT::Type&, const typename GeneratorT::ArgType&))
 {
 	using BM = BenchmarkWithFixtureAndArgGenerator<FixtureT, GeneratorT>;
 	BenchmarksContainer<BM>::Instance().Add(BM(name, func));
@@ -212,7 +209,7 @@ Descriptor *RegisterBenchmarkWithFixtureAndArgsGenerator(
 template<typename FixtureT, typename GeneratorT>
 Descriptor *RegisterBenchmarkWithFixtureAndLazyArgsGenerator(
     const char *name,
-    std::function<void(typename FixtureT::Type&, const typename GeneratorT::ArgType&)> func)
+    void (*func)(typename FixtureT::Type&, const typename GeneratorT::ArgType&))
 {
     using BM = BenchmarkWithFixtureAndLazyArgGenerator<FixtureT, GeneratorT>;
     BenchmarksContainer<BM>::Instance().Add(BM(name, func));
@@ -239,10 +236,10 @@ Descriptor *RegisterBenchmarkWithFixtureAndLazyArgsGenerator(
 
 #define SLT_REGISTER_FUNCTION(func) ::sltbench::RegisterBenchmark(#func, func)
 #define SLT_REGISTER_FUNCTION_WITH_FIXTURE(func, fixture) ::sltbench::RegisterBenchmarkWithFixture<fixture>(#func"_"#fixture, func);
-#define SLT_REGISTER_FUNCTION_WITH_ARGS(func, args_vec) ::sltbench::RegisterBenchmarkWithArgs(#func, std::function<void( const decltype(args_vec)::value_type &)>(func), args_vec)
+#define SLT_REGISTER_FUNCTION_WITH_ARGS(func, args_vec) ::sltbench::RegisterBenchmarkWithArgs(#func, func, args_vec)
 #define SLT_REGISTER_FUNCTION_WITH_ARGS_GENERATOR(func, generator) ::sltbench::RegisterBenchmarkWithArgsGenerator<generator>(#func, func)
 #define SLT_REGISTER_FUNCTION_WITH_LAZY_ARGS_GENERATOR(func, generator) ::sltbench::RegisterBenchmarkWithLazyArgsGenerator<generator>(#func, func)
-#define SLT_REGISTER_FUNCTION_WITH_FIXTURE_AND_ARGS(func, fixture, args_vec) ::sltbench::RegisterBenchmarkWithFixtureAndArgs<fixture>(#func"_"#fixture, std::function<void( fixture::Type&, const decltype(args_vec)::value_type &)>(func), args_vec);
+#define SLT_REGISTER_FUNCTION_WITH_FIXTURE_AND_ARGS(func, fixture, args_vec) ::sltbench::RegisterBenchmarkWithFixtureAndArgs<fixture>(#func"_"#fixture, func, args_vec);
 #define SLT_REGISTER_FUNCTION_WITH_FIXTURE_AND_ARGS_GENERATOR(func, fixture, generator) ::sltbench::RegisterBenchmarkWithFixtureAndArgsGenerator<fixture, generator>(#func"_"#fixture, func);
 #define SLT_REGISTER_FUNCTION_WITH_FIXTURE_AND_LAZY_ARGS_GENERATOR(func, fixture, generator) ::sltbench::RegisterBenchmarkWithFixtureAndLazyArgsGenerator<fixture, generator>(#func"_"#fixture, func);
 

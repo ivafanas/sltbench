@@ -3,7 +3,6 @@
 #include "Env.h"
 
 #include <chrono>
-#include <functional>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -17,12 +16,12 @@ class BenchmarkWithFixtureAndArgGenerator
 public:
     typedef typename FixtureT::Type FixT;
     typedef typename GeneratorT::ArgType ArgT;
-    using FunctionT = std::function<void(FixT&, const ArgT&)>;
+    typedef void (*FunctionT)(FixT&, const ArgT&);
 
 public:
 	BenchmarkWithFixtureAndArgGenerator(const char *name, FunctionT function)
 		: name_(name)
-		, function_(std::move(function))
+		, function_(function)
 	{
 	}
 
@@ -31,7 +30,7 @@ public:
         FunctionT function,
         std::vector<typename GeneratorT::ArgType> args)
 		: name_(name)
-		, function_(std::move(function))
+		, function_(function)
 		, args_(std::move(args))
 	{
 	}
@@ -42,7 +41,7 @@ public:
 		return name_;
 	}
 
-	std::chrono::nanoseconds Measure()
+	std::chrono::nanoseconds Measure(size_t)
 	{
 		const auto& arg = args_[current_arg_index_];
 
@@ -59,6 +58,11 @@ public:
 		fixture_->TearDown();
 
 		return rv;
+	}
+
+	bool SupportsMulticall() const
+	{
+		return false;
 	}
 
 	void Prepare()

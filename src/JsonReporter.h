@@ -12,10 +12,10 @@ class JsonReporter
 public: // IReporter
 	void ReportBenchmarkStarted() override;
 	void ReportBenchmarkFinished() override;
-	virtual void Report(
+	void Report(
 		const std::string& name,
 		const std::string& params,
-		bool ok,
+		Verdict verdict,
 		std::chrono::nanoseconds timing_result) override;
 
 private:

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <chrono>
-#include <functional>
 #include <memory>
 #include <string>
 
@@ -12,12 +11,12 @@ template<typename FixtureT>
 class BenchmarkWithFixture
 {
 public:
-	typedef std::function<void(typename FixtureT::Type&)> FunctionT;
+    typedef void(*FunctionT)(typename FixtureT::Type&);
 
 public:
 	BenchmarkWithFixture(const char *name, FunctionT function)
 		: name_(name)
-		, function_(std::move(function))
+		, function_(function)
 	{
 	}
 
@@ -27,7 +26,7 @@ public:
 		return name_;
 	}
 
-	std::chrono::nanoseconds Measure()
+	std::chrono::nanoseconds Measure(size_t)
 	{
 		auto& fix = fixture_->SetUp();
 
@@ -42,6 +41,11 @@ public:
 		fixture_->TearDown();
 
 		return rv;
+	}
+
+	bool SupportsMulticall() const
+	{
+		return false;
 	}
 
 	void Prepare()

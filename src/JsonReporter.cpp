@@ -19,7 +19,7 @@ void JsonReporter::ReportBenchmarkFinished()
 void JsonReporter::Report(
 	const std::string& name,
 	const std::string& params,
-	bool ok,
+	Verdict verdict,
 	std::chrono::nanoseconds timing_result)
 {
 	if (is_any_result_reported_)
@@ -31,7 +31,7 @@ void JsonReporter::Report(
 		<< "{\n"
 		<< "  \"name\": \"" << name << "\",\n"
 		<< "  \"arg\": \"" << params << "\",\n"
-		<< "  \"status\": \"" << (ok ? "ok" : "CRASHED") << "\",\n"
+		<< "  \"status\": \"" << ToString(verdict) << "\",\n"
 		<< "  \"time(ns)\": " << timing_result.count() << '\n'
 		<< "}" << std::endl;
 

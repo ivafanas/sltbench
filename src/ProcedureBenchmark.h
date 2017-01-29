@@ -15,7 +15,8 @@ public:
 
 public:
 	const std::string& GetName() const;
-	std::chrono::nanoseconds Measure();
+	std::chrono::nanoseconds Measure(size_t calls_count);
+	bool SupportsMulticall() const;
 	void Prepare();
 	void Finalize();
     bool HasArgsToProcess();

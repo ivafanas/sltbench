@@ -4,7 +4,6 @@
 #include "StopGenerationException.h"
 
 #include <chrono>
-#include <functional>
 #include <sstream>
 #include <string>
 
@@ -17,12 +16,12 @@ class BenchmarkWithFixtureAndLazyArgGenerator
 public:
     typedef typename FixtureT::Type FixT;
     typedef typename GeneratorT::ArgType ArgT;
-    using FunctionT = std::function<void(FixT&, const ArgT&)>;
+    typedef void (*FunctionT)(FixT&, const ArgT&);
 
 public:
 	BenchmarkWithFixtureAndLazyArgGenerator(const char *name, FunctionT function)
 		: name_(name)
-		, function_(std::move(function))
+		, function_(function)
 	{
 	}
 
@@ -32,7 +31,7 @@ public:
 		return name_;
 	}
 
-	std::chrono::nanoseconds Measure()
+	std::chrono::nanoseconds Measure(size_t)
 	{
 		const auto& arg = *arg_;
 
@@ -49,6 +48,11 @@ public:
 		fixture_->TearDown();
 
 		return rv;
+	}
+
+	bool SupportsMulticall() const
+	{
+		return false;
 	}
 
 	void Prepare()

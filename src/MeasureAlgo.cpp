@@ -43,13 +43,16 @@ MeasureAlgo::MeasureAlgo(Conf conf) noexcept
 MeasureAlgo::~MeasureAlgo() noexcept
 {}
 
-void MeasureAlgo::SetFirstTimingResult(nanoseconds time_ns)
+void MeasureAlgo::SetEstimationResult(const single_measure_algo::EstimationResult& estimation)
 {
-	required_spot_size_ = CalcRequiredSpotSize(conf_, time_ns);
+	required_spot_size_ = CalcRequiredSpotSize(conf_, estimation.result);
 
 	results_container_.reset(new MAResultsContainer);
 
-	AddTimingResult(time_ns);
+	single_measure_algo::SingleMeasureResult mr;
+	mr.result = estimation.result;
+	mr.total_time = estimation.total_time;
+	AddTimingResult(mr);
 }
 
 bool MeasureAlgo::NeedMoreTiming()
@@ -67,11 +70,14 @@ bool MeasureAlgo::NeedMoreTiming()
 	return result_ == 0;
 }
 
-void MeasureAlgo::AddTimingResult(nanoseconds nanoseconds)
+void MeasureAlgo::AddTimingResult(const single_measure_algo::SingleMeasureResult& result)
 {
-	accumulated_execution_time_ += nanoseconds;
+	if (result.result.count() > 0)
+	{
+		accumulated_execution_time_ += result.total_time;
 
-	results_container_->Add(nanoseconds.count());
+		results_container_->Add(result.result.count());
+	}
 }
 
 nanoseconds MeasureAlgo::GetResult()

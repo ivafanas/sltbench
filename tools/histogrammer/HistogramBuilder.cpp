@@ -10,7 +10,7 @@
 namespace sltbench {
 namespace analytics {
 
-void HistogramBuilder::BuildFor(const std::function<void()>& fun, const std::string& filename)
+void HistogramBuilder::BuildFor(void(*fun)(), const std::string& filename)
 {
 	// get results
 	std::vector<int64_t> results;

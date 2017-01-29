@@ -8,7 +8,7 @@ namespace sltbench {
 
 ProcedureBenchmark::ProcedureBenchmark(const char *name, SLTFun function)
 	: name_(name)
-	, function_(std::move(function))
+	, function_(function)
 {
 }
 
@@ -17,15 +17,21 @@ const std::string& ProcedureBenchmark::GetName() const
 	return name_;
 }
 
-nanoseconds ProcedureBenchmark::Measure()
+nanoseconds ProcedureBenchmark::Measure(size_t calls_count)
 {
 	const auto start_tp = high_resolution_clock::now();
-	function_();
+	for (size_t i = 0; i < calls_count; ++i)
+		function_();
 	const auto final_tp = high_resolution_clock::now();
 	return
 		final_tp > start_tp
 		? duration_cast<nanoseconds>(final_tp - start_tp)
 		: nanoseconds(0);;
+}
+
+bool ProcedureBenchmark::SupportsMulticall() const
+{
+	return true;
 }
 
 void ProcedureBenchmark::Prepare()

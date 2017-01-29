@@ -3,7 +3,6 @@
 #include "Env.h"
 
 #include <chrono>
-#include <functional>
 #include <memory>
 #include <sstream>
 #include <string>
@@ -16,12 +15,12 @@ template<typename GeneratorT>
 class BenchmarkWithArgGenerator
 {
 public:
-	typedef std::function<void(const typename GeneratorT::ArgType &)> FunctionT;
+    typedef void (*FunctionT)(const typename GeneratorT::ArgType&);
 
 public:
 	BenchmarkWithArgGenerator(const char *name, FunctionT function)
 		: name_(name)
-		, function_(std::move(function))
+		, function_(function)
 	{
 	}
 
@@ -30,7 +29,7 @@ public:
         FunctionT function,
         std::vector<typename GeneratorT::ArgType> args)
 		: name_(name)
-		, function_(std::move(function))
+		, function_(function)
 		, args_(std::move(args))
 	{
 	}
@@ -41,16 +40,22 @@ public:
 		return name_;
 	}
 
-	std::chrono::nanoseconds Measure()
+	std::chrono::nanoseconds Measure(size_t calls_count)
 	{
 		const auto& arg = args_[current_arg_index_];
 
 		const auto start_ts = std::chrono::high_resolution_clock::now();
-		function_(arg);
+		for (size_t i = 0; i < calls_count; ++i)
+			function_(arg);
 		const auto final_ts = std::chrono::high_resolution_clock::now();
 		return final_ts > start_ts
 			? std::chrono::duration_cast<std::chrono::nanoseconds>(final_ts - start_ts)
 			: std::chrono::nanoseconds(0);
+	}
+
+	bool SupportsMulticall() const
+	{
+		return true;
 	}
 
 	void Prepare()

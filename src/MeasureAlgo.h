@@ -34,10 +34,10 @@ public:
 	~MeasureAlgo() noexcept;
 
 public: // IMeasureAlgo
-	virtual void SetFirstTimingResult(std::chrono::nanoseconds nanoseconds) override;
-	virtual bool NeedMoreTiming() override;
-	virtual void AddTimingResult(std::chrono::nanoseconds nanoseconds) override;
-	virtual std::chrono::nanoseconds GetResult() override;
+	void SetEstimationResult(const single_measure_algo::EstimationResult& estimation) override;
+	bool NeedMoreTiming() override;
+	void AddTimingResult(const single_measure_algo::SingleMeasureResult& result) override;
+	std::chrono::nanoseconds GetResult() override;
 
 private:
 	Conf conf_;

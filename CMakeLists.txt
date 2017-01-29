@@ -32,7 +32,11 @@ set(SLTBENCH_LIB_SOURCES
 	src/ProgramOptions.cpp
 	src/ProgramOptions.h
 	src/Runner.cpp
-	src/Runner.h)
+	src/Runner.h
+	src/SingleMeasureAlgo.cpp
+	src/SysInfo.cpp
+	src/SysInfo.h
+	src/Verdict.cpp)
 
 # public headers
 set(SLTBENCH_LIB_PUBLIC_HEADERS
@@ -54,8 +58,10 @@ set(SLTBENCH_LIB_PUBLIC_IMPL_HEADERS
 	include/sltbench/impl/IMeasureAlgo.h
 	include/sltbench/impl/IReporter.h
 	include/sltbench/impl/IRunner.h
+	include/sltbench/impl/SingleMeasureAlgo.h
 	include/sltbench/impl/StaticAssertsUtil.h
-	include/sltbench/impl/StopGenerationException.h)
+	include/sltbench/impl/StopGenerationException.h
+	include/sltbench/impl/Verdict.h)
 
 # examples sources
 set(SLTBENCH_EXAMPLES_SOURCES
@@ -96,6 +102,7 @@ set(SLTBENCH_TESTS_SOURCES
 	tests/MeasureAlgoTest.cpp
 	tests/ProcedureBenchmarkTest.cpp
 	tests/ProgramOptionsTest.cpp
+	tests/SingleMeasureAlgoTest.cpp
 	tests/RunnerTest.cpp)
 
 # split source files into nested source groups by subfolder

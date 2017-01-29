@@ -1,5 +1,7 @@
 #pragma once
 
+#include "SingleMeasureAlgo.h"
+
 #include <chrono>
 
 
@@ -22,7 +24,7 @@ namespace sltbench {
 		while (measure_algo->NeedMoreTiming())
 		{
 			auto timing_res = ...;
-			measure_algo->AddTimingResult();
+			measure_algo->AddTimingResult(...);
 		}
 
 		// get the final measurement result!
@@ -35,13 +37,13 @@ struct IMeasureAlgo
 	virtual ~IMeasureAlgo() = default;
 
 	//! set the first timing result
-	virtual void SetFirstTimingResult(std::chrono::nanoseconds nanoseconds) = 0;
+	virtual void SetEstimationResult(const single_measure_algo::EstimationResult& estimation) = 0;
 
 	//! whether one more timing is needed for measurement
 	virtual bool NeedMoreTiming() = 0;
 
 	//! add timing result
-	virtual void AddTimingResult(std::chrono::nanoseconds nanoseconds) = 0;
+	virtual void AddTimingResult(const single_measure_algo::SingleMeasureResult& result) = 0;
 
 	//! get measurement result
 	virtual std::chrono::nanoseconds GetResult() = 0;

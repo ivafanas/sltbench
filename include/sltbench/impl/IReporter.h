@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Verdict.h"
+
 #include <chrono>
 #include <string>
 
@@ -29,13 +31,13 @@ struct IReporter
 
 		\param name          - name
 		\param params        - input string representation
-		\param ok            - whether timing succeeded or failed
+		\param verdict       - runner decision
 		\param timing_result - timing result
 	 */
 	virtual void Report(
 		const std::string& name,
 		const std::string& params,
-		bool ok,
+		Verdict verdict,
 		std::chrono::nanoseconds timing_result) = 0;
 };
 

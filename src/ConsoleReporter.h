@@ -15,7 +15,7 @@ public: // IReporter
 	void Report(
 		const std::string& name,
 		const std::string& params,
-		bool ok,
+		Verdict verdict,
 		std::chrono::nanoseconds timing_result) override;
 };
 

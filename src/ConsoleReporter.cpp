@@ -23,13 +23,13 @@ void ConsoleReporter::ReportBenchmarkFinished()
 void ConsoleReporter::Report(
 	const std::string& name,
 	const std::string& params,
-	bool ok,
+	Verdict verdict,
 	std::chrono::nanoseconds timing_result)
 {
 	std::cout
 		<< std::left << std::setw(60) << name
 		<< std::left << std::setw(25) << params
-		<< std::left << std::setw(9) << (ok ? "ok" : "CRASHED")
+		<< std::left << std::setw(9) << ToString(verdict)
 		<< std::right << std::setw(20) << timing_result.count() << std::endl;
 }
 

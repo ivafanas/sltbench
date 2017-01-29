@@ -1,6 +1,5 @@
 #pragma once
 
-#include <functional>
 #include <string>
 
 
@@ -18,7 +17,7 @@ public:
 		Write results to {filename}.dat,
 		Write gnuplot histogram builder script to {filename}.plt
 	 */
-	void BuildFor(const std::function<void()>& fun, const std::string& filename);
+	void BuildFor(void (*fun)(), const std::string& filename);
 };
 
 } // analytics
