@@ -54,7 +54,7 @@ EstimationResult Estimate(const SingleMeasureFun& measure_func, const bool enabl
 
 	EstimationResult rv;
 	rv.total_time = total_time;
-	rv.result = std::max(nanoseconds(1), total_time / total_calls);
+	rv.result = std::max<nanoseconds>(nanoseconds(1), total_time / total_calls);
 	rv.recommended_calls_count = enable_multicall
 		? std::max<size_t>(1u, static_cast<size_t>(min_execution_time.count() / rv.result.count()))
 		: 1u;
@@ -76,7 +76,7 @@ nanoseconds Measure(const SingleMeasureFun& measure_func, const EstimationResult
 
 		SingleMeasureResult mr;
 		mr.total_time = time_ns;
-		mr.result = std::max(nanoseconds(1), time_ns / calls_count);
+		mr.result = std::max<nanoseconds>(nanoseconds(1), time_ns / calls_count);
 		measure_algo->AddTimingResult(mr);
 	}
 	return measure_algo->GetResult();

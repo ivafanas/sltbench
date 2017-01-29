@@ -76,7 +76,7 @@ TEST(BenchmarkWithFixture, MeasureCallsFunctionExactlyOnce)
 
 TEST(BenchmarkWithFixture, MeasureCallsFunctionWithFixtureValue)
 {
-    g_arg;
+    g_arg = 0;
     BM<Fixture> bm("name", &set_arg);
 
     bm.Prepare();

@@ -74,7 +74,7 @@ TEST(BenchmarkWithLazyArgGenerator, MeasureCallsFunctionRequiredNumberOfTimes)
 
 TEST(BenchmarkWithLazyArgGenerator, MeasureCallsFunctionWithGeneratedArg)
 {
-    g_call_args;
+    g_call_args.clear();
     BM<IncGenerator> bm("name", &push_back_arg);
 
     bm.Prepare();
