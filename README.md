@@ -462,7 +462,7 @@ It is possible to set filter by benchmark name:
 
 This example shows how to run all functions wich name contains `MyFunction` substring:
 ```sh
-./my_benchmark.exe --filter=MyFunction
+./my_benchmark.exe --filter=.*MyFunction.*
 ```
 
 Filter regular expression format corresponds to [basic case of std::regex](http://en.cppreference.com/w/cpp/regex/syntax_option_type).

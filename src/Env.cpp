@@ -26,10 +26,9 @@ void InitConfig(const int argc, char **argv)
 	auto options_to_values = BuildProgramOptions(argc, argv);
 
 	// setup test cases filter
-	auto filter_expr = options_to_values["--filter"];
+	const auto filter_expr = options_to_values["--filter"];
 	if (!filter_expr.empty())
 	{
-		filter_expr = ".*" + filter_expr + ".*";
 		std::regex re(
 			filter_expr,
 			std::regex_constants::basic | std::regex_constants::icase );
