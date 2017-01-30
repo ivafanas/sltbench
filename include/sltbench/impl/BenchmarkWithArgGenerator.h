@@ -60,24 +60,24 @@ public:
 
 	void Prepare()
 	{
-        // args_ is empty means they must be generated with generator,
-        // otherwise they are given from origin and must not be changed
+		// args_ is empty means they must be generated with generator,
+		// otherwise they are given from origin and must not be changed
 		if (args_.empty())
 		{
-            args_generator_.reset(new GeneratorT());
+			args_generator_.reset(new GeneratorT());
 
-            const auto argc = Env::Instance().GetArgc();
-            const auto argv = Env::Instance().GetArgv();
+			const auto argc = Env::Instance().GetArgc();
+			const auto argv = Env::Instance().GetArgv();
 			args_ = args_generator_->Generate(argc, argv);
 		}
 
-        current_arg_index_ = 0;
+		current_arg_index_ = 0;
 	}
 
 	void Finalize()
 	{
-        // if args_generator_ exists, we must regenerate args_
-        // on the next Prepare, otherwise, leave them as-is
+		// if args_generator_ exists, we must regenerate args_
+		// on the next Prepare, otherwise, leave them as-is
 		if (args_generator_)
 		{
 			args_.clear();
@@ -86,15 +86,15 @@ public:
 		}
 	}
 
-    bool HasArgsToProcess()
-    {
-        return current_arg_index_ < args_.size();
-    }
+	bool HasArgsToProcess()
+	{
+		return current_arg_index_ < args_.size();
+	}
 
-    void OnArgProcessed()
-    {
-        ++current_arg_index_;
-    }
+	void OnArgProcessed()
+	{
+		++current_arg_index_;
+	}
 
 	std::string CurrentArgAsString()
 	{
@@ -108,7 +108,7 @@ private:
 	FunctionT function_;
 	std::unique_ptr<GeneratorT> args_generator_;
 	std::vector<typename GeneratorT::ArgType> args_;
-    size_t current_arg_index_ = 0;
+	size_t current_arg_index_ = 0;
 };
 
 } // namespace sltbench

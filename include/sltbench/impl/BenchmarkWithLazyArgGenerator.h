@@ -15,11 +15,11 @@ template<typename GeneratorT>
 class BenchmarkWithLazyArgGenerator
 {
 public:
-    typedef typename GeneratorT::ArgType ArgT;
-    typedef void (*FunctionT)(const ArgT &);
+	typedef typename GeneratorT::ArgType ArgT;
+	typedef void (*FunctionT)(const ArgT &);
 
 public:
-    BenchmarkWithLazyArgGenerator(const char *name, FunctionT function)
+	BenchmarkWithLazyArgGenerator(const char *name, FunctionT function)
 		: name_(name)
 		, function_(function)
 	{
@@ -51,28 +51,28 @@ public:
 
 	void Prepare()
 	{
-        const auto argc = Env::Instance().GetArgc();
-        const auto argv = Env::Instance().GetArgv();
-        generator_.reset(new GeneratorT(argc, argv));
+		const auto argc = Env::Instance().GetArgc();
+		const auto argv = Env::Instance().GetArgv();
+		generator_.reset(new GeneratorT(argc, argv));
 
-        PopArg();
+		PopArg();
 	}
 
 	void Finalize()
 	{
 		generator_ = nullptr;
-        arg_ = nullptr;
+		arg_ = nullptr;
 	}
 
-    bool HasArgsToProcess()
-    {
-        return arg_ != nullptr;
-    }
+	bool HasArgsToProcess()
+	{
+		return arg_ != nullptr;
+	}
 
-    void OnArgProcessed()
-    {
-        PopArg();
-    }
+	void OnArgProcessed()
+	{
+		PopArg();
+	}
 
 	std::string CurrentArgAsString()
 	{
@@ -82,23 +82,23 @@ public:
 	}
 
 private:
-    void PopArg()
-    {
-        try
-        {
-            arg_.reset(new ArgT(generator_->Generate()));
-        }
-        catch (const StopGenerationException&)
-        {
-            arg_ = nullptr;
-        }
-    }
+	void PopArg()
+	{
+		try
+		{
+			arg_.reset(new ArgT(generator_->Generate()));
+		}
+		catch (const StopGenerationException&)
+		{
+			arg_ = nullptr;
+		}
+	}
 
 private:
 	std::string name_;
 	FunctionT function_;
 	std::unique_ptr<GeneratorT> generator_;
-    std::unique_ptr<ArgT> arg_;
+	std::unique_ptr<ArgT> arg_;
 };
 
 } // namespace sltbench

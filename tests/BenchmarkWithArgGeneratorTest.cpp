@@ -8,15 +8,15 @@ namespace {
 class IncGenerator
 {
 public:
-    typedef size_t ArgType;
+	typedef size_t ArgType;
 
-    IncGenerator() {}
+	IncGenerator() {}
 
 public:
-    std::vector<size_t> Generate(int, char**)
-    {
-        return{ 1, 2, 3, 4, 5 };
-    }
+	std::vector<size_t> Generate(int, char**)
+	{
+		return{ 1, 2, 3, 4, 5 };
+	}
 };
 
 void stub_func(const size_t&)
@@ -37,19 +37,19 @@ using BM = sltbench::BenchmarkWithArgGenerator<Generator>;
 
 TEST(BenchmarkWithArgGenerator, GetNameReturnsBenchmarkName)
 {
-    BM<IncGenerator> bm("name", &stub_func);
-    EXPECT_EQ("name", bm.GetName());
+	BM<IncGenerator> bm("name", &stub_func);
+	EXPECT_EQ("name", bm.GetName());
 }
 
 TEST(BenchmarkWithArgGenerator, MeasureCallsFunction)
 {
-    g_calls_count = 0;
-    BM<IncGenerator> bm("name", &inc_calls_count);
+	g_calls_count = 0;
+	BM<IncGenerator> bm("name", &inc_calls_count);
 
-    bm.Prepare();
-    bm.Measure(1u);
+	bm.Prepare();
+	bm.Measure(1u);
 
-    EXPECT_EQ(1u, g_calls_count);
+	EXPECT_EQ(1u, g_calls_count);
 }
 
 TEST(BenchmarkWithArgGenerator, MeasureCallsRequiredCount)
@@ -88,63 +88,63 @@ void add_to_call_args(const size_t& n)
 
 TEST(BenchmarkWithArgGenerator, MeasureCallsFunctionWithGeneratedArg)
 {
-    g_call_args.clear();
-    BM<IncGenerator> bm("name", &add_to_call_args);
+	g_call_args.clear();
+	BM<IncGenerator> bm("name", &add_to_call_args);
 
-    bm.Prepare();
-    bm.Measure(1u);
-    bm.OnArgProcessed();
-    bm.Measure(1u);
-    bm.OnArgProcessed();
-    bm.Measure(1u);
-    bm.OnArgProcessed();
+	bm.Prepare();
+	bm.Measure(1u);
+	bm.OnArgProcessed();
+	bm.Measure(1u);
+	bm.OnArgProcessed();
+	bm.Measure(1u);
+	bm.OnArgProcessed();
 
-    ASSERT_EQ(3, g_call_args.size());
-    EXPECT_EQ(1, g_call_args[0]);
-    EXPECT_EQ(2, g_call_args[1]);
-    EXPECT_EQ(3, g_call_args[2]);
+	ASSERT_EQ(3, g_call_args.size());
+	EXPECT_EQ(1, g_call_args[0]);
+	EXPECT_EQ(2, g_call_args[1]);
+	EXPECT_EQ(3, g_call_args[2]);
 }
 
 TEST(BenchmarkWithArgGenerator, CurrentArgAsString)
 {
-    BM<IncGenerator> bm("name", &stub_func);
+	BM<IncGenerator> bm("name", &stub_func);
 
-    bm.Prepare();
+	bm.Prepare();
 
-    EXPECT_EQ("1", bm.CurrentArgAsString());
+	EXPECT_EQ("1", bm.CurrentArgAsString());
 }
 
 TEST(BenchmarkWithArgGenerator, HasArgsToProcessReturnsTrueAfterPrepare)
 {
-    BM<IncGenerator> bm("name", &stub_func);
+	BM<IncGenerator> bm("name", &stub_func);
 
-    bm.Prepare();
+	bm.Prepare();
 
-    EXPECT_TRUE(bm.HasArgsToProcess());
+	EXPECT_TRUE(bm.HasArgsToProcess());
 }
 
 TEST(BenchmarkWithArgGenerator, HasArgsToProcessReturnsTrueAfterThreeArgsProcessed)
 {
-    BM<IncGenerator> bm("name", &stub_func);
+	BM<IncGenerator> bm("name", &stub_func);
 
-    bm.Prepare();
-    bm.OnArgProcessed();
-    bm.OnArgProcessed();
-    bm.OnArgProcessed();
+	bm.Prepare();
+	bm.OnArgProcessed();
+	bm.OnArgProcessed();
+	bm.OnArgProcessed();
 
-    EXPECT_TRUE(bm.HasArgsToProcess());
+	EXPECT_TRUE(bm.HasArgsToProcess());
 }
 
 TEST(BenchmarkWithArgGenerator, HasArgsToProcessReturnsTrueAfterAllArgsProcessed)
 {
-    BM<IncGenerator> bm("name", &stub_func);
+	BM<IncGenerator> bm("name", &stub_func);
 
-    bm.Prepare();
-    bm.OnArgProcessed();
-    bm.OnArgProcessed();
-    bm.OnArgProcessed();
-    bm.OnArgProcessed();
-    bm.OnArgProcessed();
+	bm.Prepare();
+	bm.OnArgProcessed();
+	bm.OnArgProcessed();
+	bm.OnArgProcessed();
+	bm.OnArgProcessed();
+	bm.OnArgProcessed();
 
-    EXPECT_FALSE(bm.HasArgsToProcess());
+	EXPECT_FALSE(bm.HasArgsToProcess());
 }

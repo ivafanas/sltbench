@@ -36,7 +36,7 @@ bool ProcedureBenchmark::SupportsMulticall() const
 
 void ProcedureBenchmark::Prepare()
 {
-    measured_ = false;
+	measured_ = false;
 }
 
 void ProcedureBenchmark::Finalize()
@@ -45,17 +45,17 @@ void ProcedureBenchmark::Finalize()
 
 bool ProcedureBenchmark::HasArgsToProcess()
 {
-    return !measured_;
+	return !measured_;
 }
 
 void ProcedureBenchmark::OnArgProcessed()
 {
-    measured_ = true;
+	measured_ = true;
 }
 
 std::string ProcedureBenchmark::CurrentArgAsString()
 {
-    return{};
+	return{};
 }
 
 } // namespace sltbenh

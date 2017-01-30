@@ -6,17 +6,17 @@
 namespace sltbench {
 
 class StopGenerationException
-    : public std::exception
+	: public std::exception
 {
 public:
-    StopGenerationException() noexcept
-    {}
+	StopGenerationException() noexcept
+	{}
 
 public:
-    virtual const char * what() const noexcept override
-    {
-        return "generation was stopped";
-    }
+	virtual const char * what() const noexcept override
+	{
+		return "generation was stopped";
+	}
 };
 
 } // namespace sltbench

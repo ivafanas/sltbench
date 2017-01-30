@@ -19,14 +19,14 @@ public:
 	bool SupportsMulticall() const;
 	void Prepare();
 	void Finalize();
-    bool HasArgsToProcess();
-    void OnArgProcessed();
-    std::string CurrentArgAsString();
+	bool HasArgsToProcess();
+	void OnArgProcessed();
+	std::string CurrentArgAsString();
 
 private:
 	std::string name_;
 	SLTFun function_;
-    bool measured_ = false;
+	bool measured_ = false;
 };
 
 } // namespace sltbenh

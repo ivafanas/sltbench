@@ -329,7 +329,7 @@
 */
 #define SLTBENCH_FUNCTION_WITH_FIXTURE_AND_ARGS(func, fixture, args_vec) \
 	SLT_STATIC_ASSERT_IS_ARGS_VECTOR(args_vec); \
-    SLT_STATIC_ASSERT_IS_ARG_FIXTURE(fixture, decltype(args_vec)::value_type); \
+	SLT_STATIC_ASSERT_IS_ARG_FIXTURE(fixture, decltype(args_vec)::value_type); \
 	static SLT_DECLARE_UNIQUE_DESCRIPTOR_FUNCTION_WITH_FIXTURE(func, fixture) = SLT_REGISTER_FUNCTION_WITH_FIXTURE_AND_ARGS(func, fixture, args_vec);
 
 
@@ -425,7 +425,7 @@
 		guarantee the same functions order per run.
 */
 #define SLTBENCH_FUNCTION_WITH_FIXTURE_AND_ARGS_GENERATOR(func, fixture, generator) \
-    SLT_STATIC_ASSERT_IS_GENERATOR(generator); \
+	SLT_STATIC_ASSERT_IS_GENERATOR(generator); \
 	SLT_STATIC_ASSERT_IS_ARG_FIXTURE(fixture, generator::ArgType); \
 	static SLT_DECLARE_UNIQUE_DESCRIPTOR_FUNCTION_WITH_FIXTURE(func, fixture) = SLT_REGISTER_FUNCTION_WITH_FIXTURE_AND_ARGS_GENERATOR(func, fixture, generator);
 
@@ -519,7 +519,7 @@
         guarantee the same functions order per run.
 */
 #define SLTBENCH_FUNCTION_WITH_FIXTURE_AND_LAZY_ARGS_GENERATOR(func, fixture, generator) \
-    SLT_STATIC_ASSERT_IS_LAZY_GENERATOR(generator); \
+	SLT_STATIC_ASSERT_IS_LAZY_GENERATOR(generator); \
 	SLT_STATIC_ASSERT_IS_ARG_FIXTURE(fixture, generator::ArgType); \
 	static SLT_DECLARE_UNIQUE_DESCRIPTOR_FUNCTION_WITH_FIXTURE(func, fixture) = SLT_REGISTER_FUNCTION_WITH_FIXTURE_AND_LAZY_ARGS_GENERATOR(func, fixture, generator);
 

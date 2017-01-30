@@ -103,21 +103,21 @@ private:
 		bm.Prepare();
 
 		bool ok = true;
-        while (bm.HasArgsToProcess())
-        {
-            const auto res = Run(bm);
+		while (bm.HasArgsToProcess())
+		{
+			const auto res = Run(bm);
 
-            reporter.Report(
-                bm.GetName(),
-                bm.CurrentArgAsString(),
-                res.verdict,
-                res.time_ns);
+			reporter.Report(
+				bm.GetName(),
+				bm.CurrentArgAsString(),
+				res.verdict,
+				res.time_ns);
 
-            if (res.verdict == Verdict::CRASHED)
-                ok = false;
+			if (res.verdict == Verdict::CRASHED)
+				ok = false;
 
-            bm.OnArgProcessed();
-        }
+			bm.OnArgProcessed();
+		}
 
 		bm.Finalize();
 

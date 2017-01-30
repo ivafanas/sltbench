@@ -49,9 +49,7 @@ public:
 	Type& SetUp(const size_t& count)
 	{
 		if (fixture_.size() != count)
-		{
 			fixture_.resize(count, 0.1);
-		}
 		return fixture_;
 	}
 
@@ -72,9 +70,7 @@ static void AccVectorNaive(AccVectorFixture::Type& fix, const size_t& count)
 {
 	double res = 0;
 	for (auto v : fix)
-	{
 		res += v;
-	}
 	fix[0] = res;
 }
 SLTBENCH_FUNCTION_WITH_FIXTURE_AND_ARGS(AccVectorNaive, AccVectorFixture, acc_args);
@@ -113,9 +109,7 @@ static void AccListNaive(AccListFixture::Type& fix, const size_t& count)
 {
 	double res = 0;
 	for (auto v : fix)
-	{
 		res += v;
-	}
 	fix.front() = res;
 }
 SLTBENCH_FUNCTION_WITH_FIXTURE_AND_ARGS(AccListNaive, AccListFixture, acc_args);

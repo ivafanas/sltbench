@@ -64,8 +64,6 @@ EstimationResult Estimate(const SingleMeasureFun& measure_func, const bool enabl
 
 nanoseconds Measure(const SingleMeasureFun& measure_func, const EstimationResult& estimation)
 {
-	// TODO: unittest this function
-
 	const auto calls_count = estimation.recommended_calls_count;
 
 	const auto measure_algo = GetConfig().GetPrivate().CreateMeasureAlgo();

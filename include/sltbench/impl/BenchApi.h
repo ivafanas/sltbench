@@ -87,9 +87,9 @@ public:
 */
 template<typename ArgumentT>
 Descriptor *RegisterBenchmarkWithArgs(
-    const char *name,
-    void (*func)(const ArgumentT &),
-    std::vector<ArgumentT> args)
+	const char *name,
+	void (*func)(const ArgumentT &),
+	std::vector<ArgumentT> args)
 {
 	using BM = BenchmarkWithArgGenerator<EmptyArgsGenerator<ArgumentT>>;
 	BenchmarksContainer<BM>::Instance().Add(BM(name, func, std::move(args)));
@@ -111,8 +111,8 @@ Descriptor *RegisterBenchmarkWithArgs(
 */
 template<typename GeneratorT>
 Descriptor *RegisterBenchmarkWithArgsGenerator(
-    const char *name,
-    void (*func)(const typename GeneratorT::ArgType&))
+	const char *name,
+	void (*func)(const typename GeneratorT::ArgType&))
 {
 	using BM = BenchmarkWithArgGenerator<GeneratorT>;
 	BenchmarksContainer<BM>::Instance().Add(BM(name, func));
@@ -134,16 +134,16 @@ Descriptor *RegisterBenchmarkWithArgsGenerator(
 */
 template<typename GeneratorT>
 Descriptor *RegisterBenchmarkWithLazyArgsGenerator(
-    const char *name,
-    void (*func)(const typename GeneratorT::ArgType&))
+	const char *name,
+	void (*func)(const typename GeneratorT::ArgType&))
 {
-    using BM = BenchmarkWithLazyArgGenerator<GeneratorT>;
-    BenchmarksContainer<BM>::Instance().Add(BM(name, func));
+	using BM = BenchmarkWithLazyArgGenerator<GeneratorT>;
+	BenchmarksContainer<BM>::Instance().Add(BM(name, func));
 
-    Runner<BM>::Register();
+	Runner<BM>::Register();
 
-    static Descriptor dscr;
-    return &dscr;
+	static Descriptor dscr;
+	return &dscr;
 }
 
 
@@ -208,16 +208,16 @@ Descriptor *RegisterBenchmarkWithFixtureAndArgsGenerator(
 */
 template<typename FixtureT, typename GeneratorT>
 Descriptor *RegisterBenchmarkWithFixtureAndLazyArgsGenerator(
-    const char *name,
-    void (*func)(typename FixtureT::Type&, const typename GeneratorT::ArgType&))
+	const char *name,
+	void (*func)(typename FixtureT::Type&, const typename GeneratorT::ArgType&))
 {
-    using BM = BenchmarkWithFixtureAndLazyArgGenerator<FixtureT, GeneratorT>;
-    BenchmarksContainer<BM>::Instance().Add(BM(name, func));
+	using BM = BenchmarkWithFixtureAndLazyArgGenerator<FixtureT, GeneratorT>;
+	BenchmarksContainer<BM>::Instance().Add(BM(name, func));
 
-    Runner<BM>::Register();
+	Runner<BM>::Register();
 
-    static Descriptor dscr;
-    return &dscr;
+	static Descriptor dscr;
+	return &dscr;
 }
 
 } // namespace sltbench
@@ -249,24 +249,24 @@ Descriptor *RegisterBenchmarkWithFixtureAndLazyArgsGenerator(
 
 // whether fun is a member function of type 'return_t()'
 #define SLT_IS_MEMFUN_ARG0(fun, return_t) \
-    std::is_member_function_pointer<decltype(&fun)>::value && \
-    std::is_same<SLT_FUN_RETT(fun), return_t>::value && \
-    SLT_FUN_ARITY(fun) == 1
+	std::is_member_function_pointer<decltype(&fun)>::value && \
+	std::is_same<SLT_FUN_RETT(fun), return_t>::value && \
+	SLT_FUN_ARITY(fun) == 1
 
 // whether fun is a member function of type 'return_t(arg_t)'
 #define SLT_IS_MEMFUN_ARG1(fun, return_t, arg_t) \
 	std::is_member_function_pointer<decltype(&fun)>::value && \
-    SLT_FUN_ARITY(fun) == 2 && \
-    std::is_same<SLT_FUN_RETT(fun), return_t>::value && \
-    std::is_same<SLT_FUN_ARGT(fun, 1), arg_t>::value
+	SLT_FUN_ARITY(fun) == 2 && \
+	std::is_same<SLT_FUN_RETT(fun), return_t>::value && \
+	std::is_same<SLT_FUN_ARGT(fun, 1), arg_t>::value
 
 // whether fun is a member function of type 'return_t(arg1_t, arg2_t)'
 #define SLT_IS_MEMFUN_ARG2(fun, return_t, arg1_t, arg2_t) \
 	std::is_member_function_pointer<decltype(&fun)>::value && \
-    SLT_FUN_ARITY(fun) == 3 && \
-    std::is_same<SLT_FUN_RETT(fun),  return_t>::value && \
-    std::is_same<SLT_FUN_ARGT(fun, 1), arg1_t>::value && \
-    std::is_same<SLT_FUN_ARGT(fun, 2), arg2_t>::value
+	SLT_FUN_ARITY(fun) == 3 && \
+	std::is_same<SLT_FUN_RETT(fun),  return_t>::value && \
+	std::is_same<SLT_FUN_ARGT(fun, 1), arg1_t>::value && \
+	std::is_same<SLT_FUN_ARGT(fun, 2), arg2_t>::value
 
 #define SLT_STATIC_ASSERT_IS_FIXTURE(fixture) \
 	static_assert(std::is_class<fixture>::value, "Fixture must be a class"); \
@@ -279,20 +279,20 @@ Descriptor *RegisterBenchmarkWithFixtureAndLazyArgsGenerator(
 	static_assert(std::is_class<fixture>::value, "Fixture must be a class"); \
 	static_assert(std::is_default_constructible<fixture>::value, "Fixture must be default constructible"); \
 	static_assert(sltbench::has_inner_type_Type<fixture>::value, "Fixture class must have inner typedef 'Type'"); \
-    static_assert(SLT_IS_MEMFUN_ARG1(fixture::SetUp, fixture::Type&, const arg_type &), "Fixture class must have 'Type& Setup(const Arg&)' method"); \
-    static_assert(SLT_IS_MEMFUN_ARG0(fixture::TearDown, void), "Fixture class must have 'void TearDown()' method");
+	static_assert(SLT_IS_MEMFUN_ARG1(fixture::SetUp, fixture::Type&, const arg_type &), "Fixture class must have 'Type& Setup(const Arg&)' method"); \
+	static_assert(SLT_IS_MEMFUN_ARG0(fixture::TearDown, void), "Fixture class must have 'void TearDown()' method");
 
 #define SLT_STATIC_ASSERT_IS_GENERATOR(generator) \
 	static_assert(std::is_class<generator>::value, "Arguments generator must be a class"); \
 	static_assert(std::is_default_constructible<generator>::value, "Arguments generator must be default constructible"); \
 	static_assert(sltbench::has_inner_type_ArgType<generator>::value, "Arguments generator must have inner typedef 'ArgType'"); \
-    static_assert(SLT_IS_MEMFUN_ARG2(generator::Generate, std::vector<typename generator::ArgType>, int, char**), "Arguments generator must have 'std::vector<ArgType> Generate(int, char **)' method");
+	static_assert(SLT_IS_MEMFUN_ARG2(generator::Generate, std::vector<typename generator::ArgType>, int, char**), "Arguments generator must have 'std::vector<ArgType> Generate(int, char **)' method");
 
 #define SLT_STATIC_ASSERT_IS_LAZY_GENERATOR(generator) \
 	static_assert(std::is_class<generator>::value, "Lazy arguments generator must be a class"); \
-    static_assert(sltbench::is_constructible_from_env<generator>::value, "Lazy arguments generator must have c-tor from (int argc, char **argv)"); \
+	static_assert(sltbench::is_constructible_from_env<generator>::value, "Lazy arguments generator must have c-tor from (int argc, char **argv)"); \
 	static_assert(sltbench::has_inner_type_ArgType<generator>::value, "Lazy arguments generator must have inner typedef 'ArgType'"); \
-    static_assert(SLT_IS_MEMFUN_ARG0(generator::Generate, generator::ArgType), "Lazy arguments generator must have 'ArgType Generate()' method");
+	static_assert(SLT_IS_MEMFUN_ARG0(generator::Generate, generator::ArgType), "Lazy arguments generator must have 'ArgType Generate()' method");
 
 #define SLT_STATIC_ASSERT_IS_ARGS_VECTOR(args_vec) \
 	static_assert(sltbench::has_inner_type_value_type<decltype(args_vec)>::value, "Arguments must be a vector"); \

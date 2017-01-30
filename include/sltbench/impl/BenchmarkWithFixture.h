@@ -11,7 +11,7 @@ template<typename FixtureT>
 class BenchmarkWithFixture
 {
 public:
-    typedef void(*FunctionT)(typename FixtureT::Type&);
+	typedef void(*FunctionT)(typename FixtureT::Type&);
 
 public:
 	BenchmarkWithFixture(const char *name, FunctionT function)
@@ -51,7 +51,7 @@ public:
 	void Prepare()
 	{
 		fixture_.reset(new FixtureT());
-        measured_ = false;
+		measured_ = false;
 	}
 
 	void Finalize()
@@ -59,26 +59,26 @@ public:
 		fixture_.reset();
 	}
 
-    bool HasArgsToProcess()
-    {
-        return !measured_;
-    }
+	bool HasArgsToProcess()
+	{
+		return !measured_;
+	}
 
-    void OnArgProcessed()
-    {
-        measured_ = true;
-    }
+	void OnArgProcessed()
+	{
+		measured_ = true;
+	}
 
-    std::string CurrentArgAsString()
-    {
-        return{};
-    }
+	std::string CurrentArgAsString()
+	{
+		return{};
+	}
 
 private:
 	std::string name_;
 	std::unique_ptr<FixtureT> fixture_;
 	FunctionT function_;
-    bool measured_ = false;
+	bool measured_ = false;
 };
 
 } // namespace sltbench

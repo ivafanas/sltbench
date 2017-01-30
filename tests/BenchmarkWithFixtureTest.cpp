@@ -8,20 +8,20 @@ namespace {
 class Fixture
 {
 public:
-    typedef int Type;
+	typedef int Type;
 
-    Fixture() {}
+	Fixture() {}
 
-    int& SetUp()
-    {
-        fixture_ = 42;
-        return fixture_;
-    }
+	int& SetUp()
+	{
+		fixture_ = 42;
+		return fixture_;
+	}
 
-    void TearDown() {}
+	void TearDown() {}
 
 private:
-    int fixture_;
+	int fixture_;
 };
 
 void stub_func(int&) {}
@@ -30,14 +30,14 @@ size_t g_calls_count = false;
 
 void inc_calls_count(int&)
 {
-    ++g_calls_count;
+	++g_calls_count;
 }
 
 int g_arg = 0;
 
 void set_arg(int& arg)
 {
-    g_arg = arg;
+	g_arg = arg;
 }
 
 } // namespace
@@ -47,20 +47,20 @@ using BM = sltbench::BenchmarkWithFixture<Fixture>;
 
 TEST(BenchmarkWithFixture, GetNameShouldReturnBenchmarkName)
 {
-    BM<Fixture> bm("name", &stub_func);
+	BM<Fixture> bm("name", &stub_func);
 
-    EXPECT_EQ("name", bm.GetName());
+	EXPECT_EQ("name", bm.GetName());
 }
 
 TEST(BenchmarkWithFixture, MeasureCallsFunction)
 {
-    g_calls_count = 0;
-    BM<Fixture> bm("name", &inc_calls_count);
+	g_calls_count = 0;
+	BM<Fixture> bm("name", &inc_calls_count);
 
-    bm.Prepare();
-    bm.Measure(1u);
+	bm.Prepare();
+	bm.Measure(1u);
 
-    EXPECT_EQ(1u, g_calls_count);
+	EXPECT_EQ(1u, g_calls_count);
 }
 
 TEST(BenchmarkWithFixture, MeasureCallsFunctionExactlyOnce)
@@ -76,39 +76,39 @@ TEST(BenchmarkWithFixture, MeasureCallsFunctionExactlyOnce)
 
 TEST(BenchmarkWithFixture, MeasureCallsFunctionWithFixtureValue)
 {
-    g_arg = 0;
-    BM<Fixture> bm("name", &set_arg);
+	g_arg = 0;
+	BM<Fixture> bm("name", &set_arg);
 
-    bm.Prepare();
-    bm.Measure(1u);
+	bm.Prepare();
+	bm.Measure(1u);
 
-    EXPECT_EQ(42, g_arg);
+	EXPECT_EQ(42, g_arg);
 }
 
 TEST(BenchmarkWithFixture, HasArgsToProcessReturnsTrueAfterPrepare)
 {
-    BM<Fixture> bm("name", &stub_func);
+	BM<Fixture> bm("name", &stub_func);
 
-    bm.Prepare();
+	bm.Prepare();
 
-    EXPECT_TRUE(bm.HasArgsToProcess());
+	EXPECT_TRUE(bm.HasArgsToProcess());
 }
 
 TEST(BenchmarkWithFixture, HasArgsToProcessReturnsFalseAfterArgProcessed)
 {
-    BM<Fixture> bm("name", &stub_func);
+	BM<Fixture> bm("name", &stub_func);
 
-    bm.Prepare();
-    bm.OnArgProcessed();
+	bm.Prepare();
+	bm.OnArgProcessed();
 
-    EXPECT_FALSE(bm.HasArgsToProcess());
+	EXPECT_FALSE(bm.HasArgsToProcess());
 }
 
 TEST(BenchmarkWithFixture, CurrentArgAsString)
 {
-    BM<Fixture> bm("name", &stub_func);
+	BM<Fixture> bm("name", &stub_func);
 
-    bm.Prepare();
+	bm.Prepare();
 
-    EXPECT_TRUE(bm.CurrentArgAsString().empty());
+	EXPECT_TRUE(bm.CurrentArgAsString().empty());
 }

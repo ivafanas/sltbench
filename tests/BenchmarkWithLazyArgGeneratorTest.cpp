@@ -8,19 +8,19 @@ namespace {
 class IncGenerator
 {
 public:
-    typedef size_t ArgType;
+	typedef size_t ArgType;
 
-    IncGenerator(int, char **) {}
+	IncGenerator(int, char **) {}
 
 public:
-    size_t Generate()
-    {
-        ++i_;
-        return i_;
-    }
+	size_t Generate()
+	{
+		++i_;
+		return i_;
+	}
 
 private:
-    size_t i_ = 0;
+	size_t i_ = 0;
 };
 
 void stub_func(const size_t&) {}
@@ -36,7 +36,7 @@ std::vector<size_t> g_call_args;
 
 void push_back_arg(const size_t& arg)
 {
-    g_call_args.push_back(arg);
+	g_call_args.push_back(arg);
 }
 
 } // namespace
@@ -46,19 +46,19 @@ using BM = sltbench::BenchmarkWithLazyArgGenerator<Generator>;
 
 TEST(BenchmarkWithLazyArgGenerator, GetNameReturnsBenchmarkName)
 {
-    BM<IncGenerator> bm("name", &stub_func);
-    EXPECT_EQ("name", bm.GetName());
+	BM<IncGenerator> bm("name", &stub_func);
+	EXPECT_EQ("name", bm.GetName());
 }
 
 TEST(BenchmarkWithLazyArgGenerator, MeasureCallsFunction)
 {
 	g_calls_count = 0;
-    BM<IncGenerator> bm("name", &inc_calls_count);
+	BM<IncGenerator> bm("name", &inc_calls_count);
 
-    bm.Prepare();
-    bm.Measure(1u);
+	bm.Prepare();
+	bm.Measure(1u);
 
-    EXPECT_EQ(1u, g_calls_count);
+	EXPECT_EQ(1u, g_calls_count);
 }
 
 TEST(BenchmarkWithLazyArgGenerator, MeasureCallsFunctionRequiredNumberOfTimes)
@@ -74,28 +74,28 @@ TEST(BenchmarkWithLazyArgGenerator, MeasureCallsFunctionRequiredNumberOfTimes)
 
 TEST(BenchmarkWithLazyArgGenerator, MeasureCallsFunctionWithGeneratedArg)
 {
-    g_call_args.clear();
-    BM<IncGenerator> bm("name", &push_back_arg);
+	g_call_args.clear();
+	BM<IncGenerator> bm("name", &push_back_arg);
 
-    bm.Prepare();
-    bm.Measure(1u);
-    bm.OnArgProcessed();
-    bm.Measure(1u);
-    bm.OnArgProcessed();
-    bm.Measure(1u);
-    bm.OnArgProcessed();
+	bm.Prepare();
+	bm.Measure(1u);
+	bm.OnArgProcessed();
+	bm.Measure(1u);
+	bm.OnArgProcessed();
+	bm.Measure(1u);
+	bm.OnArgProcessed();
 
-    ASSERT_EQ(3, g_call_args.size());
-    EXPECT_EQ(1, g_call_args[0]);
-    EXPECT_EQ(2, g_call_args[1]);
-    EXPECT_EQ(3, g_call_args[2]);
+	ASSERT_EQ(3, g_call_args.size());
+	EXPECT_EQ(1, g_call_args[0]);
+	EXPECT_EQ(2, g_call_args[1]);
+	EXPECT_EQ(3, g_call_args[2]);
 }
 
 TEST(BenchmarkWithLazyArgGenerator, CurrentArgAsString)
 {
-    BM<IncGenerator> bm("name", &stub_func);
+	BM<IncGenerator> bm("name", &stub_func);
 
-    bm.Prepare();
+	bm.Prepare();
 
-    EXPECT_EQ("1", bm.CurrentArgAsString());
+	EXPECT_EQ("1", bm.CurrentArgAsString());
 }

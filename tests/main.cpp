@@ -5,10 +5,10 @@
 
 int main(int argc, char **argv)
 {
-    sltbench::Env::Instance().SetArgs(argc, argv);
+	sltbench::Env::Instance().SetArgs(argc, argv);
 
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+	::testing::InitGoogleTest(&argc, argv);
+	return RUN_ALL_TESTS();
 }
 
 

@@ -14,9 +14,9 @@ template<typename FixtureT, typename GeneratorT>
 class BenchmarkWithFixtureAndLazyArgGenerator
 {
 public:
-    typedef typename FixtureT::Type FixT;
-    typedef typename GeneratorT::ArgType ArgT;
-    typedef void (*FunctionT)(FixT&, const ArgT&);
+	typedef typename FixtureT::Type FixT;
+	typedef typename GeneratorT::ArgType ArgT;
+	typedef void (*FunctionT)(FixT&, const ArgT&);
 
 public:
 	BenchmarkWithFixtureAndLazyArgGenerator(const char *name, FunctionT function)
@@ -59,8 +59,8 @@ public:
 	{
 		fixture_.reset(new FixtureT());
 
-        const auto argc = Env::Instance().GetArgc();
-        const auto argv = Env::Instance().GetArgv();
+		const auto argc = Env::Instance().GetArgc();
+		const auto argv = Env::Instance().GetArgv();
 		generator_.reset(new GeneratorT(argc, argv));
 
 		PopArg();
@@ -70,45 +70,45 @@ public:
 	{
 		fixture_ = nullptr;
 		generator_ = nullptr;
-        arg_ = nullptr;
+		arg_ = nullptr;
 	}
 
-    bool HasArgsToProcess()
-    {
-        return arg_ != nullptr;
-    }
+	bool HasArgsToProcess()
+	{
+		return arg_ != nullptr;
+	}
 
-    void OnArgProcessed()
-    {
-        PopArg();
-    }
+	void OnArgProcessed()
+	{
+		PopArg();
+	}
 
-    std::string CurrentArgAsString()
-    {
-        std::ostringstream os;
-        os << *arg_;
-        return os.str();
-    }
+	std::string CurrentArgAsString()
+	{
+		std::ostringstream os;
+		os << *arg_;
+		return os.str();
+	}
 
 private:
-    void PopArg()
-    {
-        try
-        {
-            arg_.reset(new ArgT(generator_->Generate()));
-        }
-        catch (const StopGenerationException&)
-        {
-            arg_ = nullptr;
-        }
-    }
+	void PopArg()
+	{
+		try
+		{
+			arg_.reset(new ArgT(generator_->Generate()));
+		}
+		catch (const StopGenerationException&)
+		{
+			arg_ = nullptr;
+		}
+	}
 
 private:
 	std::string name_;
 	std::unique_ptr<FixtureT> fixture_;
 	FunctionT function_;
 	std::unique_ptr<GeneratorT> generator_;
-    std::unique_ptr<ArgT> arg_;
+	std::unique_ptr<ArgT> arg_;
 };
 
 } // namespace sltbench

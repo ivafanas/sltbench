@@ -142,9 +142,7 @@ static void DotProduct(DotProductFixture::Type& fixture, const size_t& count)
 	auto& v2 = fixture.v2;
 	double res = 0.0;
 	for (size_t i = 0; i < count; ++i)
-	{
 		res += v1[i] * v2[i];
-	}
 	v1.back() = res;
 }
 SLTBENCH_FUNCTION_WITH_FIXTURE_AND_ARGS(DotProduct, DotProductFixture, dot_product_args);
