@@ -545,6 +545,11 @@ InsertToSetSorted/1000000           272967626      272922463   1.000
 Sort_Fixture                           862500         861708   1.001
 ```
 
+# Metrics
+
+[Document](tools/metrics/README.md) covers metrics defined as critical for
+sltbench project and evaluation tools.
+
 
 # License
 
