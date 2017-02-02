@@ -1,4 +1,12 @@
 
+2.1.0
+------------------
+
+* Reorganized documentation.
+* Added "why sltbench" section to documentation to mension key features.
+* Added comparison with googlebench by key metrics.
+
+
 2.0.0
 ------------------
 
