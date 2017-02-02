@@ -8,8 +8,48 @@ C++ benchmark tool. Practical, stable and fast performance testing framework.
 - stable - correctness and reproducibility is a goal
 - fast - if results are stable, they should be produced as soon as possible
 
-This tool is trained to gain about 5% measure stability (depends on function, input and context).
-Of course, it cannot strongly guarantee 5% stability (some functions are unstable itself, nothing helps), but it tends to.
+This tool is trained to gain about 5% measure stability (depends on function,
+input and context). Of course, it cannot strongly guarantee 5% stability (some
+functions are unstable itself, nothing helps), but it tends to.
+
+
+# Why sltbench
+
+The closest and the most famous analog is googlebench - microbenchmarking
+library from Google engineers.
+
+The key features of `sltbench` are:
+* sltbench is about *4.7x times faster* than googlebench.
+* sltbench produces results with less timing error, which really matters for
+performance results reproducibility. About 5x times improvement for testing
+dataset.
+* Supports correct mutable fixtures.
+* Supports lazy arguments generation including reading from file,
+  autogeneration etc.. (critical for large  input datasets which does not fit
+  into RAM all together, but perfectly fit one by one)
+* Output customization, separate tools for performance results comparison and
+  more.
+
+(The results below are obtained on 4 cores i7-2600 CPU @ 3.40GHz, 8Gb RAM
+for sltbench dataset; see "Metrics" section for details; see "How to benchmark"
+section for instructions)
+
+|                      |sltbench|googlebench|
+|----------------------|:------:|:---------:|
+| benchmark time, sec  | 87.45  |   416.44  |
+| average rel error, % |  0.4%  |    5.6%   |
+| maximum rel error, % |  2.9%  |   15.1%   |
+
+4.7x times speedup sounds extremely effective for projects where performance is
+super critical, tested meticulously and benchmarking takes about several hours
+or even days (for our project it was about a week).
+
+Lesser relative error means:
+* Less false speedups/slowdowns you get during testing. Economy of developer
+  time.
+* More precise performance changes may be obtained. If testing tool provides
+  15% relative error you cannot measure 10% speedup, but having 3% relative
+  error 10% speedup can be detected.
 
 
 # Build instructions
