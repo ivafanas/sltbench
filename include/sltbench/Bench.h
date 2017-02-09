@@ -36,7 +36,52 @@
 
 
 /*!
-	Register function with fixture to benchmark
+	Register function with fixture to benchmark.
+	(simplified version for fixtures: using fixture builder)
+
+	This benchmark is preferable if:
+		* initialization is required
+		* initialization parameters set is known at compile time
+		* initialization parameters set is exactly one
+		* fixture supports cheap RAII
+
+	\param func            - function with the only argument
+	\param fixture_builder - function constructing the fixtures
+
+	\example
+	\code
+
+		std::vector<size_t> make_my_fixture()
+		{
+			std::vector<size_t> rv(100000, 0);
+			...
+			return rv;
+		}
+
+		void my_function(std::vector<size_t>& fix)
+		{
+			// some code using fix
+			...
+		}
+		SLTBENCH_FUNCTION_WITH_FIXTURE_BUILDER(my_function, make_my_fixture);
+
+	\endcode
+
+	\warning
+		Function name is generated as func##fixture_builder.
+
+		Further functions registered with the same name
+		even in other source files will be ignored.
+		sltbench ensures unique name for functions to
+		guarantee the same functions order per run.
+*/
+#define SLTBENCH_FUNCTION_WITH_FIXTURE_BUILDER(func, fixture_builder) \
+	static SLT_DECLARE_UNIQUE_DESCRIPTOR_FUNCTION_WITH_FIXTURE(func, fixture_builder) = SLT_REGISTER_FUNCTION_WITH_FIXTURE_BUILDER(func, fixture_builder);
+
+
+/*!
+	Register function with fixture to benchmark.
+	(full version for fixtures)
 
 	This benchmark is preferable if:
 		* initialization is required
