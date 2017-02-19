@@ -87,13 +87,37 @@ void my_function(MyFixture::Type& fix)
 }
 
 SLTBENCH_FUNCTION_WITH_FIXTURE(my_function, MyFixture);
-
-SLTBENCH_MAIN();
 ```
 
 Be careful, `SetUp` and `TearDown` methods are called per each run.
 If function execution time is small enough (which leads to huge number of iterations)
 and `SetUp` and `TearDown` are expensive, benchmark may produce results for a long long time.
+
+If function execution time is significantly greater than fixture generation time
+you can use simplified version:
+
+```
+std::vector<size_t> make_my_fixture()
+{
+	std::vector<size_t> rv(100000, 0);
+	...
+	return rv;
+}
+
+void my_sort(std::vector<size_t>& fix)
+{
+	std::sort(fix.begin(), fix.end());
+}
+SLTBENCH_FUNCTION_WITH_FIXTURE_BUILDER(my_sort, make_my_fixture);
+```
+
+For the simplified case:
+* `make_my_fixture` is called per each run, keep its execution time small
+especially if function under testing execution time is small (which leads to
+huge number of iterations).
+* Prefer RAII fixtures or make shure your fixture destructor correctly frees
+resources. It is quite obvious for the case of `std::vector`, but it is not for
+the case of non-RAII elements like C-style pointer, C-style files etc.
 
 
 # Function with input values generator
