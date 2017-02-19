@@ -94,7 +94,7 @@ and `SetUp` and `TearDown` are expensive, benchmark may produce results for a lo
 If function execution time is significantly greater than fixture generation time
 you can use simplified version:
 
-```
+```c++
 std::vector<size_t> make_my_fixture()
 {
 	std::vector<size_t> rv(100000, 0);
