@@ -42,8 +42,6 @@ void my_function(const size_t& count)
 static const std::vector<size_t> my_args{ 100000, 110000, 120000, 130000, 140000, 150000 };
 
 SLTBENCH_FUNCTION_WITH_ARGS(my_function, my_args);
-
-SLTBENCH_MAIN();
 ```
 
 
@@ -159,8 +157,6 @@ void my_function(const MyArgsGenerator::ArgType& arg)
 }
 
 SLTBENCH_FUNCTION_WITH_ARGS_GENERATOR(my_function, MyArgsGenerator);
-
-SLTBENCH_MAIN();
 ```
 
 `Generate` method is called once per function,
@@ -208,8 +204,6 @@ void my_function(MyFixture::Type& fix, const size_t& arg)
 static const std::vector<size_t> my_args = { 100000, 110000, 120000 };
 
 SLTBENCH_FUNCTION_WITH_FIXTURE_AND_ARGS(my_function, MyFixture, my_args);
-
-SLTBENCH_MAIN();
 ```
 
 
@@ -269,8 +263,6 @@ void my_function(MyFixture::Type& fix, const MyArgsGenerator::ArgType& arg)
 }
 
 SLTBENCH_FUNCTION_WITH_FIXTURE_AND_ARGS_GENERATOR(my_function, MyFixture, MyArgsGenerator);
-
-SLTBENCH_MAIN();
 ```
 
 
@@ -316,8 +308,6 @@ void my_function(const HugeMemoryConsumingStruct& arg)
 }
 
 SLTBENCH_FUNCTION_WITH_LAZY_ARGS_GENERATOR(my_function, Generator);
-
-SLTBENCH_MAIN();
 ```
 
 
@@ -386,6 +376,4 @@ void my_function(Fixture::Type& fix, const HugeMemoryConsumingStruct& arg)
 }
 
 SLTBENCH_FUNCTION_WITH_FIXTURE_AND_LAZY_ARGS_GENERATOR(my_function, Generator);
-
-SLTBENCH_MAIN();
 ```
