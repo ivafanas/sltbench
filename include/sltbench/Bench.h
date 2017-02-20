@@ -231,7 +231,7 @@
 	\endcode
 
 	\warning
-		Function name is generated as func##generator.
+		Function name is generated as #func"_"#generator.
 
 		Further functions registered with the same name
 		even in other source files will be ignored.
@@ -360,12 +360,12 @@
 
 		static const std::vector<size_t> my_args = { 1024 * 1024, 42 * 1024 * 1024 };
 
-		SLTBENCH_FUNCTION_WITH_FIXTURE_AND_ARGS(my_function, MyFixture, size_t);
+		SLTBENCH_FUNCTION_WITH_FIXTURE_AND_ARGS(my_function, MyFixture, my_args);
 
 	\endcode
 
 	\warning
-		Function name is generated as func##fixture.
+		Function name is generated as #func"_"#fixture.
 
 		Further functions registered with the same name
 		even in other source files will be ignored.
@@ -462,7 +462,7 @@
 	\endcode
 
 	\warning
-		Function name is generated as func##fixture.
+		Function name is generated as #func"_"#fixture.
 
 		Further functions registered with the same name
 		even in other source files will be ignored.
@@ -556,7 +556,7 @@
     \endcode
 
     \warning
-        Function name is generated as func##fixture.
+        Function name is generated as #func"_"#fixture.
 
         Further functions registered with the same name
         even in other source files will be ignored.
