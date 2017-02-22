@@ -15,10 +15,11 @@ std::vector<size_t> MakeSortFixture()
 	return rv;
 }
 
-void Sort_WB(std::vector<size_t>& fix)
+void Sort_FB(std::vector<size_t>& fix)
 {
+	// code to benchmark using fix
 	std::sort(fix.begin(), fix.end());
 }
-SLTBENCH_FUNCTION_WITH_FIXTURE_BUILDER(Sort_WB, MakeSortFixture);
+SLTBENCH_FUNCTION_WITH_FIXTURE_BUILDER(Sort_FB, MakeSortFixture);
 
 } // namespace

@@ -51,6 +51,8 @@ set(SLTBENCH_LIB_PUBLIC_IMPL_HEADERS
 	include/sltbench/impl/BenchmarkWithFixtureAndArgGenerator.h
 	include/sltbench/impl/BenchmarkWithFixtureAndLazyArgGenerator.h
 	include/sltbench/impl/BenchmarkWithFixtureBuilder.h
+	include/sltbench/impl/BenchmarkWithFixtureBuilderAndArgGenerator.h
+	include/sltbench/impl/BenchmarkWithFixtureBuilderAndLazyArgGenerator.h
 	include/sltbench/impl/BenchmarkWithLazyArgGenerator.h
 	include/sltbench/impl/Descriptor.h
 	include/sltbench/impl/Env.h
@@ -76,6 +78,9 @@ set(SLTBENCH_EXAMPLES_SOURCES
 	examples/function_with_fixture_and_args_generator.cpp
 	examples/function_with_fixture_and_lazy_args_generator.cpp
 	examples/function_with_fixture_builder.cpp
+	examples/function_with_fixture_builder_and_args.cpp
+	examples/function_with_fixture_builder_and_args_generator.cpp
+	examples/function_with_fixture_builder_and_lazy_args_generator.cpp
 	examples/function_with_lazy_args_generator.cpp
 	examples/main.cpp
 	examples/simple_function.cpp)
