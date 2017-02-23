@@ -308,6 +308,157 @@ SLTBENCH_FUNCTION_WITH_FIXTURE_AND_LAZY_ARGS_GENERATOR(func_fix_lazygen_{uid}, F
 }}
 '''
 
+_SLTBENCH_TEST_TMPL_FIXTURE_BUILDER = '''
+#include <sltbench/Bench.h>
+#include <algorithm>
+#include <vector>
+
+namespace {{
+
+std::vector<size_t> make_fixture()
+{{
+    return {{ }};
+}}
+
+void func_fb_{uid}(std::vector<size_t>& fix)
+{{
+    std::sort(fix.begin(), fix.end());
+}}
+SLTBENCH_FUNCTION_WITH_FIXTURE_BUILDER(func_fb_{uid}, make_fixture);
+}}
+'''
+
+_SLTBENCH_TEST_TMPL_FIXTURE_BUILDER_ARGS = '''
+#include <sltbench/Bench.h>
+#include <algorithm>
+#include <ostream>
+#include <vector>
+
+namespace {{
+
+struct Arg
+{{
+    size_t size;
+    size_t ncalls;
+}};
+
+std::ostream& operator << (std::ostream& oss, const Arg& arg)
+{{
+    return oss << arg.size << '/' << arg.ncalls;
+}}
+
+std::vector<size_t> make_fixture(const Arg&)
+{{
+    return {{ }};
+}}
+
+void func_fb_a_{uid}(std::vector<size_t>&, const Arg&)
+{{
+}}
+static const std::vector<Arg> args = {{ {{ 100000, 1 }} }};
+SLTBENCH_FUNCTION_WITH_FIXTURE_BUILDER_AND_ARGS(func_fb_a_{uid}, make_fixture, args);
+}}
+'''
+
+_SLTBENCH_TEST_TMPL_FIXTURE_BUILDER_GENERATOR = '''
+#include <sltbench/Bench.h>
+#include <algorithm>
+#include <ostream>
+#include <vector>
+
+namespace {{
+
+class Generator
+{{
+public:
+    struct ArgType
+    {{
+        size_t size;
+        size_t ncalls;
+    }};
+
+    Generator() {{}}
+
+    std::vector<ArgType> Generate(int argc, char **argv)
+    {{
+        return{{ {{100000, 10}}, {{200000, 20}} }};
+    }}
+}};
+
+std::ostream& operator << (std::ostream& os, const Generator::ArgType& rhs)
+{{
+    return os << rhs.ncalls << '/' << rhs.size;
+}}
+
+std::vector<size_t> make_fixture(const Generator::ArgType&)
+{{
+    return {{ }};
+}}
+
+void func_fb_g_{uid}(std::vector<size_t>& fix, const Generator::ArgType& arg)
+{{
+    // some useful work here based on fixture and arg
+    for (size_t i = 0; i < arg.ncalls; ++i)
+        std::random_shuffle(fix.begin(), fix.end());
+}}
+SLTBENCH_FUNCTION_WITH_FIXTURE_BUILDER_AND_ARGS_GENERATOR(func_fb_g_{uid}, make_fixture, Generator);
+}}
+'''
+
+_SLTBENCH_TEST_TMPL_FIXTURE_BUILDER_LAZY_GENERATOR = '''
+#include <sltbench/Bench.h>
+#include <algorithm>
+#include <ostream>
+#include <vector>
+
+namespace {{
+
+class Generator
+{{
+public:
+    struct ArgType
+    {{
+        size_t size;
+        size_t ncalls;
+    }};
+
+    Generator(int, char **) {{}}
+
+    ArgType Generate()
+    {{
+        if (generated_count_ >= 3)
+            throw sltbench::StopGenerationException();
+
+        ++generated_count_;
+
+        // the only instance of ArgType is in the memory during measurement
+        return{{generated_count_ * 100000, generated_count_}};
+    }}
+
+private:
+    size_t generated_count_ = 0;
+}};
+
+std::ostream& operator << (std::ostream& os, const Generator::ArgType& rhs)
+{{
+    return os << rhs.size << '/' << rhs.ncalls;
+}}
+
+std::vector<size_t> make_fixture(const Generator::ArgType&)
+{{
+    return {{ }};
+}}
+
+void func_fb_lag_{uid}(std::vector<size_t>& fix, const Generator::ArgType& arg)
+{{
+    // some useful work here based on fixture and arg
+    for (size_t i = 0; i < arg.ncalls; ++i)
+        std::random_shuffle(fix.begin(), fix.end());
+}}
+SLTBENCH_FUNCTION_WITH_FIXTURE_BUILDER_AND_LAZY_ARGS_GENERATOR(func_fb_lag_{uid}, make_fixture, Generator);
+}}
+'''
+
 _GOOGLEBENCH_TEST_TMPL_SIMPLE = '''
 #include <benchmark/benchmark.h>
 
@@ -352,10 +503,6 @@ def gen_sltbench_test_simple(uid):
     return _SLTBENCH_TEST_TMPL_SIMPLE.format(uid=uid)
 
 
-def gen_sltbench_test_fixture(uid):
-    return _SLTBENCH_TEST_TMPL_FIXTURE.format(uid=uid)
-
-
 def gen_sltbench_test_args(uid):
     return _SLTBENCH_TEST_TMPL_ARGS.format(uid=uid)
 
@@ -368,6 +515,10 @@ def gen_sltbench_test_lazy_generator(uid):
     return _SLTBENCH_TEST_TMPL_LAZY_GENERATOR.format(uid=uid)
 
 
+def gen_sltbench_test_fixture(uid):
+    return _SLTBENCH_TEST_TMPL_FIXTURE.format(uid=uid)
+
+
 def gen_sltbench_test_fixture_args(uid):
     return _SLTBENCH_TEST_TMPL_FIXTURE_ARGS.format(uid=uid)
 
@@ -378,6 +529,22 @@ def gen_sltbench_test_fixture_generator(uid):
 
 def gen_sltbench_test_fixture_lazy_generator(uid):
     return _SLTBENCH_TEST_TMPL_FIXTURE_LAZY_GENERATOR.format(uid=uid)
+
+
+def gen_sltbench_test_fixture_builder(uid):
+    return _SLTBENCH_TEST_TMPL_FIXTURE_BUILDER.format(uid=uid)
+
+
+def gen_sltbench_test_fixture_builder_args(uid):
+    return _SLTBENCH_TEST_TMPL_FIXTURE_BUILDER_ARGS.format(uid=uid)
+
+
+def gen_sltbench_test_fixture_builder_generator(uid):
+    return _SLTBENCH_TEST_TMPL_FIXTURE_BUILDER_GENERATOR.format(uid=uid)
+
+
+def gen_sltbench_test_fixture_builder_lazy_generator(uid):
+    return _SLTBENCH_TEST_TMPL_FIXTURE_BUILDER_LAZY_GENERATOR.format(uid=uid)
 
 
 def gen_googlebench_test_simple(uid):

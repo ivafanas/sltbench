@@ -8,6 +8,11 @@ FIXTURE = 'fixture'
 FIXTURE_ARGS = 'fixture_args'
 FIXTURE_GENERATOR = 'fixture_generator'
 FIXTURE_LAZY_GENERATOR = 'fixture_lazy_generator'
+FIXTURE_BUILDER = 'fixture_builder'
+FIXTURE_BUILDER_ARGS = 'fixture_builder_args'
+FIXTURE_BUILDER_GENERATOR = 'fixture_builder_generator'
+FIXTURE_BUILDER_LAZY_GENERATOR = 'fixture_builder_lazy_generator'
+
 
 # dataset used to compare different backends
 COMPARABLE = [
@@ -24,7 +29,11 @@ ALL = [
     FIXTURE,
     FIXTURE_ARGS,
     FIXTURE_GENERATOR,
-    FIXTURE_LAZY_GENERATOR
+    FIXTURE_LAZY_GENERATOR,
+    FIXTURE_BUILDER,
+    FIXTURE_BUILDER_ARGS,
+    FIXTURE_BUILDER_GENERATOR,
+    FIXTURE_BUILDER_LAZY_GENERATOR
 ]
 
 # available input
