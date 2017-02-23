@@ -34,7 +34,7 @@ SLTBENCH_FUNCTION_WITH_ARGS(InsertToSetUnordered, insert_to_set_args);
 
 
 //
-// what about performance of std::accumulate for vector and list ?
+// what about performance of std::accumulate for vector ?
 //
 
 static const std::vector<size_t> acc_args{ 1000, 10000, 100000, 1000000 };
@@ -74,42 +74,3 @@ static void AccVectorNaive(AccVectorFixture::Type& fix, const size_t& count)
 	fix[0] = res;
 }
 SLTBENCH_FUNCTION_WITH_FIXTURE_AND_ARGS(AccVectorNaive, AccVectorFixture, acc_args);
-
-class AccListFixture
-{
-public:
-	typedef std::list<double> Type;
-
-	AccListFixture() {}
-
-	Type& SetUp(const size_t& count)
-	{
-		if (fixture_.size() != count)
-		{
-			for (size_t i = 0; i < count; ++i)
-				fixture_.push_back(0.1);
-		}
-		return fixture_;
-	}
-
-	void TearDown() {}
-
-private:
-	Type fixture_;
-};
-
-static void AccListStd(AccListFixture::Type& fix, const size_t& count)
-{
-	auto res = std::accumulate(fix.begin(), fix.end(), 0.0);
-	fix.front() = res;
-}
-SLTBENCH_FUNCTION_WITH_FIXTURE_AND_ARGS(AccListStd, AccListFixture, acc_args);
-
-static void AccListNaive(AccListFixture::Type& fix, const size_t& count)
-{
-	double res = 0;
-	for (auto v : fix)
-		res += v;
-	fix.front() = res;
-}
-SLTBENCH_FUNCTION_WITH_FIXTURE_AND_ARGS(AccListNaive, AccListFixture, acc_args);
