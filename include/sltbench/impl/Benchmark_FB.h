@@ -3,9 +3,6 @@
 #include <chrono>
 #include <string>
 
-// TODO: add the new kind of benchmarks to metrics
-// TODO: add the new kind of benchmarks to documentation
-
 
 namespace sltbench {
 
