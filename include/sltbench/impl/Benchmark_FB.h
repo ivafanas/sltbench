@@ -3,18 +3,22 @@
 #include <chrono>
 #include <string>
 
+// TODO: add tests for the new kind of benchmarks
+// TODO: add the new kind of benchmarks to metrics
+// TODO: add the new kind of benchmarks to documentation
+
 
 namespace sltbench {
 
 template<typename FixtureT>
-class BenchmarkWithFixtureBuilder
+class Benchmark_FB
 {
 public:
 	typedef void(*FunctionT)(FixtureT&);
 	typedef FixtureT(*FixtureBuilderT)();
 
 public:
-	BenchmarkWithFixtureBuilder(const char *name, FunctionT function, FixtureBuilderT builder)
+	Benchmark_FB(const char *name, FunctionT function, FixtureBuilderT builder)
 		: name_(name)
 		, function_(function)
 		, builder_(builder)

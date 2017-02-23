@@ -33,15 +33,15 @@ void inc_calls_count(const size_t&)
 } // namespace
 
 template<typename Generator>
-using BM = sltbench::BenchmarkWithArgGenerator<Generator>;
+using BM = sltbench::Benchmark_AG<Generator>;
 
-TEST(BenchmarkWithArgGenerator, GetNameReturnsBenchmarkName)
+TEST(Benchmark_AG, GetNameReturnsBenchmarkName)
 {
 	BM<IncGenerator> bm("name", &stub_func);
 	EXPECT_EQ("name", bm.GetName());
 }
 
-TEST(BenchmarkWithArgGenerator, MeasureCallsFunction)
+TEST(Benchmark_AG, MeasureCallsFunction)
 {
 	g_calls_count = 0;
 	BM<IncGenerator> bm("name", &inc_calls_count);
@@ -52,7 +52,7 @@ TEST(BenchmarkWithArgGenerator, MeasureCallsFunction)
 	EXPECT_EQ(1u, g_calls_count);
 }
 
-TEST(BenchmarkWithArgGenerator, MeasureCallsRequiredCount)
+TEST(Benchmark_AG, MeasureCallsRequiredCount)
 {
 	g_calls_count = 0;
 	BM<IncGenerator> bm("name", &inc_calls_count);
@@ -63,7 +63,7 @@ TEST(BenchmarkWithArgGenerator, MeasureCallsRequiredCount)
 	EXPECT_EQ(3u, g_calls_count);
 }
 
-TEST(BenchmarkWithArgGenerator, MeasureCallsFunctionRequiredCountOfTimes)
+TEST(Benchmark_AG, MeasureCallsFunctionRequiredCountOfTimes)
 {
 	g_calls_count = 0;
 	BM<IncGenerator> bm("name", &inc_calls_count);
@@ -86,7 +86,7 @@ void add_to_call_args(const size_t& n)
 
 } // namespace
 
-TEST(BenchmarkWithArgGenerator, MeasureCallsFunctionWithGeneratedArg)
+TEST(Benchmark_AG, MeasureCallsFunctionWithGeneratedArg)
 {
 	g_call_args.clear();
 	BM<IncGenerator> bm("name", &add_to_call_args);
@@ -105,7 +105,7 @@ TEST(BenchmarkWithArgGenerator, MeasureCallsFunctionWithGeneratedArg)
 	EXPECT_EQ(3, g_call_args[2]);
 }
 
-TEST(BenchmarkWithArgGenerator, CurrentArgAsString)
+TEST(Benchmark_AG, CurrentArgAsString)
 {
 	BM<IncGenerator> bm("name", &stub_func);
 
@@ -114,7 +114,7 @@ TEST(BenchmarkWithArgGenerator, CurrentArgAsString)
 	EXPECT_EQ("1", bm.CurrentArgAsString());
 }
 
-TEST(BenchmarkWithArgGenerator, HasArgsToProcessReturnsTrueAfterPrepare)
+TEST(Benchmark_AG, HasArgsToProcessReturnsTrueAfterPrepare)
 {
 	BM<IncGenerator> bm("name", &stub_func);
 
@@ -123,7 +123,7 @@ TEST(BenchmarkWithArgGenerator, HasArgsToProcessReturnsTrueAfterPrepare)
 	EXPECT_TRUE(bm.HasArgsToProcess());
 }
 
-TEST(BenchmarkWithArgGenerator, HasArgsToProcessReturnsTrueAfterThreeArgsProcessed)
+TEST(Benchmark_AG, HasArgsToProcessReturnsTrueAfterThreeArgsProcessed)
 {
 	BM<IncGenerator> bm("name", &stub_func);
 
@@ -135,7 +135,7 @@ TEST(BenchmarkWithArgGenerator, HasArgsToProcessReturnsTrueAfterThreeArgsProcess
 	EXPECT_TRUE(bm.HasArgsToProcess());
 }
 
-TEST(BenchmarkWithArgGenerator, HasArgsToProcessReturnsTrueAfterAllArgsProcessed)
+TEST(Benchmark_AG, HasArgsToProcessReturnsTrueAfterAllArgsProcessed)
 {
 	BM<IncGenerator> bm("name", &stub_func);
 

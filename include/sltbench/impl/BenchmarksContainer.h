@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <map>
+#include <memory>
 #include <string>
 
 
@@ -12,7 +13,7 @@ class BenchmarksContainer
 {
 public:
 	// we need std::map to define execution order of benchmarks inside one container
-	typedef std::map<std::string, BenchmarkT> BenchmarksMap;
+	typedef std::map<std::string, std::unique_ptr<BenchmarkT>> BenchmarksMap;
 
 public:
 	static BenchmarksContainer<BenchmarkT> & Instance()
@@ -22,9 +23,9 @@ public:
 	}
 
 public:
-	void Add(BenchmarkT bm)
+	void Add(std::unique_ptr<BenchmarkT> bm)
 	{
-		const auto& name = bm.GetName();
+		const auto& name = bm->GetName();
 		auto it = bms_.find(name);
 		if (it == bms_.end())
 		{

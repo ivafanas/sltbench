@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Env.h"
+#include "Optional.h"
 
 #include <chrono>
 #include <memory>
@@ -12,7 +13,7 @@
 namespace sltbench {
 
 template<typename FixtureT, typename GeneratorT>
-class BenchmarkWithFixtureBuilderAndArgGenerator
+class Benchmark_FB_AG
 {
 public:
 	typedef typename GeneratorT::ArgType ArgT;
@@ -20,7 +21,7 @@ public:
 	typedef FixtureT(*FixtureBuilderT)(const ArgT&);
 
 public:
-	BenchmarkWithFixtureBuilderAndArgGenerator(
+	Benchmark_FB_AG(
 		const char *name,
 		FunctionT function,
 		FixtureBuilderT builder)
@@ -30,7 +31,7 @@ public:
 	{
 	}
 
-	BenchmarkWithFixtureBuilderAndArgGenerator(
+	Benchmark_FB_AG(
 		const char *name,
 		FunctionT function,
 		FixtureBuilderT builder,
@@ -76,11 +77,11 @@ public:
 		// otherwise they are given from origin and must not be changed
 		if (args_.empty())
 		{
-			args_generator_.reset(new GeneratorT());
+			args_generator_opt_.emplace();
 
 			const auto argc = Env::Instance().GetArgc();
 			const auto argv = Env::Instance().GetArgv();
-			args_ = args_generator_->Generate(argc, argv);
+			args_ = args_generator_opt_.get().Generate(argc, argv);
 		}
 
 		current_arg_index_ = 0;
@@ -90,11 +91,11 @@ public:
 	{
 		// if args_generator_ exists, we must regenerate args_
 		// on the next Prepare, otherwise, leave them as-is
-		if (args_generator_)
+		if (args_generator_opt_.is_initialized())
 		{
 			args_.clear();
 			args_.shrink_to_fit();
-			args_generator_.reset();
+			args_generator_opt_.reset();
 		}
 	}
 
@@ -119,7 +120,7 @@ private:
 	std::string name_;
 	FunctionT function_;
 	FixtureBuilderT builder_;
-	std::unique_ptr<GeneratorT> args_generator_;
+	scoped_optional<GeneratorT> args_generator_opt_;
 	std::vector<ArgT> args_;
 	size_t current_arg_index_ = 0;
 };

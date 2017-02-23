@@ -9,6 +9,7 @@
 
 #include <chrono>
 #include <iostream>
+#include <memory>
 #include <stdexcept>
 #include <vector>
 
@@ -99,7 +100,8 @@ Descriptor* RegisterBenchmark(const char *name, SLTFun func)
 	using BM = ProcedureBenchmark;
 
 	Runner<BM>::Register();
-	BenchmarksContainer<BM>::Instance().Add(BM(name, func));
+	BenchmarksContainer<BM>::Instance().Add(
+		std::unique_ptr<BM>(new BM(name, func)));
 
 	static Descriptor dscr;
 	return &dscr;

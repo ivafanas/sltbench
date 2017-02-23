@@ -1,20 +1,21 @@
 #pragma once
 
+#include "Optional.h"
+
 #include <chrono>
-#include <memory>
 #include <string>
 
 
 namespace sltbench {
 
 template<typename FixtureT>
-class BenchmarkWithFixture
+class Benchmark_F
 {
 public:
 	typedef void(*FunctionT)(typename FixtureT::Type&);
 
 public:
-	BenchmarkWithFixture(const char *name, FunctionT function)
+	Benchmark_F(const char *name, FunctionT function)
 		: name_(name)
 		, function_(function)
 	{
@@ -28,7 +29,7 @@ public:
 
 	std::chrono::nanoseconds Measure(size_t)
 	{
-		auto& fix = fixture_->SetUp();
+		auto& fix = fixture_opt_.get().SetUp();
 
 		const auto start_ts = std::chrono::high_resolution_clock::now();
 		function_(fix);
@@ -38,7 +39,7 @@ public:
 			? std::chrono::duration_cast<std::chrono::nanoseconds>(final_ts - start_ts)
 			: std::chrono::nanoseconds(0);
 
-		fixture_->TearDown();
+		fixture_opt_.get().TearDown();
 
 		return rv;
 	}
@@ -50,13 +51,13 @@ public:
 
 	void Prepare()
 	{
-		fixture_.reset(new FixtureT());
+		fixture_opt_.emplace();
 		measured_ = false;
 	}
 
 	void Finalize()
 	{
-		fixture_.reset();
+		fixture_opt_.reset();
 	}
 
 	bool HasArgsToProcess()
@@ -76,7 +77,7 @@ public:
 
 private:
 	std::string name_;
-	std::unique_ptr<FixtureT> fixture_;
+	scoped_optional<FixtureT> fixture_opt_;
 	FunctionT function_;
 	bool measured_ = false;
 };

@@ -43,16 +43,16 @@ void set_arg(int& arg)
 } // namespace
 
 template<typename Fixture>
-using BM = sltbench::BenchmarkWithFixture<Fixture>;
+using BM = sltbench::Benchmark_F<Fixture>;
 
-TEST(BenchmarkWithFixture, GetNameShouldReturnBenchmarkName)
+TEST(Benchmark_F, GetNameShouldReturnBenchmarkName)
 {
 	BM<Fixture> bm("name", &stub_func);
 
 	EXPECT_EQ("name", bm.GetName());
 }
 
-TEST(BenchmarkWithFixture, MeasureCallsFunction)
+TEST(Benchmark_F, MeasureCallsFunction)
 {
 	g_calls_count = 0;
 	BM<Fixture> bm("name", &inc_calls_count);
@@ -63,7 +63,7 @@ TEST(BenchmarkWithFixture, MeasureCallsFunction)
 	EXPECT_EQ(1u, g_calls_count);
 }
 
-TEST(BenchmarkWithFixture, MeasureCallsFunctionExactlyOnce)
+TEST(Benchmark_F, MeasureCallsFunctionExactlyOnce)
 {
 	g_calls_count = 0;
 	BM<Fixture> bm("name", &inc_calls_count);
@@ -74,7 +74,7 @@ TEST(BenchmarkWithFixture, MeasureCallsFunctionExactlyOnce)
 	EXPECT_EQ(1u, g_calls_count);
 }
 
-TEST(BenchmarkWithFixture, MeasureCallsFunctionWithFixtureValue)
+TEST(Benchmark_F, MeasureCallsFunctionWithFixtureValue)
 {
 	g_arg = 0;
 	BM<Fixture> bm("name", &set_arg);
@@ -85,7 +85,7 @@ TEST(BenchmarkWithFixture, MeasureCallsFunctionWithFixtureValue)
 	EXPECT_EQ(42, g_arg);
 }
 
-TEST(BenchmarkWithFixture, HasArgsToProcessReturnsTrueAfterPrepare)
+TEST(Benchmark_F, HasArgsToProcessReturnsTrueAfterPrepare)
 {
 	BM<Fixture> bm("name", &stub_func);
 
@@ -94,7 +94,7 @@ TEST(BenchmarkWithFixture, HasArgsToProcessReturnsTrueAfterPrepare)
 	EXPECT_TRUE(bm.HasArgsToProcess());
 }
 
-TEST(BenchmarkWithFixture, HasArgsToProcessReturnsFalseAfterArgProcessed)
+TEST(Benchmark_F, HasArgsToProcessReturnsFalseAfterArgProcessed)
 {
 	BM<Fixture> bm("name", &stub_func);
 
@@ -104,7 +104,7 @@ TEST(BenchmarkWithFixture, HasArgsToProcessReturnsFalseAfterArgProcessed)
 	EXPECT_FALSE(bm.HasArgsToProcess());
 }
 
-TEST(BenchmarkWithFixture, CurrentArgAsString)
+TEST(Benchmark_F, CurrentArgAsString)
 {
 	BM<Fixture> bm("name", &stub_func);
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Env.h"
+#include "Optional.h"
 #include "StopGenerationException.h"
 
 #include <chrono>
@@ -11,7 +12,7 @@
 namespace sltbench {
 
 template<typename FixtureT, typename GeneratorT>
-class BenchmarkWithFixtureAndLazyArgGenerator
+class Benchmark_F_LAG
 {
 public:
 	typedef typename FixtureT::Type FixT;
@@ -19,7 +20,7 @@ public:
 	typedef void (*FunctionT)(FixT&, const ArgT&);
 
 public:
-	BenchmarkWithFixtureAndLazyArgGenerator(const char *name, FunctionT function)
+	Benchmark_F_LAG(const char *name, FunctionT function)
 		: name_(name)
 		, function_(function)
 	{
@@ -33,9 +34,9 @@ public:
 
 	std::chrono::nanoseconds Measure(size_t)
 	{
-		const auto& arg = *arg_;
+		const auto& arg = arg_opt_.get();
 
-		auto& fix = fixture_->SetUp(arg);
+		auto& fix = fixture_opt_.get().SetUp(arg);
 
 		const auto start_ts = std::chrono::high_resolution_clock::now();
 		function_(fix, arg);
@@ -45,7 +46,7 @@ public:
 			? std::chrono::duration_cast<std::chrono::nanoseconds>(final_ts - start_ts)
 			: std::chrono::nanoseconds(0);
 
-		fixture_->TearDown();
+		fixture_opt_.get().TearDown();
 
 		return rv;
 	}
@@ -57,25 +58,25 @@ public:
 
 	void Prepare()
 	{
-		fixture_.reset(new FixtureT());
+		fixture_opt_.emplace();
 
 		const auto argc = Env::Instance().GetArgc();
 		const auto argv = Env::Instance().GetArgv();
-		generator_.reset(new GeneratorT(argc, argv));
+		generator_opt_.emplace(argc, argv);
 
 		PopArg();
 	}
 
 	void Finalize()
 	{
-		fixture_ = nullptr;
-		generator_ = nullptr;
-		arg_ = nullptr;
+		fixture_opt_.reset();
+		generator_opt_.reset();
+		arg_opt_.reset();
 	}
 
 	bool HasArgsToProcess()
 	{
-		return arg_ != nullptr;
+		return arg_opt_.is_initialized();
 	}
 
 	void OnArgProcessed()
@@ -86,7 +87,7 @@ public:
 	std::string CurrentArgAsString()
 	{
 		std::ostringstream os;
-		os << *arg_;
+		os << arg_opt_.get();
 		return os.str();
 	}
 
@@ -95,20 +96,20 @@ private:
 	{
 		try
 		{
-			arg_.reset(new ArgT(generator_->Generate()));
+			arg_opt_.emplace(generator_opt_.get().Generate());
 		}
 		catch (const StopGenerationException&)
 		{
-			arg_ = nullptr;
+			arg_opt_.reset();
 		}
 	}
 
 private:
 	std::string name_;
-	std::unique_ptr<FixtureT> fixture_;
 	FunctionT function_;
-	std::unique_ptr<GeneratorT> generator_;
-	std::unique_ptr<ArgT> arg_;
+	scoped_optional<FixtureT> fixture_opt_;
+	scoped_optional<GeneratorT> generator_opt_;
+	scoped_optional<ArgT> arg_opt_;
 };
 
 } // namespace sltbench

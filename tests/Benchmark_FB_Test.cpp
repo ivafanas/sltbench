@@ -32,16 +32,16 @@ void set_arg(int& arg)
 } // namespace
 
 template<typename Fixture>
-using BM = sltbench::BenchmarkWithFixtureBuilder<Fixture>;
+using BM = sltbench::Benchmark_FB<Fixture>;
 
-TEST(BenchmarkWithFixtureBuilder, GetNameShouldReturnBenchmarkName)
+TEST(Benchmark_FB, GetNameShouldReturnBenchmarkName)
 {
 	BM<int> bm("name", &stub_func, &make_fixture);
 
 	EXPECT_EQ("name", bm.GetName());
 }
 
-TEST(BenchmarkWithFixtureBuilder, MeasureCallsFunction)
+TEST(Benchmark_FB, MeasureCallsFunction)
 {
 	g_calls_count = 0;
 	g_fixtures_made_count = 0;
@@ -54,7 +54,7 @@ TEST(BenchmarkWithFixtureBuilder, MeasureCallsFunction)
 	EXPECT_EQ(1u, g_fixtures_made_count);
 }
 
-TEST(BenchmarkWithFixtureBuilder, MeasureCallsFunctionExactlyOnce)
+TEST(Benchmark_FB, MeasureCallsFunctionExactlyOnce)
 {
 	g_calls_count = 0;
 	g_fixtures_made_count = 0;
@@ -67,7 +67,7 @@ TEST(BenchmarkWithFixtureBuilder, MeasureCallsFunctionExactlyOnce)
 	EXPECT_EQ(1u, g_fixtures_made_count);
 }
 
-TEST(BenchmarkWithFixtureBuilder, MeasureCallsFunctionWithFixtureValue)
+TEST(Benchmark_FB, MeasureCallsFunctionWithFixtureValue)
 {
 	g_arg = 0;
 	BM<int> bm("name", &set_arg, &make_fixture);
@@ -78,7 +78,7 @@ TEST(BenchmarkWithFixtureBuilder, MeasureCallsFunctionWithFixtureValue)
 	EXPECT_EQ(42, g_arg);
 }
 
-TEST(BenchmarkWithFixtureBuilder, HasArgsToProcessReturnsTrueAfterPrepare)
+TEST(Benchmark_FB, HasArgsToProcessReturnsTrueAfterPrepare)
 {
 	BM<int> bm("name", &stub_func, &make_fixture);
 
@@ -87,7 +87,7 @@ TEST(BenchmarkWithFixtureBuilder, HasArgsToProcessReturnsTrueAfterPrepare)
 	EXPECT_TRUE(bm.HasArgsToProcess());
 }
 
-TEST(BenchmarkWithFixtureBuilder, HasArgsToProcessReturnsFalseAfterArgProcessed)
+TEST(Benchmark_FB, HasArgsToProcessReturnsFalseAfterArgProcessed)
 {
 	BM<int> bm("name", &stub_func, &make_fixture);
 
@@ -97,7 +97,7 @@ TEST(BenchmarkWithFixtureBuilder, HasArgsToProcessReturnsFalseAfterArgProcessed)
 	EXPECT_FALSE(bm.HasArgsToProcess());
 }
 
-TEST(BenchmarkWithFixtureBuilder, CurrentArgAsString)
+TEST(Benchmark_FB, CurrentArgAsString)
 {
 	BM<int> bm("name", &stub_func, &make_fixture);
 

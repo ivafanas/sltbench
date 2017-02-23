@@ -46,14 +46,14 @@ set(SLTBENCH_LIB_PUBLIC_HEADERS
 set(SLTBENCH_LIB_PUBLIC_IMPL_HEADERS
 	include/sltbench/impl/BenchApi.h
 	include/sltbench/impl/BenchmarksContainer.h
-	include/sltbench/impl/BenchmarkWithArgGenerator.h
-	include/sltbench/impl/BenchmarkWithFixture.h
-	include/sltbench/impl/BenchmarkWithFixtureAndArgGenerator.h
-	include/sltbench/impl/BenchmarkWithFixtureAndLazyArgGenerator.h
-	include/sltbench/impl/BenchmarkWithFixtureBuilder.h
-	include/sltbench/impl/BenchmarkWithFixtureBuilderAndArgGenerator.h
-	include/sltbench/impl/BenchmarkWithFixtureBuilderAndLazyArgGenerator.h
-	include/sltbench/impl/BenchmarkWithLazyArgGenerator.h
+	include/sltbench/impl/Benchmark_AG.h
+	include/sltbench/impl/Benchmark_F.h
+	include/sltbench/impl/Benchmark_F_AG.h
+	include/sltbench/impl/Benchmark_F_LAG.h
+	include/sltbench/impl/Benchmark_FB.h
+	include/sltbench/impl/Benchmark_FB_AG.h
+	include/sltbench/impl/Benchmark_FB_LAG.h
+	include/sltbench/impl/Benchmark_LAG.h
 	include/sltbench/impl/Descriptor.h
 	include/sltbench/impl/Env.h
 	include/sltbench/impl/IConfig.h
@@ -61,6 +61,7 @@ set(SLTBENCH_LIB_PUBLIC_IMPL_HEADERS
 	include/sltbench/impl/IMeasureAlgo.h
 	include/sltbench/impl/IReporter.h
 	include/sltbench/impl/IRunner.h
+	include/sltbench/impl/Optional.h
 	include/sltbench/impl/SingleMeasureAlgo.h
 	include/sltbench/impl/StaticAssertsUtil.h
 	include/sltbench/impl/StopGenerationException.h
@@ -98,12 +99,12 @@ set(SLTBENCH_HISTOGRAMMER_SOURCES
 
 # tests sources
 set(SLTBENCH_TESTS_SOURCES
-	tests/BenchmarkWithArgGeneratorTest.cpp
-	tests/BenchmarkWithFixtureAndArgGeneratorTest.cpp
-	tests/BenchmarkWithFixtureAndLazyArgGeneratorTest.cpp
-	tests/BenchmarkWithFixtureBuilderTest.cpp
-	tests/BenchmarkWithFixtureTest.cpp
-	tests/BenchmarkWithLazyArgGeneratorTest.cpp
+	tests/Benchmark_AG_Test.cpp
+	tests/Benchmark_F_Test.cpp
+	tests/Benchmark_F_AG_Test.cpp
+	tests/Benchmark_F_LAG_Test.cpp
+	tests/Benchmark_FB_Test.cpp
+	tests/Benchmark_LAG_Test.cpp
 	tests/FiltersTest.cpp
 	tests/main.cpp
 	tests/MAResultsContainerTest.cpp

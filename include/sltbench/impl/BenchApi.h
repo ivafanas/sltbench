@@ -1,14 +1,14 @@
 #pragma once
 
+#include "Benchmark_AG.h"
+#include "Benchmark_F.h"
+#include "Benchmark_F_AG.h"
+#include "Benchmark_F_LAG.h"
+#include "Benchmark_FB.h"
+#include "Benchmark_FB_AG.h"
+#include "Benchmark_FB_LAG.h"
+#include "Benchmark_LAG.h"
 #include "BenchmarksContainer.h"
-#include "BenchmarkWithArgGenerator.h"
-#include "BenchmarkWithFixture.h"
-#include "BenchmarkWithFixtureAndArgGenerator.h"
-#include "BenchmarkWithFixtureAndLazyArgGenerator.h"
-#include "BenchmarkWithFixtureBuilder.h"
-#include "BenchmarkWithFixtureBuilderAndArgGenerator.h"
-#include "BenchmarkWithFixtureBuilderAndLazyArgGenerator.h"
-#include "BenchmarkWithLazyArgGenerator.h"
 #include "Descriptor.h"
 #include "IConfig.h"
 #include "IRunner.h"
@@ -58,8 +58,9 @@ Descriptor *RegisterBenchmark_FB(
 	void(*func)(FixtureT&),
 	FixtureT(*fixture_builder)())
 {
-	using BM = BenchmarkWithFixtureBuilder<FixtureT>;
-	BenchmarksContainer<BM>::Instance().Add(BM(name, func, fixture_builder));
+	using BM = Benchmark_FB<FixtureT>;
+	BenchmarksContainer<BM>::Instance().Add(
+		std::unique_ptr<BM>(new BM(name, func, fixture_builder)));
 
 	Runner<BM>::Register();
 
@@ -79,8 +80,9 @@ Descriptor *RegisterBenchmark_FB(
 template<typename FixtureT>
 Descriptor *RegisterBenchmark_F(const char *name, void (*func)(typename FixtureT::Type&))
 {
-	using BM = BenchmarkWithFixture<FixtureT>;
-	BenchmarksContainer<BM>::Instance().Add(BM(name, func));
+	using BM = Benchmark_F<FixtureT>;
+	BenchmarksContainer<BM>::Instance().Add(
+		std::unique_ptr<BM>(new BM(name, func)));
 
 	Runner<BM>::Register();
 
@@ -97,6 +99,7 @@ public:
 	typedef Type ArgType;
 
 	EmptyArgsGenerator() = default;
+	~EmptyArgsGenerator() = default;
 
 	std::vector<ArgType> Generate(int , char **) { return{}; }
 };
@@ -117,8 +120,9 @@ Descriptor *RegisterBenchmark_A(
 	void (*func)(const ArgumentT &),
 	std::vector<ArgumentT> args)
 {
-	using BM = BenchmarkWithArgGenerator<EmptyArgsGenerator<ArgumentT>>;
-	BenchmarksContainer<BM>::Instance().Add(BM(name, func, std::move(args)));
+	using BM = Benchmark_AG<EmptyArgsGenerator<ArgumentT>>;
+	BenchmarksContainer<BM>::Instance().Add(
+		std::unique_ptr<BM>(new BM(name, func, std::move(args))));
 
 	Runner<BM>::Register();
 
@@ -140,8 +144,9 @@ Descriptor *RegisterBenchmark_AG(
 	const char *name,
 	void (*func)(const typename GeneratorT::ArgType&))
 {
-	using BM = BenchmarkWithArgGenerator<GeneratorT>;
-	BenchmarksContainer<BM>::Instance().Add(BM(name, func));
+	using BM = Benchmark_AG<GeneratorT>;
+	BenchmarksContainer<BM>::Instance().Add(
+		std::unique_ptr<BM>(new BM(name, func)));
 
 	Runner<BM>::Register();
 
@@ -163,8 +168,9 @@ Descriptor *RegisterBenchmark_LAG(
 	const char *name,
 	void (*func)(const typename GeneratorT::ArgType&))
 {
-	using BM = BenchmarkWithLazyArgGenerator<GeneratorT>;
-	BenchmarksContainer<BM>::Instance().Add(BM(name, func));
+	using BM = Benchmark_LAG<GeneratorT>;
+	BenchmarksContainer<BM>::Instance().Add(
+		std::unique_ptr<BM>(new BM(name, func)));
 
 	Runner<BM>::Register();
 
@@ -189,8 +195,9 @@ Descriptor *RegisterBenchmark_F_A(
 	void (*func)(typename FixtureT::Type&, const ArgumentT&),
 	std::vector<ArgumentT> args_vec)
 {
-	using BM = BenchmarkWithFixtureAndArgGenerator<FixtureT, EmptyArgsGenerator<ArgumentT>>;
-	BenchmarksContainer<BM>::Instance().Add(BM(name, func, std::move(args_vec)));
+	using BM = Benchmark_F_AG<FixtureT, EmptyArgsGenerator<ArgumentT>>;
+	BenchmarksContainer<BM>::Instance().Add(
+		std::unique_ptr<BM>(new BM(name, func, std::move(args_vec))));
 
 	Runner<BM>::Register();
 
@@ -214,8 +221,9 @@ Descriptor *RegisterBenchmark_FB_A(
 	FixtureT(*fixture_builder)(const ArgumentT&),
 	std::vector<ArgumentT> args_vec)
 {
-	using BM = BenchmarkWithFixtureBuilderAndArgGenerator<FixtureT, EmptyArgsGenerator<ArgumentT>>;
-	BenchmarksContainer<BM>::Instance().Add(BM(name, func, fixture_builder, std::move(args_vec)));
+	using BM = Benchmark_FB_AG<FixtureT, EmptyArgsGenerator<ArgumentT>>;
+	BenchmarksContainer<BM>::Instance().Add(
+		std::unique_ptr<BM>(new BM(name, func, fixture_builder, std::move(args_vec))));
 
 	Runner<BM>::Register();
 
@@ -238,8 +246,9 @@ Descriptor *RegisterBenchmark_F_AG(
 	const char *name,
 	void (*func)(typename FixtureT::Type&, const typename GeneratorT::ArgType&))
 {
-	using BM = BenchmarkWithFixtureAndArgGenerator<FixtureT, GeneratorT>;
-	BenchmarksContainer<BM>::Instance().Add(BM(name, func));
+	using BM = Benchmark_F_AG<FixtureT, GeneratorT>;
+	BenchmarksContainer<BM>::Instance().Add(
+		std::unique_ptr<BM>(new BM(name, func)));
 
 	Runner<BM>::Register();
 
@@ -263,8 +272,9 @@ Descriptor *RegisterBenchmark_FB_AG(
 	void(*func)(typename FixtureT&, const typename GeneratorT::ArgType&),
 	FixtureT(*fixture_builder)(const typename GeneratorT::ArgType&))
 {
-	using BM = BenchmarkWithFixtureBuilderAndArgGenerator<FixtureT, GeneratorT>;
-	BenchmarksContainer<BM>::Instance().Add(BM(name, func, fixture_builder));
+	using BM = Benchmark_FB_AG<FixtureT, GeneratorT>;
+	BenchmarksContainer<BM>::Instance().Add(
+		std::unique_ptr<BM>(new BM(name, func, fixture_builder)));
 
 	Runner<BM>::Register();
 
@@ -287,8 +297,9 @@ Descriptor *RegisterBenchmark_F_LAG(
 	const char *name,
 	void (*func)(typename FixtureT::Type&, const typename GeneratorT::ArgType&))
 {
-	using BM = BenchmarkWithFixtureAndLazyArgGenerator<FixtureT, GeneratorT>;
-	BenchmarksContainer<BM>::Instance().Add(BM(name, func));
+	using BM = Benchmark_F_LAG<FixtureT, GeneratorT>;
+	BenchmarksContainer<BM>::Instance().Add(
+		std::unique_ptr<BM>(new BM(name, func)));
 
 	Runner<BM>::Register();
 
@@ -312,8 +323,9 @@ Descriptor *RegisterBenchmark_FB_LAG(
 	void(*func)(typename FixtureT&, const typename GeneratorT::ArgType&),
 	FixtureT(*fixture_builder)(const typename GeneratorT::ArgType&))
 {
-	using BM = BenchmarkWithFixtureBuilderAndLazyArgGenerator<FixtureT, GeneratorT>;
-	BenchmarksContainer<BM>::Instance().Add(BM(name, func, fixture_builder));
+	using BM = Benchmark_FB_LAG<FixtureT, GeneratorT>;
+	BenchmarksContainer<BM>::Instance().Add(
+		std::unique_ptr<BM>(new BM(name, func, fixture_builder)));
 
 	Runner<BM>::Register();
 

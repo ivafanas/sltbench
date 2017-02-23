@@ -137,7 +137,7 @@ public:
 			const auto& name = name_and_bm.first;
 			if (filter.ShouldRunBenchmark(name))
 			{
-				auto& bm = name_and_bm.second;
+				auto& bm = *(name_and_bm.second);
 				bool res = Run(bm, reporter);
 				if (!res)
 					was_crash = true;

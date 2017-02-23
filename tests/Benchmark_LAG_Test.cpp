@@ -42,15 +42,15 @@ void push_back_arg(const size_t& arg)
 } // namespace
 
 template<typename Generator>
-using BM = sltbench::BenchmarkWithLazyArgGenerator<Generator>;
+using BM = sltbench::Benchmark_LAG<Generator>;
 
-TEST(BenchmarkWithLazyArgGenerator, GetNameReturnsBenchmarkName)
+TEST(Benchmark_LAG, GetNameReturnsBenchmarkName)
 {
 	BM<IncGenerator> bm("name", &stub_func);
 	EXPECT_EQ("name", bm.GetName());
 }
 
-TEST(BenchmarkWithLazyArgGenerator, MeasureCallsFunction)
+TEST(Benchmark_LAG, MeasureCallsFunction)
 {
 	g_calls_count = 0;
 	BM<IncGenerator> bm("name", &inc_calls_count);
@@ -61,7 +61,7 @@ TEST(BenchmarkWithLazyArgGenerator, MeasureCallsFunction)
 	EXPECT_EQ(1u, g_calls_count);
 }
 
-TEST(BenchmarkWithLazyArgGenerator, MeasureCallsFunctionRequiredNumberOfTimes)
+TEST(Benchmark_LAG, MeasureCallsFunctionRequiredNumberOfTimes)
 {
 	g_calls_count = 0;
 	BM<IncGenerator> bm("name", &inc_calls_count);
@@ -72,7 +72,7 @@ TEST(BenchmarkWithLazyArgGenerator, MeasureCallsFunctionRequiredNumberOfTimes)
 	EXPECT_EQ(3u, g_calls_count);
 }
 
-TEST(BenchmarkWithLazyArgGenerator, MeasureCallsFunctionWithGeneratedArg)
+TEST(Benchmark_LAG, MeasureCallsFunctionWithGeneratedArg)
 {
 	g_call_args.clear();
 	BM<IncGenerator> bm("name", &push_back_arg);
@@ -91,7 +91,7 @@ TEST(BenchmarkWithLazyArgGenerator, MeasureCallsFunctionWithGeneratedArg)
 	EXPECT_EQ(3, g_call_args[2]);
 }
 
-TEST(BenchmarkWithLazyArgGenerator, CurrentArgAsString)
+TEST(Benchmark_LAG, CurrentArgAsString)
 {
 	BM<IncGenerator> bm("name", &stub_func);
 

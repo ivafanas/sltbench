@@ -29,17 +29,13 @@ class IncGenerator
 public:
 	typedef size_t ArgType;
 
-	IncGenerator(int, char **) {}
+	IncGenerator() {}
 
 public:
-	size_t Generate()
+	std::vector<size_t> Generate(int, char**)
 	{
-		++i_;
-		return i_;
+		return{ 1, 2, 3, 4, 5 };
 	}
-
-private:
-	size_t i_ = 0;
 };
 
 void stub_func(int&, const size_t&) {}
@@ -63,15 +59,16 @@ void push_back_arg_and_fix(int& fix, const size_t& arg)
 } // namespace
 
 template<typename Fixture, typename Generator>
-using BM = sltbench::BenchmarkWithFixtureAndLazyArgGenerator<Fixture, Generator>;
+using BM = sltbench::Benchmark_F_AG<Fixture, Generator>;
 
-TEST(BenchmarkWithFixtureAndLazyArgGenerator, GetNameReturnsBenchmarkName)
+TEST(Benchmark_F_AG, GetNameShouldReturnBenchmarkName)
 {
 	BM<Fixture, IncGenerator> bm("name", &stub_func);
+
 	EXPECT_EQ("name", bm.GetName());
 }
 
-TEST(BenchmarkWithFixtureAndLazyArgGenerator, MeasureCallsFunction)
+TEST(Benchmark_F_AG, MeasureCallsFunction)
 {
 	g_calls_count = 0;
 	BM<Fixture, IncGenerator> bm("name", &inc_calls_count);
@@ -82,7 +79,7 @@ TEST(BenchmarkWithFixtureAndLazyArgGenerator, MeasureCallsFunction)
 	EXPECT_EQ(1u, g_calls_count);
 }
 
-TEST(BenchmarkWithFixtureAndLazyArgGenerator, MeasureCallsFunctionExactlyOnce)
+TEST(Benchmark_F_AG, MeasureCallsFunctionExactlyOnce)
 {
 	g_calls_count = 0;
 	BM<Fixture, IncGenerator> bm("name", &inc_calls_count);
@@ -93,7 +90,7 @@ TEST(BenchmarkWithFixtureAndLazyArgGenerator, MeasureCallsFunctionExactlyOnce)
 	EXPECT_EQ(1u, g_calls_count);
 }
 
-TEST(BenchmarkWithFixtureAndLazyArgGenerator, MeasureCallsFunctionWithGeneratedArg)
+TEST(Benchmark_F_AG, MeasureCallsFunctionWithFixtureAndArg)
 {
 	g_call_args.clear();
 	g_call_fixs.clear();
@@ -118,11 +115,46 @@ TEST(BenchmarkWithFixtureAndLazyArgGenerator, MeasureCallsFunctionWithGeneratedA
 	EXPECT_EQ(5, g_call_fixs[2]);
 }
 
-TEST(BenchmarkWithFixtureAndLazyArgGenerator, CurrentArgAsString)
+TEST(Benchmark_F_AG, CurrentArgAsString)
 {
 	BM<Fixture, IncGenerator> bm("name", &stub_func);
 
 	bm.Prepare();
 
 	EXPECT_EQ("1", bm.CurrentArgAsString());
+}
+
+TEST(Benchmark_F_AG, HasArgsToProcessReturnsTrueAfterPrepare)
+{
+	BM<Fixture, IncGenerator> bm("name", &stub_func);
+
+	bm.Prepare();
+
+	EXPECT_TRUE(bm.HasArgsToProcess());
+}
+
+TEST(Benchmark_F_AG, HasArgsToProcessReturnsTrueAfterThreeArgsProcessed)
+{
+	BM<Fixture, IncGenerator> bm("name", &stub_func);
+
+	bm.Prepare();
+	bm.OnArgProcessed();
+	bm.OnArgProcessed();
+	bm.OnArgProcessed();
+
+	EXPECT_TRUE(bm.HasArgsToProcess());
+}
+
+TEST(Benchmark_F_AG, HasArgsToProcessReturnsTrueAfterAllArgsProcessed)
+{
+	BM<Fixture, IncGenerator> bm("name", &stub_func);
+
+	bm.Prepare();
+	bm.OnArgProcessed();
+	bm.OnArgProcessed();
+	bm.OnArgProcessed();
+	bm.OnArgProcessed();
+	bm.OnArgProcessed();
+
+	EXPECT_FALSE(bm.HasArgsToProcess());
 }
