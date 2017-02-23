@@ -39,7 +39,7 @@ void my_function(const size_t& count)
 	std::sort(vec.begin(), vec.end());
 }
 
-static const std::vector<size_t> my_args{ 100000, 110000, 120000, 130000, 140000, 150000 };
+static const std::vector<size_t> my_args{ 1024, 2048, 4096 };
 
 SLTBENCH_FUNCTION_WITH_ARGS(my_function, my_args);
 ```
@@ -201,9 +201,29 @@ void my_function(MyFixture::Type& fix, const size_t& arg)
 	std::sort(fix.begin(), fix.end());
 }
 
-static const std::vector<size_t> my_args = { 100000, 110000, 120000 };
+static const std::vector<size_t> my_args = { 1024, 2048, 4096 };
 
 SLTBENCH_FUNCTION_WITH_FIXTURE_AND_ARGS(my_function, MyFixture, my_args);
+```
+
+And the example for simplified fixtures:
+
+```c++
+std::vector<std::string> make_fixture(const size_t& arg)
+{
+	// create and return fixture here
+	// ...
+}
+
+void my_function(std::vector<std::string>& fix, const size_t& arg)
+{
+	// code to benchmark here
+	// ...
+}
+
+static const std::vector<size_t> my_args = { 1024, 2048, 4096 };
+
+SLTBENCH_FUNCTION_WITH_FIXTURE_BUILDER_AND_ARGS(my_function, make_fixture, my_args);
 ```
 
 
@@ -265,6 +285,39 @@ void my_function(MyFixture::Type& fix, const MyArgsGenerator::ArgType& arg)
 SLTBENCH_FUNCTION_WITH_FIXTURE_AND_ARGS_GENERATOR(my_function, MyFixture, MyArgsGenerator);
 ```
 
+And the example for simplified fixtures:
+
+```c++
+class Generator
+{
+public:
+	typedef size_t ArgType;
+
+	Generator() {}
+
+	std::vector<ArgType> Generate(int argc, char **argv)
+	{
+		std::vector<ArgType> values;
+		// init values here ...
+		return values;
+	}
+};
+
+std::vector<std::string> make_fixture(const Generator::ArgType& arg)
+{
+	// create and return fixture here
+	// ...
+}
+
+void my_function(std::vector<std::string>& fix, const size_t& arg)
+{
+	// code to benchmark here
+	// ...
+}
+
+SLTBENCH_FUNCTION_WITH_FIXTURE_BUILDER_AND_ARGS_GENERATOR(my_function, make_fixture, Generator);
+```
+
 
 # Function with input values lazy generator
 
@@ -287,7 +340,7 @@ class Generator
 public:
 	typedef HugeMemoryConsumingStruct ArgType;
 
-	MyArgsGenerator(int argc, char **argv) { /* ... */ }
+	MyArgsGenerator(int argc, char ** argv) { /*...*/ }
 
 	ArgType Generate()
 	{
@@ -301,10 +354,8 @@ public:
 
 void my_function(const HugeMemoryConsumingStruct& arg)
 {
-	/*
-	 * process arg here
-	 * ...
-	 */
+	// code to benchmark here
+	// ...
 }
 
 SLTBENCH_FUNCTION_WITH_LAZY_ARGS_GENERATOR(my_function, Generator);
@@ -314,7 +365,7 @@ SLTBENCH_FUNCTION_WITH_LAZY_ARGS_GENERATOR(my_function, Generator);
 # Function with fixture and input values lazy generator
 
 If input value consumes a lot memory and
-whole values set doesnot fit into RAM,
+whole values set does not fit into RAM,
 lazy generator should be used.
 
 Requirements:
@@ -336,7 +387,7 @@ class Generator
 public:
 	typedef HugeMemoryConsumingStruct ArgType;
 
-	Generator(int argc, char **argv) { /* ... */ }
+	Generator(int argc, char ** argv) { /*...*/ }
 
 	ArgType Generate()
 	{
@@ -357,7 +408,7 @@ public:
 
 	Type& SetUp(const Generator::ArgType& arg)
 	{
-		/* ... */
+		/*...*/
 		return fixture_;
 	}
 
@@ -369,11 +420,44 @@ private:
 
 void my_function(Fixture::Type& fix, const HugeMemoryConsumingStruct& arg)
 {
-	/*
-	 * process fix and arg here
-	 * ...
-	 */
+	// code to benchmark
+	// ...
 }
 
 SLTBENCH_FUNCTION_WITH_FIXTURE_AND_LAZY_ARGS_GENERATOR(my_function, Generator);
+```
+
+And the example for simplified fixtures:
+
+```c++
+class Generator
+{
+public:
+	typedef HugeMemoryConsumingStruct ArgType;
+
+	Generator(int argc, char ** argv) { /*...*/ }
+
+	ArgType Generate()
+	{
+		bool continue_generation = /*...*/;
+		if (!continue_generation)
+			throw sltbench::StopGenerationException();
+
+		return HugeMemoryConsumingStruct(/*...*/);
+	}
+};
+
+std::vector<size_t> make_fixture(const Generator::ArgType& arg)
+{
+	// generate and return fixture
+	// ...
+}
+
+void my_function(std::vector<size_t>& fix, const HugeMemoryConsumingStruct& arg)
+{
+	// code to benchmark here
+	// ...
+}
+
+SLTBENCH_FUNCTION_WITH_FIXTURE_BUILDER_AND_LAZY_ARGS_GENERATOR(my_function, make_fixture, Generator);
 ```
