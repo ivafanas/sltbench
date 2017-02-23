@@ -217,7 +217,7 @@ Descriptor *RegisterBenchmark_F_A(
 template<typename FixtureT, typename ArgumentT>
 Descriptor *RegisterBenchmark_FB_A(
 	const char *name,
-	void(*func)(typename FixtureT&, const ArgumentT&),
+	void(*func)(FixtureT&, const ArgumentT&),
 	FixtureT(*fixture_builder)(const ArgumentT&),
 	std::vector<ArgumentT> args_vec)
 {
@@ -269,7 +269,7 @@ Descriptor *RegisterBenchmark_F_AG(
 template<typename FixtureT, typename GeneratorT>
 Descriptor *RegisterBenchmark_FB_AG(
 	const char *name,
-	void(*func)(typename FixtureT&, const typename GeneratorT::ArgType&),
+	void(*func)(FixtureT&, const typename GeneratorT::ArgType&),
 	FixtureT(*fixture_builder)(const typename GeneratorT::ArgType&))
 {
 	using BM = Benchmark_FB_AG<FixtureT, GeneratorT>;
@@ -320,7 +320,7 @@ Descriptor *RegisterBenchmark_F_LAG(
 template<typename FixtureT, typename GeneratorT>
 Descriptor *RegisterBenchmark_FB_LAG(
 	const char *name,
-	void(*func)(typename FixtureT&, const typename GeneratorT::ArgType&),
+	void(*func)(FixtureT&, const typename GeneratorT::ArgType&),
 	FixtureT(*fixture_builder)(const typename GeneratorT::ArgType&))
 {
 	using BM = Benchmark_FB_LAG<FixtureT, GeneratorT>;
