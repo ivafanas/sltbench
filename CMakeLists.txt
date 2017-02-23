@@ -104,6 +104,8 @@ set(SLTBENCH_TESTS_SOURCES
 	tests/Benchmark_F_AG_Test.cpp
 	tests/Benchmark_F_LAG_Test.cpp
 	tests/Benchmark_FB_Test.cpp
+	tests/Benchmark_FB_AG_Test.cpp
+	tests/Benchmark_FB_LAG_Test.cpp
 	tests/Benchmark_LAG_Test.cpp
 	tests/FiltersTest.cpp
 	tests/main.cpp
