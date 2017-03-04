@@ -15,6 +15,8 @@ Options:
 `googlebench`. Default value: `sltbench`.
 * `--file_prev` - file with performance results in json format.
 * `--file_next` - file with performance results in json format.
+* `--name_prev` - name of the column with `file_prev` results. Default: `prev`.
+* `--name_next` - name of the column with `file_next` results. Default: `next`.
 * `--format` - output format. Supported values: `json|readable`. Default value:
 `readable`.
 
