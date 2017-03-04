@@ -36,7 +36,9 @@ set(SLTBENCH_LIB_SOURCES
 	src/SingleMeasureAlgo.cpp
 	src/SysInfo.cpp
 	src/SysInfo.h
-	src/Verdict.cpp)
+	src/Verdict.cpp
+	src/WarningsMessages.h
+	src/WarningsMessages.cpp)
 
 # public headers
 set(SLTBENCH_LIB_PUBLIC_HEADERS
@@ -62,6 +64,7 @@ set(SLTBENCH_LIB_PUBLIC_IMPL_HEADERS
 	include/sltbench/impl/IReporter.h
 	include/sltbench/impl/IRunner.h
 	include/sltbench/impl/Optional.h
+	include/sltbench/impl/RunWarnings.h
 	include/sltbench/impl/SingleMeasureAlgo.h
 	include/sltbench/impl/StaticAssertsUtil.h
 	include/sltbench/impl/StopGenerationException.h

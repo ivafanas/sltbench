@@ -1,5 +1,6 @@
 #pragma once
 
+#include "RunWarnings.h"
 #include "Verdict.h"
 
 #include <chrono>
@@ -39,6 +40,13 @@ struct IReporter
 		const std::string& params,
 		Verdict verdict,
 		std::chrono::nanoseconds timing_result) = 0;
+
+	/*!
+		Report warning event.
+
+		\param warning - warning kind
+	*/
+	virtual void ReportWarning(RunWarning warning) = 0;
 };
 
 } // namespace reporter

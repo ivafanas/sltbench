@@ -41,6 +41,23 @@ void heatup()
 	}
 }
 
+bool IsCompiledInDebug()
+{
+#ifndef NDEBUG
+	return true;
+#else
+	return false;
+#endif
+}
+
+void ProcessRunWarnings()
+{
+	auto& reporter = Config::Instance().GetReporter();
+
+	if (IsCompiledInDebug())
+		reporter.ReportWarning(RunWarning::DEBUG_BUILD);
+}
+
 } // namespace
 } // namespace sltbench
 
@@ -73,6 +90,8 @@ void Init(int argc, char **argv)
 
 int Run()
 {
+	ProcessRunWarnings();
+
 	if (GetConfig().GetPrivate().IsHeatupRequired())
 	{
 		// some kind of dark magic: heatup core and scheduler

@@ -34,6 +34,13 @@ public:
 		console_reporter_.Report(name, params, verdict, timing_result);
 	}
 
+	void ReportWarning(sltbench::RunWarning warning) override
+	{
+		// for example, you can ignore warnings here
+		// or redirect them to separate file.
+		console_reporter_.ReportWarning(warning);
+	}
+
 private:
 	sltbench::reporter::ConsoleReporter console_reporter_;
 };

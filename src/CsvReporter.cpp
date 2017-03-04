@@ -1,5 +1,7 @@
 #include "CsvReporter.h"
 
+#include "WarningsMessages.h"
+
 #include <iostream>
 
 
@@ -26,6 +28,11 @@ void CsvReporter::Report(
 		<< params << ','
 		<< ToString(verdict) << ','
 		<< timing_result.count() << std::endl;
+}
+
+void CsvReporter::ReportWarning(RunWarning warning)
+{
+	std::cerr << "WARNING: " << MessageForWarning(warning) << std::endl;
 }
 
 } // namespace repoerter

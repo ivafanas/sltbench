@@ -17,6 +17,7 @@ public: // IReporter
 		const std::string& params,
 		Verdict verdict,
 		std::chrono::nanoseconds timing_result) override;
+	void ReportWarning(RunWarning warning) override;
 };
 
 } // namespace reporter

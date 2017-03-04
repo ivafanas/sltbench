@@ -1,5 +1,7 @@
 #include "JsonReporter.h"
 
+#include "WarningsMessages.h"
+
 #include <iostream>
 
 
@@ -36,6 +38,11 @@ void JsonReporter::Report(
 		<< "}" << std::endl;
 
 	is_any_result_reported_ = true;
+}
+
+void JsonReporter::ReportWarning(RunWarning warning)
+{
+	std::cerr << "WARNING: " << MessageForWarning(warning) << std::endl;
 }
 
 } // namespace repoerter

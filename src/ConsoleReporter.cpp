@@ -1,5 +1,7 @@
 #include "ConsoleReporter.h"
 
+#include "WarningsMessages.h"
+
 #include <iomanip>
 #include <iostream>
 
@@ -31,6 +33,11 @@ void ConsoleReporter::Report(
 		<< std::left << std::setw(25) << params
 		<< std::left << std::setw(9) << ToString(verdict)
 		<< std::right << std::setw(20) << timing_result.count() << std::endl;
+}
+
+void ConsoleReporter::ReportWarning(RunWarning warning)
+{
+	std::cerr << "WARNING: " << MessageForWarning(warning) << std::endl;
 }
 
 } // namespace repoerter

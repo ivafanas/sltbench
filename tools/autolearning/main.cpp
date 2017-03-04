@@ -47,6 +47,7 @@ public: // IReporter
 	{
 		test_2_res_[name + "_" + param] = result;
 	}
+	void ReportWarning(RunWarning) override {}
 
 private:
 	TimingMap test_2_res_;
