@@ -13,6 +13,8 @@ def _parse_args():
     parser.add_argument('--format', default='readable', choices=['readable', 'json'])
     parser.add_argument('--file_prev', required=True, help='file with performance results in json format')
     parser.add_argument('--file_next', required=True, help='file with performance results in json format')
+    parser.add_argument('--name_prev', required=False, default='prev', help='name of the column with "file_prev" results')
+    parser.add_argument('--name_next', required=False, default='next', help='name of the column with "file_next" results')
     return parser.parse_args()
 
 
@@ -47,23 +49,27 @@ def _make_compare_item(i_prev, i_next):
 
 def _report(compare_result, args):
     if args.format == 'readable':
-        _report_readable(compare_result)
+        _report_readable(compare_result, args)
     if args.format == 'json':
-        _report_json(compare_result)
+        _report_json(compare_result, args)
 
 
-def _report_json(compare_result):
+def _report_json(compare_result, args):
     print('[')
     lines = []
     for item in compare_result:
-        lines.append('{{ "name": {}, "prev": {}, "next": {}, "ratio": {} }}'
-            .format(item.name, item.prev, item.next, item.ratio))
+        lines.append('{{ "name": {}, "{}": {}, "{}": {}, "ratio": {} }}'
+            .format(item.name,
+                    args.name_prev, item.prev,
+                    args.name_next, item.next,
+                    item.ratio))
     print(',\n'.join(lines))
     print(']')
 
 
-def _report_readable(compare_result):
-    print('{:<30}{:>15}{:>15}{:>8}'.format('function', 'prev_ns', 'next_ns', 'ratio'))
+def _report_readable(compare_result, args):
+    print('{:<30}{:>15}{:>15}{:>8}'
+        .format('function', args.name_prev, args.name_next, 'ratio'))
     for item in compare_result:
         print('{:<30}{:>15}{:>15}{:>8.3f}'.
             format(item.name, item.prev, item.next, item.ratio))
