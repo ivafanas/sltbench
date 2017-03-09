@@ -77,6 +77,7 @@ SLTBENCH_MAIN();
 * [Examples](doc/examples.md)
 * [How to benchmark](doc/howtobenchmark.md) - follow this
   instruction before you run any performance test
+* [How to analyse performance results] (doc/howto_analyze_results.md)
 * [How to compare performance results](doc/compare_results.md)
 * [Advanced command line options](doc/commandlineoptions.md)
 * [Critical metrics for sltbench project and evaluation tools](tools/metrics/README.md)
