@@ -13,6 +13,20 @@ This example shows how to run all functions wich name contains `MyFunction` subs
 Filter regular expression format corresponds to [basic case of std::regex](http://en.cppreference.com/w/cpp/regex/syntax_option_type).
 
 
+# Change output format
+
+`sltbench` output format may be changed with `--reporter` option:
+
+```sh
+./my_benchmark.exe --reporter=json
+```
+
+Supported values:
+* `console` - (default) prints output as human-readable table of results
+* `json` - prints output in json format
+* `csv` - prints output in csv format
+
+
 # Heatup
 
 Benchmark "heatups" OS and hardware before timing. This process takes about
