@@ -80,6 +80,7 @@ SLTBENCH_MAIN();
 * [How to analyse performance results] (doc/howto_analyze_results.md)
 * [How to compare performance results](doc/compare_results.md)
 * [Advanced command line options](doc/commandlineoptions.md)
+* [Advanced user guide] (doc/advanced user guide.md)
 * [Critical metrics for sltbench project and evaluation tools](tools/metrics/README.md)
 
 
