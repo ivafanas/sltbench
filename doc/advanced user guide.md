@@ -1,5 +1,54 @@
 # Advanced user guide
 
+## How to cutomize output
+
+To customize benchmark output:
+1. Implement custom reporter class and
+2. Register it in the benchmark config.
+
+```c++
+// Custom reporter has to be inherited from IReporter interface
+class CustomReporter : public sltbench::reporter::IReporter
+{
+public:
+	CustomReporter() = default;
+	~CustomReporter() override = default;
+
+public:
+	//! Called once before any test run
+	void ReportBenchmarkStarted() override
+	{
+		// ...
+	}
+
+	//! Called once after all tests run
+	void ReportBenchmarkFinished() override
+	{
+		// ...
+	}
+
+	//! Report about the new test case measure result
+	void Report(
+		const std::string& name,
+		const std::string& params,
+		sltbench::Verdict verdict,
+		std::chrono::nanoseconds timing_result) override
+	{
+		// ...
+	}
+
+	//! Called when warning detected
+	void ReportWarning(sltbench::RunWarning warning) override
+	{
+		// ...
+	}
+};
+
+// Register custom reporter in the benchmark config.
+SLTBENCH_CONFIG().SetReporter(std::make_unique<CustomReporter>());
+```
+
+
 ## How to deal with IMPRECISE status
 
 `IMPRECISE` is the status of test case performance measurement. It means that
