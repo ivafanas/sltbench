@@ -3,8 +3,8 @@
 ## How to cutomize output
 
 To customize benchmark output:
-1. Implement custom reporter class and
-2. Register it in the benchmark config.
+* Implement custom reporter class and
+* Register it in the benchmark config.
 
 ```c++
 // Custom reporter has to be inherited from IReporter interface
