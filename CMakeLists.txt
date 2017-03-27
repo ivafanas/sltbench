@@ -18,6 +18,7 @@ set(SLTBENCH_LIB_SOURCES
 	src/ConsoleReporter.h
 	src/CsvReporter.cpp
 	src/CsvReporter.h
+	src/DoNotOptimize.cpp
 	src/Env.cpp
 	src/Filters.cpp
 	src/Filters.h
@@ -57,6 +58,7 @@ set(SLTBENCH_LIB_PUBLIC_IMPL_HEADERS
 	include/sltbench/impl/Benchmark_FB_LAG.h
 	include/sltbench/impl/Benchmark_LAG.h
 	include/sltbench/impl/Descriptor.h
+	include/sltbench/impl/DoNotOptimize.h
 	include/sltbench/impl/Env.h
 	include/sltbench/impl/IConfig.h
 	include/sltbench/impl/IFilter.h

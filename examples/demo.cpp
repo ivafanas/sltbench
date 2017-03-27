@@ -70,7 +70,7 @@ static void AccVectorNaive(AccVectorFixture::Type& fix, const size_t& count)
 {
 	double res = 0;
 	for (auto v : fix)
-		res += v;
+		sltbench::DoNotOptimize(res += v);
 	fix[0] = res;
 }
 SLTBENCH_FUNCTION_WITH_FIXTURE_AND_ARGS(AccVectorNaive, AccVectorFixture, acc_args);

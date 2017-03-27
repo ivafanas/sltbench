@@ -1,5 +1,39 @@
 # Advanced user guide
 
+## Preventing benchmark code being optimized away
+
+Let's look for the example below.
+
+```
+void my_function()
+{
+	size_t rv;
+	for (size_t i = 0; i < 100000; ++i)
+		rv += i;
+}
+SLTBENCH_FUNCTION(my_function);
+```
+
+Compiler will likely omptimize out calculation inside `my_function`.
+To prevent optimization use `DoNotOptimize` function:
+
+```
+void my_function()
+{
+	size_t rv;
+	for (size_t i = 0; i < 100000; ++i)
+		sltbench::DoNotOptimize(rv += i);
+}
+SLTBENCH_FUNCTION(my_function);
+```
+
+`DoNotOptimize` will force compiler to store expression result, but
+computations inside expression in `DoNotOptimize` can be optimized.
+Keep in mind that `DoNotOptimize` leads to memory barrier, which is
+an performance overhead. Make shure that memory barrier overhead is
+acceptable for your measurement.
+
+
 ## How to cutomize output
 
 To customize benchmark output:

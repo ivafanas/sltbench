@@ -9,6 +9,7 @@
 #include "Benchmark_FB_LAG.h"
 #include "Benchmark_LAG.h"
 #include "BenchmarksContainer.h"
+#include "DoNotOptimize.h"
 #include "Descriptor.h"
 #include "IConfig.h"
 #include "IRunner.h"
