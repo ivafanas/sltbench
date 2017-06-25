@@ -15,7 +15,7 @@ template<typename GeneratorT>
 class Benchmark_AG
 {
 public:
-    typedef void (*FunctionT)(const typename GeneratorT::ArgType&);
+	typedef void (*FunctionT)(const typename GeneratorT::ArgType&);
 
 public:
 	Benchmark_AG(const char *name, FunctionT function)
@@ -25,9 +25,9 @@ public:
 	}
 
 	Benchmark_AG(
-        const char *name,
-        FunctionT function,
-        std::vector<typename GeneratorT::ArgType> args)
+		const char *name,
+		FunctionT function,
+		std::vector<typename GeneratorT::ArgType> args)
 		: name_(name)
 		, function_(function)
 		, args_(std::move(args))

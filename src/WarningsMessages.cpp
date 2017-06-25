@@ -11,11 +11,11 @@ namespace sltbench {
 
 const char * MessageForWarning(RunWarning warning)
 {
-    switch(warning)
-    {
-    case RunWarning::DEBUG_BUILD: return c_msg_debug;
-    };
-    return c_msg_empty;
+	switch(warning)
+	{
+	case RunWarning::DEBUG_BUILD: return c_msg_debug;
+	};
+	return c_msg_empty;
 }
 
 } // namespace sltbench
