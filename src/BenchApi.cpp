@@ -30,7 +30,7 @@ void heatup_function()
 
 void heatup()
 {
-	const std::chrono::nanoseconds heatup_limit = std::chrono::seconds(7);
+	const std::chrono::nanoseconds heatup_limit = std::chrono::seconds(3);
 	std::chrono::nanoseconds heating_time(0);
 	while (heating_time < heatup_limit)
 	{
