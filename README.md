@@ -44,7 +44,7 @@ section for instructions)
 super critical, tested meticulously and benchmarking takes about several hours
 or even days (for our project it was about a week).
 
-Lesser relative error means:
+Less relative error means:
 * Less false speedups/slowdowns you get during testing. Economy of developer
   time.
 * More precise performance changes may be obtained. If testing tool provides
