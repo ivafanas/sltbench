@@ -32,7 +32,7 @@ python -m benchbench.main --backend=nonius --backend_install_path=<path_to_noniu
 ```
 
 Options:
-* `--backend` - which backend to test (`sltbench` or `googlebench`)
+* `--backend` - which backend to test (`sltbench` or `googlebench` or 'nonius')
 * `--backend_install_path` - where backend is installed (with headers and static libs)
 * `--pincpu` - cpu id to pin process (argument of `taskset -c`).
 * `--toolset` - flag to switch compiler (`gcc`|`clang`)
