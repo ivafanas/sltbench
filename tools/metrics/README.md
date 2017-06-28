@@ -17,7 +17,7 @@ The metric is super critical. Its degradation should be fixed ASAP and is a rele
 
 Instruction:
 
-* Install benchmark backend for timing (`sltbench` or `googlebench`)
+* Install benchmark backend for timing (`sltbench` or `googlebench` or `nonius`)
 * run `sltbench` with default parameters:
 ```bash
 python -m benchbench.main --backend=sltbench --backend_install_path=<path_to_sltbench_installed> --pincpu 1
@@ -25,6 +25,10 @@ python -m benchbench.main --backend=sltbench --backend_install_path=<path_to_slt
 * run `googlebench` with default parameters:
 ```bash
 python -m benchbench.main --backend=googlebench --backend_install_path=<path_to_googlebench_installed> --pincpu 1
+```
+* run `nonius` with default parameters:
+```bash
+python -m benchbench.main --backend=nonius --backend_install_path=<path_to_nonius_installed> --pincpu 1
 ```
 
 Options:
