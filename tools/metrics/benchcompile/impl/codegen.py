@@ -498,6 +498,21 @@ static void func_fix_{uid}(benchmark::State& state)
 BENCHMARK(func_fix_{uid});
 '''
 
+_NONIUS_TEST_TMPL_SIMPLE = '''
+#include <nonius/nonius.h++>
+
+#include <string>
+
+static void simple_{uid}()
+{{
+    std::string rv;
+    for (size_t i = 0; i < 100000; ++i)
+        rv += "simple function";
+}}
+
+NONIUS_BENCHMARK("simple_{uid}", [](){{ simple_{uid}(); }})
+'''
+
 
 def gen_sltbench_test_simple(uid):
     return _SLTBENCH_TEST_TMPL_SIMPLE.format(uid=uid)
@@ -553,3 +568,7 @@ def gen_googlebench_test_simple(uid):
 
 def gen_googlebench_test_fixture(uid):
     return _GOOGLEBENCH_TEST_TMPL_FIXTURE.format(uid=uid)
+
+
+def gen_nonius_test_simple(uid):
+    return _NONIUS_TEST_TMPL_SIMPLE.format(uid=uid)

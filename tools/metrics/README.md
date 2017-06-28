@@ -6,7 +6,7 @@ benchmark time for the set of functions.
 * `benchcompile` - benchmark for compilation time.
 The target metric is compilation time of the set of performance tests.
 
-All utilities support `sltbench` and `googlebench` backends.
+All utilities support `sltbench`, `googlebench` and `nonius` backends.
 
 
 # benchbench
@@ -32,7 +32,7 @@ python -m benchbench.main --backend=nonius --backend_install_path=<path_to_noniu
 ```
 
 Options:
-* `--backend` - which backend to test (`sltbench` or `googlebench` or 'nonius')
+* `--backend` - which backend to test (`sltbench` or `googlebench` or `nonius`)
 * `--backend_install_path` - where backend is installed (with headers and static libs)
 * `--pincpu` - cpu id to pin process (argument of `taskset -c`).
 * `--toolset` - flag to switch compiler (`gcc`|`clang`)
@@ -50,7 +50,7 @@ The utility to measure compilation time. Less compilation time is better.
 
 Instruction:
 
-* Install benchmark backend for timing (`sltbench` or `googlebench`)
+* Install benchmark backend for timing (`sltbench` or `googlebench` or `nonius`)
 * run `sltbench` with default parameters:
 ```bash
 python -m benchcompile.main --backend=sltbench --backend_install_path=<path_to_sltbench_installed>
@@ -59,11 +59,15 @@ python -m benchcompile.main --backend=sltbench --backend_install_path=<path_to_s
 ```bash
 python -m benchcompile.main --backend=googlebench --backend_install_path=<path_to_googlebench_installed>
 ```
+* run `nonius` with default parameters:
+```bash
+python -m benchcompile.main --backend=nonius --backend_install_path=<path_to_nonius_installed>
+```
 
 Additional options:
 * `--toolset` - flag to switch compiler (`gcc`|`clang`)
-* `--dataset` - set of tests to compile. `sltbench` and `googlebench` have
-different functionality, so some tests cannot be compiled for `googlebench` at
-all. The default dataset is the subset of tests which can be compiled both with
-`sltbench` and `googlebench`.
+* `--dataset` - set of tests to compile. `sltbench`, `googlebench` and `nonius`
+have different functionality, so some tests cannot be compiled for `googlebench`
+at all, most of the tests cannot be compiled for `nonius`. The default dataset
+is the subset of tests which can be compiled for all backends.
 Use `--dataset=all` to benchmark all available `sltbench` cases.

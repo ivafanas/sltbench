@@ -33,4 +33,9 @@ def create(args):
             dataset.SIMPLE: codegen.gen_googlebench_test_simple,
             dataset.FIXTURE: codegen.gen_googlebench_test_fixture }
         return rv
+    if args.backend == backends_common.NONIUS:
+        rv = backends_common.BackendNonius(install_path=args.backend_install_path)
+        rv.suite_to_generator = {
+            dataset.SIMPLE: codegen.gen_nonius_test_simple }
+        return rv
     raise RuntimeError('Unrecognized backend: {}'.format(args.backend))

@@ -15,9 +15,11 @@ FIXTURE_BUILDER_LAZY_GENERATOR = 'fixture_builder_lazy_generator'
 
 
 # dataset used to compare different backends
+# sltbench supports: all
+# googlebench supports: SIMPLE && FIXTURE
+# nonius supports: SIMPLE
 COMPARABLE = [
     SIMPLE,
-    FIXTURE,
 ]
 
 # all suites
