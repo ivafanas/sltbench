@@ -34,11 +34,11 @@ dataset.
 for sltbench dataset; see "Metrics" section for details; see "How to benchmark"
 section for instructions)
 
-|                      |sltbench|googlebench|
-|----------------------|:------:|:---------:|
-| benchmark time, sec  | 87.45  |   416.44  |
-| average rel error, % |  0.4%  |    5.6%   |
-| maximum rel error, % |  2.9%  |   15.1%   |
+|                      |sltbench|googlebench|nonius|
+|----------------------|:------:|:---------:|:----:|
+| benchmark time, sec  | 87.45  |   416.44  |482.03|
+| average rel error, % |  0.4%  |    5.6%   |  2.6%|
+| maximum rel error, % |  2.9%  |   15.1%   |  -   |
 
 4.7x times speedup sounds extremely effective for projects where performance is
 super critical, tested meticulously and benchmarking takes about several hours
