@@ -38,7 +38,7 @@ section for instructions)
 |----------------------|:------:|:---------:|:----:|
 | benchmark time, sec  | 87.45  |   416.44  |482.03|
 | average rel error, % |  0.4%  |    5.6%   |  2.6%|
-| maximum rel error, % |  2.9%  |   15.1%   |  -   |
+| maximum rel error, % |  2.9%  |   15.1%   | 60%  |
 
 4.7x times speedup sounds extremely effective for projects where performance is
 super critical, tested meticulously and benchmarking takes about several hours

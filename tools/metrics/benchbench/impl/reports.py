@@ -12,6 +12,7 @@ def _report_json(result, options):
     import json
     res = {}
     res['mean_err_percent'] = result.mean_err
+    res['max_err_percent'] = result.max_err
     res['bench_time_sec'] = result.bench_time
     if options.moreinfo:
         res['functions'] = []
@@ -25,6 +26,7 @@ def _report_csv(result, options):
     lines = []
     lines.append('bench_time_sec,{}'.format(result.bench_time))
     lines.append('mean_err_percent,{}'.format(result.mean_err))
+    lines.append('max_err_percent,{}'.format(result.max_err))
     if options.moreinfo:
         for f in result.functions:
             lines.append('{},{},{}'.format(f.name, f.avr, f.err))
@@ -35,6 +37,7 @@ def _report_readable(result, options):
     lines = []
     lines.append('bench_time_sec: {}'.format(result.bench_time))
     lines.append('mean_err_percent: {}'.format(result.mean_err))
+    lines.append('max_err_percent: {}'.format(result.max_err))
     if options.moreinfo:
         for f in result.functions:
             lines.append('{:<30}{:>15}{:>8.4f}'.format(f.name, f.avr, f.err))

@@ -67,6 +67,7 @@ def _collect_stat(rr_results):
     ItemT = namedtuple('FunctionStat', 'name,avr,err')
     items = []
     mean_err = 0.0
+    max_err = 0.0
     for name, values in func_to_values.iteritems():
         f_min = min(values)
         f_max = max(values)
@@ -77,14 +78,16 @@ def _collect_stat(rr_results):
                 float(f_avr - f_min) / f_avr,
                 float(f_max - f_avr) / f_avr)
         mean_err += f_err
+        max_err = max(max_err, f_err)
         items.append(ItemT(name=name, avr=f_avr, err=f_err))
     mean_err /= len(items)
     items.sort(key=lambda x: x.name)
 
-    RT = namedtuple('_collect_stat_res', 'functions,mean_err,bench_time')
+    RT = namedtuple('_collect_stat_res', 'functions,mean_err,max_err,bench_time')
     return RT(
         functions=items,
         mean_err=mean_err,
+        max_err=max_err,
         bench_time=min([x.time for x in rr_results]))
 
 
