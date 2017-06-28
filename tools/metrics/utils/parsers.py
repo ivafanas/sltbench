@@ -38,3 +38,21 @@ class PerfResultsParserGoogleBench:
             rv = [_Res(name=x['name'], time=x['real_time']) for x in root]
             rv.sort(key=lambda x: x.name)
             return rv
+
+
+class PerfResultsParserNonius:
+
+    def __init__(self):
+        pass
+
+    def parse(self, file):
+        with open(file, 'r') as f:
+            def make_res(i):
+                return _Res(name=i.attributes['name'].value,
+                            time=int(float(i.attributes['time'].value) * 1e9))
+
+            from xml.dom import minidom
+            doc = minidom.parse(f)
+            rv = [make_res(x) for x in doc.getElementsByTagName('testcase')]
+            rv.sort(key=lambda x: x.name)
+            return rv

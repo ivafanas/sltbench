@@ -32,14 +32,14 @@ def _run_make(context, path):
 
 
 def _run_runner(context, path):
-    outfile = os.path.abspath('{path}/output.json'.format(path=path))
+    outfile = os.path.abspath('{path}/outfile'.format(path=path))
     cmd_pincpu = ''
     if context.benchcc.pincpu:
         cmd_pincpu = 'taskset -c {}'.format(context.benchcc.pincpu)
     command = 'cd {path} && {cmd_pincpu} ./runner {options} > {outfile}'.format(
         path=path,
         cmd_pincpu=cmd_pincpu,
-        options=context.backend.option_json_reporter,
+        options=context.backend.option_reporter,
         outfile=outfile)
     print(command)
 
