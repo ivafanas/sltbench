@@ -5,24 +5,23 @@
 Key changes
 ~~~~~~~~~~~
 
-* Added simplified fixture `SLTBENCH_FUNCTION_WITH_FIXTURE_BUILDER`. It allows
+* Added simplified fixture ``SLTBENCH_FUNCTION_WITH_FIXTURE_BUILDER``. It allows
   simple fixtures without implementing custom Fixture class. Variants with
   arguments and arguments generators are also provided.
 
-* Added `DoNotOptimize` utility function to prevent the code under testing
+* Added ``DoNotOptimize`` utility function to prevent the code under testing
   being ompimized out by compiler.
 
 * Startup heatup time decreased to 3 seconds (was 7 seconds).
-
 
 Other
 ~~~~~
 
 * Added runtime warning to console about DEBUG build configuration.
 
-* `--name_prev` and ``--name_next` command line arguments of performance results
-  comparator script allows to customize columns names with previous and next
-  results.
+* ``--name_prev`` and ``--name_next`` command line arguments of performance
+  results comparator script allows to customize columns names with previous and
+  next results.
 
 
 2.1.0
