@@ -1,4 +1,30 @@
 
+2.2.0
+------------------
+
+Key changes
+~~~~~~~~~~~
+
+* Added simplified fixture `SLTBENCH_FUNCTION_WITH_FIXTURE_BUILDER`. It allows
+  simple fixtures without implementing custom Fixture class. Variants with
+  arguments and arguments generators are also provided.
+
+* Added `DoNotOptimize` utility function to prevent the code under testing
+  being ompimized out by compiler.
+
+* Startup heatup time decreased to 3 seconds (was 7 seconds).
+
+
+Other
+~~~~~
+
+* Added runtime warning to console about DEBUG build configuration.
+
+* `--name_prev` and ``--name_next` command line arguments of performance results
+  comparator script allows to customize columns names with previous and next
+  results.
+
+
 2.1.0
 ------------------
 
@@ -18,18 +44,18 @@ Key changes
 
 * Removed 20-nanoseconds (approx.) overhead on function call, which is critical
   for functions with execution time less then 0.0000005 sec (500 nanoseconds).
-  For other functions 20 nanoseconds fits  into timing error and does not influe 
+  For other functions 20 nanoseconds fits  into timing error and does not influe
   on performance results.
- 
+
 * Significantly improved reproducibility, quality and benchmarking time for
   functions with execution time about tens of nanoseconds.
- 
+
 * Now sltbench is about 4x times faster than googlebench on training dataset and
   produce more stable results (see metrics section below).
- 
+
 * Added tool to compare performance results. Usable to check was functions
   dataset speeded up or not. See ``tools/compare/main.py``
-  
+
 * Added tools to compare key project metrics for sltbench and competitors like
   googlebench (see ``tools/metrics``): benchmark time, performance results
   reproducibilty (rel. error) and compilation time.
@@ -86,5 +112,5 @@ Other
 
 * Measure algorithm is learned on training dataset.
 
-* The first sltbench release test functions about 3x times faster than 
+* The first sltbench release test functions about 3x times faster than
   googlebench. Looks reasonable.
