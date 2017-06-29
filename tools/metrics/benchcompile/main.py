@@ -12,11 +12,11 @@ import utils.toolset as toolset
 
 def _parse_args():
     import argparse
-    parser = argparse.ArgumentParser(description='benchcompile utility')
-    parser.add_argument('--backend', default=BACKEND_SLTBENCH, choices=BACKENDS_ALL)
-    parser.add_argument('--backend_install_path', required=True)
-    parser.add_argument('--dataset', default='comparable', choices=dataset.ALL_INPUT)
-    parser.add_argument('--toolset', default=toolset.CLANG, choices=toolset.ALL)
+    parser = argparse.ArgumentParser(description='Utility to measure benchmark compilation time.')
+    parser.add_argument('--backend', default=BACKEND_SLTBENCH, choices=BACKENDS_ALL, help='benchmark framework to test. Default is "sltbench".')
+    parser.add_argument('--backend_install_path', required=True, help='path to installed backend with headers and static libs.')
+    parser.add_argument('--dataset', default='comparable', choices=dataset.ALL_INPUT, help='testing dataset. sltbench supports all datasets. googlebench supports "simple" and "fixture". nonius supports "simple". Default is "comparable".')
+    parser.add_argument('--toolset', default=toolset.CLANG, choices=toolset.ALL, help='compiler tools collection. Default is "clang".')
     return parser.parse_args()
 
 

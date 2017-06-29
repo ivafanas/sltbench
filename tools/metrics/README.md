@@ -43,6 +43,11 @@ only for fixed subset of sizes. The default value is `all`.
 `--sizes` argument. The default value is `all`.
 * `--moreinfo`, `--report_format`, `--outfile`, `--runcount` - options for developer needs.
 
+Run the following command for detailed information:
+```bash
+python -m benchbench.main --help
+```
+
 
 # benchcompile
 
@@ -71,3 +76,8 @@ have different functionality, so some tests cannot be compiled for `googlebench`
 at all, most of the tests cannot be compiled for `nonius`. The default dataset
 is the subset of tests which can be compiled for all backends.
 Use `--dataset=all` to benchmark all available `sltbench` cases.
+
+Run the following command for detailed information:
+```bash
+python -m benchcompile.main --help
+```
