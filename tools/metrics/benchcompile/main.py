@@ -2,7 +2,6 @@
 Benchmark for performance tests compilation time
 '''
 
-# TODO: update README, it is not runnable more from its folder
 from utils.backend import SLTBENCH as BACKEND_SLTBENCH
 from utils.backend import ALL as BACKENDS_ALL
 import impl.backend as backend
