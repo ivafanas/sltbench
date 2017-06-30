@@ -20,7 +20,7 @@ def _parse_args():
     parser.add_argument('--report_format', default=reports.FMT_READABLE, choices=reports.FMT_ALL, help='output format. Default is "readable".')
     parser.add_argument('--outfile', default=None, help='output file to save report. Output will not be saved to file by default.')
     parser.add_argument('--runcount', default=4, type=int, help='count of benchmark runs to collect statistics. Default is 4.')
-    parser.add_argument('--pincpu', default=None, help='input arguments to taskset to pin benchmark to the cpu. No pinning by default because it is definitely machine-specific.')
+    parser.add_argument('--pincpu', default=None, help='input arguments to taskset to pin benchmark to the cpu. No pinning by default because it is definitely machine-specific. Linux only. Currently not supported for Mac and Windows.')
     return parser.parse_args()
 
 

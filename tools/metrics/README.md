@@ -34,7 +34,7 @@ python -m benchbench.main --backend=nonius --backend_install_path=<path_to_noniu
 Options:
 * `--backend` - which backend to test (`sltbench` or `googlebench` or `nonius`)
 * `--backend_install_path` - where backend is installed (with headers and static libs)
-* `--pincpu` - cpu id to pin process (argument of `taskset -c`).
+* `--pincpu` - cpu id to pin process (argument of `taskset -c`. Linux only. Not supported for Mac OS and Windows).
 * `--toolset` - flag to switch compiler (`gcc`|`clang`)
 * `--sizes` - set of sizes to test. Different problems sizes has different
 behaviour in both `sltbench` and `googlebench`. Some problems may be reproduced
