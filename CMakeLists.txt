@@ -83,6 +83,7 @@ add_library(sltbench
 	${SLTBENCH_LIB_SOURCES}
 	${SLTBENCH_LIB_PUBLIC_HEADERS}
 	${SLTBENCH_LIB_PUBLIC_IMPL_HEADERS})
+add_library(slt::sltbench ALIAS sltbench)
 
 set_target_properties(sltbench PROPERTIES
 	CXX_STANDARD 11
@@ -128,6 +129,7 @@ if(BUILD_TESTS)
 		tests/ProgramOptionsTest.cpp
 		tests/SingleMeasureAlgoTest.cpp
 		tests/RunnerTest.cpp)
+	add_executable(slt::sltbench_unittests ALIAS sltbench_unittests)
 
 	add_dependencies(sltbench_unittests sltbench)
 
@@ -165,6 +167,7 @@ if (BUILD_EXAMPLES)
 		examples/function_with_lazy_args_generator.cpp
 		examples/main.cpp
 		examples/simple_function.cpp)
+	add_executable(slt::sltbench_examples ALIAS sltbench_examples)
 
 	add_dependencies(sltbench_examples sltbench)
 
@@ -181,6 +184,7 @@ if (BUILD_AUTOLEARNING)
 	add_executable(sltbench_autolearning
 		tools/autolearning/main.cpp
 		tools/autolearning/Samples.cpp)
+	add_executable(slt::sltbench_autolearning ALIAS sltbench_autolearning)
 
 	add_dependencies(sltbench_autolearning sltbench)
 
@@ -201,6 +205,7 @@ if (BUILD_HISTOGRAMMER)
 		tools/histogrammer/HistogramBuilder.cpp
 		tools/histogrammer/HistogramBuilder.h
 		tools/histogrammer/main.cpp)
+	add_executable(slt::sltbench_histogrammer ALIAS sltbench_histogrammer)
 
 	add_dependencies(sltbench_histogrammer sltbench)
 
