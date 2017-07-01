@@ -4,7 +4,6 @@ project (sltbench)
 
 # setup env
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 # options
 option(BUILD_TESTS "BUILD_TESTS" OFF)
@@ -110,6 +109,11 @@ add_library (sltbench_static
 	${SLTBENCH_LIB_PUBLIC_HEADERS}
 	${SLTBENCH_LIB_PUBLIC_IMPL_HEADERS})
 
+set_target_properties(sltbench_static PROPERTIES
+	CXX_STANDARD 11
+	CXX_STANDARD_REQUIRED YES
+	CXX_EXTENSIONS NO)
+
 # install static lib
 install(
 	TARGETS sltbench_static
@@ -146,6 +150,11 @@ if(BUILD_TESTS)
 		tests/SingleMeasureAlgoTest.cpp
 		tests/RunnerTest.cpp)
 
+	set_target_properties(sltbench_unittests PROPERTIES
+		CXX_STANDARD 11
+		CXX_STANDARD_REQUIRED YES
+		CXX_EXTENSIONS NO)
+
 	target_include_directories(sltbench_unittests PRIVATE
 		${CMAKE_CURRENT_SOURCE_DIR}/tests/gtest/googletest
 		${CMAKE_CURRENT_SOURCE_DIR}/tests/gtest/googletest/include)
@@ -173,6 +182,12 @@ if (BUILD_EXAMPLES)
 		examples/function_with_lazy_args_generator.cpp
 		examples/main.cpp
 		examples/simple_function.cpp)
+
+	set_target_properties(sltbench_examples PROPERTIES
+		CXX_STANDARD 11
+		CXX_STANDARD_REQUIRED YES
+		CXX_EXTENSIONS NO)
+
 	target_link_libraries(sltbench_examples LINK_PUBLIC sltbench_static)
 endif()
 
@@ -181,6 +196,12 @@ if (BUILD_AUTOLEARNING)
 	add_executable(sltbench_autolearning
 		tools/autolearning/main.cpp
 		tools/autolearning/Samples.cpp)
+
+	set_target_properties(sltbench_autolearning PROPERTIES
+		CXX_STANDARD 11
+		CXX_STANDARD_REQUIRED YES
+		CXX_EXTENSIONS NO)
+
 	target_link_libraries(sltbench_autolearning LINK_PUBLIC sltbench_static)
 endif()
 
@@ -190,5 +211,11 @@ if (BUILD_HISTOGRAMMER)
 		tools/histogrammer/HistogramBuilder.cpp
 		tools/histogrammer/HistogramBuilder.h
 		tools/histogrammer/main.cpp)
+
+	set_target_properties(sltbench_histogrammer PROPERTIES
+		CXX_STANDARD 11
+		CXX_STANDARD_REQUIRED YES
+		CXX_EXTENSIONS NO)
+
 	target_link_libraries(sltbench_histogrammer LINK_PUBLIC sltbench_static)
 endif()
