@@ -128,9 +128,6 @@ install(
 
 # unit tests
 if(BUILD_TESTS)
-	include_directories (${CMAKE_CURRENT_SOURCE_DIR}/tests/gtest/googletest/include)
-	include_directories (${CMAKE_CURRENT_SOURCE_DIR}/tests/gtest/googletest)
-
 	add_executable(sltbench_unittests
 		tests/Benchmark_AG_Test.cpp
 		tests/Benchmark_F_Test.cpp
@@ -148,6 +145,10 @@ if(BUILD_TESTS)
 		tests/ProgramOptionsTest.cpp
 		tests/SingleMeasureAlgoTest.cpp
 		tests/RunnerTest.cpp)
+
+	target_include_directories(sltbench_unittests PRIVATE
+		${CMAKE_CURRENT_SOURCE_DIR}/tests/gtest/googletest
+		${CMAKE_CURRENT_SOURCE_DIR}/tests/gtest/googletest/include)
 
 	find_package (Threads)
 	target_link_libraries(sltbench_unittests LINK_PUBLIC sltbench_static ${CMAKE_THREAD_LIBS_INIT})
