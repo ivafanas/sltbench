@@ -1,12 +1,11 @@
 #include <sltbench/Bench.h>
 
-#include "ConsoleReporter.h"
+#include <iomanip>
+#include <iostream>
 
 
 namespace {
 
-// custom reporter.
-// just forward call to ConsoleReporter, but method can do whatever you want
 class MyReporter : public sltbench::reporter::IReporter
 {
 public:
@@ -16,12 +15,12 @@ public:
 public:
 	void ReportBenchmarkStarted() override
 	{
-		console_reporter_.ReportBenchmarkStarted();
+		// for example, ignore this event
 	}
 
 	void ReportBenchmarkFinished() override
 	{
-		console_reporter_.ReportBenchmarkFinished();
+		// for example, ignore this event
 	}
 
 	void Report(
@@ -30,19 +29,17 @@ public:
 		sltbench::Verdict verdict,
 		std::chrono::nanoseconds timing_result) override
 	{
-		// std::cout << name << params << ok << timing_result.count() << std::endl;
-		console_reporter_.Report(name, params, verdict, timing_result);
+		std::cout
+			<< std::left << std::setw(60) << name
+			<< std::left << std::setw(25) << params
+			<< std::left << std::setw(9) << ToString(verdict)
+			<< std::right << std::setw(20) << timing_result.count() << std::endl;
 	}
 
 	void ReportWarning(sltbench::RunWarning warning) override
 	{
-		// for example, you can ignore warnings here
-		// or redirect them to separate file.
-		console_reporter_.ReportWarning(warning);
+		// for example, do not report warnings.
 	}
-
-private:
-	sltbench::reporter::ConsoleReporter console_reporter_;
 };
 
 } // namespace
