@@ -100,14 +100,17 @@ foreach(source IN LISTS SLTBENCH_LIB_SOURCES SLTBENCH_LIB_PUBLIC_HEADERS SLTBENC
     source_group("${source_path_msvc}" FILES "${source}")
 endforeach()
 
-include_directories (${CMAKE_CURRENT_SOURCE_DIR}/src)
-include_directories (${CMAKE_CURRENT_SOURCE_DIR}/include)
-
 # lib
 add_library (sltbench_static
 	${SLTBENCH_LIB_SOURCES}
 	${SLTBENCH_LIB_PUBLIC_HEADERS}
 	${SLTBENCH_LIB_PUBLIC_IMPL_HEADERS})
+
+target_include_directories(sltbench_static PUBLIC
+	${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+target_include_directories(sltbench_static PRIVATE
+	${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 set_target_properties(sltbench_static PROPERTIES
 	CXX_STANDARD 11
@@ -150,6 +153,8 @@ if(BUILD_TESTS)
 		tests/SingleMeasureAlgoTest.cpp
 		tests/RunnerTest.cpp)
 
+	add_dependencies(sltbench_unittests sltbench_static)
+
 	set_target_properties(sltbench_unittests PROPERTIES
 		CXX_STANDARD 11
 		CXX_STANDARD_REQUIRED YES
@@ -183,6 +188,8 @@ if (BUILD_EXAMPLES)
 		examples/main.cpp
 		examples/simple_function.cpp)
 
+	add_dependencies(sltbench_examples sltbench_static)
+
 	set_target_properties(sltbench_examples PROPERTIES
 		CXX_STANDARD 11
 		CXX_STANDARD_REQUIRED YES
@@ -196,6 +203,8 @@ if (BUILD_AUTOLEARNING)
 	add_executable(sltbench_autolearning
 		tools/autolearning/main.cpp
 		tools/autolearning/Samples.cpp)
+
+	add_dependencies(sltbench_autolearning sltbench_static)
 
 	set_target_properties(sltbench_autolearning PROPERTIES
 		CXX_STANDARD 11
@@ -211,6 +220,8 @@ if (BUILD_HISTOGRAMMER)
 		tools/histogrammer/HistogramBuilder.cpp
 		tools/histogrammer/HistogramBuilder.h
 		tools/histogrammer/main.cpp)
+
+	add_dependencies(sltbench_histogrammer sltbench_static)
 
 	set_target_properties(sltbench_histogrammer PROPERTIES
 		CXX_STANDARD 11
