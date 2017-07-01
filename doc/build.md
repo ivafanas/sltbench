@@ -1,7 +1,7 @@
 # Build instructions
 
 
-## Linux
+## Linux && Mac
 
 ```bash
 # clone git repo
@@ -16,11 +16,8 @@ mkdir build install
 
 # generate, build, install
 cd build
-cmake -DCMAKE_INSTALL_PREFIX=${PWD}/../install -DBUILD_TESTS=ON ${PWD}/../sltbench -DCMAKE_BUILD_TYPE=Release
-make install
-
-# run unittests (just to make shure)
-./sltbench_unittests
+cmake -DCMAKE_INSTALL_PREFIX=${PWD}/../install ${PWD}/../sltbench -DCMAKE_BUILD_TYPE=Release
+cmake --build . --target install
 
 # prepared sltbench lib is here:
 # ${PWD}/../install
