@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.8.0)
+cmake_minimum_required (VERSION 3.5.0)
 
 project (sltbench)
 
@@ -8,6 +8,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 # options
 option(BUILD_TESTS "BUILD_TESTS" OFF)
+option(BUILD_EXAMPLES "BUILD_EXAMPLES" OFF)
+option(BUILD_HISTOGRAMMER "BUILD_HISTOGRAMMER" OFF)
+option(BUILD_AUTOLEARNING "BUILD_AUTOLEARNING" OFF)
 
 # sources
 set(SLTBENCH_LIB_SOURCES
@@ -72,36 +75,6 @@ set(SLTBENCH_LIB_PUBLIC_IMPL_HEADERS
 	include/sltbench/impl/StopGenerationException.h
 	include/sltbench/impl/Verdict.h)
 
-# examples sources
-set(SLTBENCH_EXAMPLES_SOURCES
-	examples/custom_reporter.cpp
-	examples/demo.cpp
-	examples/function_with_args.cpp
-	examples/function_with_args_generator.cpp
-	examples/function_with_exception.cpp
-	examples/function_with_fixture.cpp
-	examples/function_with_fixture_and_args.cpp
-	examples/function_with_fixture_and_args_generator.cpp
-	examples/function_with_fixture_and_lazy_args_generator.cpp
-	examples/function_with_fixture_builder.cpp
-	examples/function_with_fixture_builder_and_args.cpp
-	examples/function_with_fixture_builder_and_args_generator.cpp
-	examples/function_with_fixture_builder_and_lazy_args_generator.cpp
-	examples/function_with_lazy_args_generator.cpp
-	examples/main.cpp
-	examples/simple_function.cpp)
-
-# autolearning sources
-set(SLTBENCH_AUTOLEARNING_SOURCES
-	tools/autolearning/main.cpp
-	tools/autolearning/Samples.cpp)
-
-# histogrammer sources
-set(SLTBENCH_HISTOGRAMMER_SOURCES
-	tools/histogrammer/HistogramBuilder.cpp
-	tools/histogrammer/HistogramBuilder.h
-	tools/histogrammer/main.cpp)
-
 # tests sources
 set(SLTBENCH_TESTS_SOURCES
 	tests/Benchmark_AG_Test.cpp
@@ -122,7 +95,7 @@ set(SLTBENCH_TESTS_SOURCES
 	tests/RunnerTest.cpp)
 
 # split source files into nested source groups by subfolder
-foreach(source IN LISTS SLTBENCH_LIB_SOURCES SLTBENCH_LIB_PUBLIC_HEADERS SLTBENCH_LIB_PUBLIC_IMPL_HEADERS SLTBENCH_TESTS_SOURCES)
+foreach(source IN LISTS SLTBENCH_LIB_SOURCES SLTBENCH_LIB_PUBLIC_HEADERS SLTBENCH_LIB_PUBLIC_IMPL_HEADERS)
     get_filename_component(source_path "${source}" PATH)
     string(REPLACE "/" "\\" source_path_msvc "${source_path}")
     source_group("${source_path_msvc}" FILES "${source}")
@@ -136,18 +109,6 @@ add_library (sltbench_static
 	${SLTBENCH_LIB_SOURCES}
 	${SLTBENCH_LIB_PUBLIC_HEADERS}
 	${SLTBENCH_LIB_PUBLIC_IMPL_HEADERS})
-
-# examples
-add_executable(sltbench_examples ${SLTBENCH_EXAMPLES_SOURCES})
-target_link_libraries(sltbench_examples LINK_PUBLIC sltbench_static)
-
-# autolearning tool
-add_executable(sltbench_autolearning ${SLTBENCH_AUTOLEARNING_SOURCES})
-target_link_libraries(sltbench_autolearning LINK_PUBLIC sltbench_static)
-
-# histogrammer tool
-add_executable(sltbench_histogrammer ${SLTBENCH_HISTOGRAMMER_SOURCES})
-target_link_libraries(sltbench_histogrammer LINK_PUBLIC sltbench_static)
 
 # install static lib
 install(
@@ -170,7 +131,63 @@ if(BUILD_TESTS)
 	include_directories (${CMAKE_CURRENT_SOURCE_DIR}/tests/gtest/googletest/include)
 	include_directories (${CMAKE_CURRENT_SOURCE_DIR}/tests/gtest/googletest)
 
+	add_executable(sltbench_unittests
+		tests/Benchmark_AG_Test.cpp
+		tests/Benchmark_F_Test.cpp
+		tests/Benchmark_F_AG_Test.cpp
+		tests/Benchmark_F_LAG_Test.cpp
+		tests/Benchmark_FB_Test.cpp
+		tests/Benchmark_FB_AG_Test.cpp
+		tests/Benchmark_FB_LAG_Test.cpp
+		tests/Benchmark_LAG_Test.cpp
+		tests/FiltersTest.cpp
+		tests/main.cpp
+		tests/MAResultsContainerTest.cpp
+		tests/MeasureAlgoTest.cpp
+		tests/ProcedureBenchmarkTest.cpp
+		tests/ProgramOptionsTest.cpp
+		tests/SingleMeasureAlgoTest.cpp
+		tests/RunnerTest.cpp)
+
 	find_package (Threads)
-	add_executable(sltbench_unittests ${SLTBENCH_TESTS_SOURCES})
 	target_link_libraries(sltbench_unittests LINK_PUBLIC sltbench_static ${CMAKE_THREAD_LIBS_INIT})
+endif()
+
+# examples
+if (BUILD_EXAMPLES)
+	add_executable(sltbench_examples
+		examples/custom_reporter.cpp
+		examples/demo.cpp
+		examples/function_with_args.cpp
+		examples/function_with_args_generator.cpp
+		examples/function_with_exception.cpp
+		examples/function_with_fixture.cpp
+		examples/function_with_fixture_and_args.cpp
+		examples/function_with_fixture_and_args_generator.cpp
+		examples/function_with_fixture_and_lazy_args_generator.cpp
+		examples/function_with_fixture_builder.cpp
+		examples/function_with_fixture_builder_and_args.cpp
+		examples/function_with_fixture_builder_and_args_generator.cpp
+		examples/function_with_fixture_builder_and_lazy_args_generator.cpp
+		examples/function_with_lazy_args_generator.cpp
+		examples/main.cpp
+		examples/simple_function.cpp)
+	target_link_libraries(sltbench_examples LINK_PUBLIC sltbench_static)
+endif()
+
+# autolearning tool
+if (BUILD_AUTOLEARNING)
+	add_executable(sltbench_autolearning
+		tools/autolearning/main.cpp
+		tools/autolearning/Samples.cpp)
+	target_link_libraries(sltbench_autolearning LINK_PUBLIC sltbench_static)
+endif()
+
+# histogrammer tool
+if (BUILD_HISTOGRAMMER)
+	add_executable(sltbench_histogrammer
+		tools/histogrammer/HistogramBuilder.cpp
+		tools/histogrammer/HistogramBuilder.h
+		tools/histogrammer/main.cpp)
+	target_link_libraries(sltbench_histogrammer LINK_PUBLIC sltbench_static)
 endif()

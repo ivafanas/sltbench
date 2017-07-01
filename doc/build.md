@@ -34,6 +34,13 @@ cd ..
 
 mkdir build install
 cd build
-cmake -DCMAKE_INSTALL_PREFIX=..\install -DBUILD_TESTS=ON ..\sltbench
+cmake -DCMAKE_INSTALL_PREFIX=..\install ..\sltbench
 msbuild.exe INSTALL.vcxproj /p:Configuration=Release
+```
+
+## For sltbench maintainers:
+
+Use the following command to build the full set of sources:
+```bash
+cmake -DCMAKE_INSTALL_PREFIX=${PWD}/../install ${PWD}/../sltbench -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON -DBUILD_EXAMPLES=ON -DBUILD_HISTOGRAMMER=ON -DBUILD_AUTOLEARNING=ON
 ```
