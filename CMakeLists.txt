@@ -3,10 +3,10 @@ cmake_minimum_required (VERSION 3.5.0)
 project (sltbench)
 
 # options
-option(BUILD_TESTS "BUILD_TESTS" OFF)
-option(BUILD_EXAMPLES "BUILD_EXAMPLES" OFF)
-option(BUILD_HISTOGRAMMER "BUILD_HISTOGRAMMER" OFF)
-option(BUILD_AUTOLEARNING "BUILD_AUTOLEARNING" OFF)
+option(SLT_BUILD_TESTS "SLT_BUILD_TESTS" OFF)
+option(SLT_BUILD_EXAMPLES "SLT_BUILD_EXAMPLES" OFF)
+option(SLT_BUILD_HISTOGRAMMER "SLT_BUILD_HISTOGRAMMER" OFF)
+option(SLT_BUILD_AUTOLEARNING "SLT_BUILD_AUTOLEARNING" OFF)
 
 # sources
 set(SLTBENCH_LIB_SOURCES
@@ -111,7 +111,7 @@ install(
 )
 
 # unit tests
-if(BUILD_TESTS)
+if (SLT_BUILD_TESTS)
 	add_executable(sltbench_unittests
 		tests/Benchmark_AG_Test.cpp
 		tests/Benchmark_F_Test.cpp
@@ -149,7 +149,7 @@ if(BUILD_TESTS)
 endif()
 
 # examples
-if (BUILD_EXAMPLES)
+if (SLT_BUILD_EXAMPLES)
 	add_executable(sltbench_examples
 		examples/custom_reporter.cpp
 		examples/demo.cpp
@@ -180,7 +180,7 @@ if (BUILD_EXAMPLES)
 endif()
 
 # autolearning tool
-if (BUILD_AUTOLEARNING)
+if (SLT_BUILD_AUTOLEARNING)
 	add_executable(sltbench_autolearning
 		tools/autolearning/main.cpp
 		tools/autolearning/Samples.cpp)
@@ -200,7 +200,7 @@ if (BUILD_AUTOLEARNING)
 endif()
 
 # histogrammer tool
-if (BUILD_HISTOGRAMMER)
+if (SLT_BUILD_HISTOGRAMMER)
 	add_executable(sltbench_histogrammer
 		tools/histogrammer/HistogramBuilder.cpp
 		tools/histogrammer/HistogramBuilder.h

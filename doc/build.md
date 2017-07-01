@@ -42,5 +42,5 @@ msbuild.exe INSTALL.vcxproj /p:Configuration=Release
 
 Use the following command to build the full set of sources:
 ```bash
-cmake -DCMAKE_INSTALL_PREFIX=${PWD}/../install ${PWD}/../sltbench -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON -DBUILD_EXAMPLES=ON -DBUILD_HISTOGRAMMER=ON -DBUILD_AUTOLEARNING=ON
+cmake -DCMAKE_INSTALL_PREFIX=${PWD}/../install ${PWD}/../sltbench -DCMAKE_BUILD_TYPE=Release -DSLT_BUILD_TESTS=ON -DSLT_BUILD_EXAMPLES=ON -DSLT_BUILD_HISTOGRAMMER=ON -DSLT_BUILD_AUTOLEARNING=ON
 ```
