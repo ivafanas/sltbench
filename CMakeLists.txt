@@ -71,25 +71,6 @@ set(SLTBENCH_LIB_PUBLIC_IMPL_HEADERS
 	include/sltbench/impl/StopGenerationException.h
 	include/sltbench/impl/Verdict.h)
 
-# tests sources
-set(SLTBENCH_TESTS_SOURCES
-	tests/Benchmark_AG_Test.cpp
-	tests/Benchmark_F_Test.cpp
-	tests/Benchmark_F_AG_Test.cpp
-	tests/Benchmark_F_LAG_Test.cpp
-	tests/Benchmark_FB_Test.cpp
-	tests/Benchmark_FB_AG_Test.cpp
-	tests/Benchmark_FB_LAG_Test.cpp
-	tests/Benchmark_LAG_Test.cpp
-	tests/FiltersTest.cpp
-	tests/main.cpp
-	tests/MAResultsContainerTest.cpp
-	tests/MeasureAlgoTest.cpp
-	tests/ProcedureBenchmarkTest.cpp
-	tests/ProgramOptionsTest.cpp
-	tests/SingleMeasureAlgoTest.cpp
-	tests/RunnerTest.cpp)
-
 # split source files into nested source groups by subfolder
 foreach(source IN LISTS SLTBENCH_LIB_SOURCES SLTBENCH_LIB_PUBLIC_HEADERS SLTBENCH_LIB_PUBLIC_IMPL_HEADERS)
     get_filename_component(source_path "${source}" PATH)
