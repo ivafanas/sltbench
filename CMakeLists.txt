@@ -2,9 +2,6 @@ cmake_minimum_required (VERSION 3.5.0)
 
 project (sltbench)
 
-# setup env
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
 # options
 option(BUILD_TESTS "BUILD_TESTS" OFF)
 option(BUILD_EXAMPLES "BUILD_EXAMPLES" OFF)
@@ -161,6 +158,7 @@ if(BUILD_TESTS)
 		CXX_EXTENSIONS NO)
 
 	target_include_directories(sltbench_unittests PRIVATE
+		${CMAKE_CURRENT_SOURCE_DIR}
 		${CMAKE_CURRENT_SOURCE_DIR}/tests/gtest/googletest
 		${CMAKE_CURRENT_SOURCE_DIR}/tests/gtest/googletest/include)
 
@@ -212,6 +210,9 @@ if (BUILD_AUTOLEARNING)
 		CXX_EXTENSIONS NO)
 
 	target_link_libraries(sltbench_autolearning LINK_PUBLIC sltbench_static)
+
+	target_include_directories(sltbench_autolearning PRIVATE
+		${CMAKE_CURRENT_SOURCE_DIR})
 endif()
 
 # histogrammer tool
