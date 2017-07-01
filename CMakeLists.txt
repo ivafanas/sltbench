@@ -79,25 +79,23 @@ foreach(source IN LISTS SLTBENCH_LIB_SOURCES SLTBENCH_LIB_PUBLIC_HEADERS SLTBENC
 endforeach()
 
 # lib
-add_library (sltbench_static
+add_library(sltbench
 	${SLTBENCH_LIB_SOURCES}
 	${SLTBENCH_LIB_PUBLIC_HEADERS}
 	${SLTBENCH_LIB_PUBLIC_IMPL_HEADERS})
 
-target_include_directories(sltbench_static PUBLIC
-	${CMAKE_CURRENT_SOURCE_DIR}/include)
-
-target_include_directories(sltbench_static PRIVATE
-	${CMAKE_CURRENT_SOURCE_DIR}/src)
-
-set_target_properties(sltbench_static PROPERTIES
+set_target_properties(sltbench PROPERTIES
 	CXX_STANDARD 11
 	CXX_STANDARD_REQUIRED YES
 	CXX_EXTENSIONS NO)
 
+target_include_directories(sltbench
+	PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+	PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
 # install static lib
 install(
-	TARGETS sltbench_static
+	TARGETS sltbench
 	LIBRARY DESTINATION lib
 	ARCHIVE DESTINATION lib
 	RUNTIME DESTINATION bin
@@ -131,7 +129,7 @@ if(BUILD_TESTS)
 		tests/SingleMeasureAlgoTest.cpp
 		tests/RunnerTest.cpp)
 
-	add_dependencies(sltbench_unittests sltbench_static)
+	add_dependencies(sltbench_unittests sltbench)
 
 	set_target_properties(sltbench_unittests PROPERTIES
 		CXX_STANDARD 11
@@ -144,7 +142,8 @@ if(BUILD_TESTS)
 		${CMAKE_CURRENT_SOURCE_DIR}/tests/gtest/googletest/include)
 
 	find_package (Threads)
-	target_link_libraries(sltbench_unittests LINK_PUBLIC sltbench_static ${CMAKE_THREAD_LIBS_INIT})
+	target_link_libraries(sltbench_unittests
+		LINK_PUBLIC sltbench ${CMAKE_THREAD_LIBS_INIT})
 endif()
 
 # examples
@@ -167,14 +166,14 @@ if (BUILD_EXAMPLES)
 		examples/main.cpp
 		examples/simple_function.cpp)
 
-	add_dependencies(sltbench_examples sltbench_static)
+	add_dependencies(sltbench_examples sltbench)
 
 	set_target_properties(sltbench_examples PROPERTIES
 		CXX_STANDARD 11
 		CXX_STANDARD_REQUIRED YES
 		CXX_EXTENSIONS NO)
 
-	target_link_libraries(sltbench_examples LINK_PUBLIC sltbench_static)
+	target_link_libraries(sltbench_examples LINK_PUBLIC sltbench)
 endif()
 
 # autolearning tool
@@ -183,14 +182,14 @@ if (BUILD_AUTOLEARNING)
 		tools/autolearning/main.cpp
 		tools/autolearning/Samples.cpp)
 
-	add_dependencies(sltbench_autolearning sltbench_static)
+	add_dependencies(sltbench_autolearning sltbench)
 
 	set_target_properties(sltbench_autolearning PROPERTIES
 		CXX_STANDARD 11
 		CXX_STANDARD_REQUIRED YES
 		CXX_EXTENSIONS NO)
 
-	target_link_libraries(sltbench_autolearning LINK_PUBLIC sltbench_static)
+	target_link_libraries(sltbench_autolearning LINK_PUBLIC sltbench)
 
 	target_include_directories(sltbench_autolearning PRIVATE
 		${CMAKE_CURRENT_SOURCE_DIR})
@@ -203,12 +202,12 @@ if (BUILD_HISTOGRAMMER)
 		tools/histogrammer/HistogramBuilder.h
 		tools/histogrammer/main.cpp)
 
-	add_dependencies(sltbench_histogrammer sltbench_static)
+	add_dependencies(sltbench_histogrammer sltbench)
 
 	set_target_properties(sltbench_histogrammer PROPERTIES
 		CXX_STANDARD 11
 		CXX_STANDARD_REQUIRED YES
 		CXX_EXTENSIONS NO)
 
-	target_link_libraries(sltbench_histogrammer LINK_PUBLIC sltbench_static)
+	target_link_libraries(sltbench_histogrammer LINK_PUBLIC sltbench)
 endif()
