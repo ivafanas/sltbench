@@ -19,7 +19,7 @@ build_script:
   - git submodule update --init --recursive
   - md build -Force
   - cd build
-  - cmake "-DBUILD_TESTS=ON" "-DBUILD_EXAMPLES=ON" "-DBUILD_HISTOGRAMMER=ON" "-DBUILD_AUTOLEARNING=ON" "-DCMAKE_BUILD_TYPE=%configuration%" ..
+  - cmake "-DSLT_BUILD_TESTS=ON" "-DSLT_BUILD_EXAMPLES=ON" "-DSLT_BUILD_HISTOGRAMMER=ON" "-DSLT_BUILD_AUTOLEARNING=ON" "-DCMAKE_BUILD_TYPE=%configuration%" ..
   - cmake --build . --config %configuration%
   - cd ..
 

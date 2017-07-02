@@ -53,6 +53,6 @@ before_install:
   - ./cmake-3.7.2-Linux-x86_64.sh --prefix=$HOME/usr --exclude-subdir --skip-license
 
 script:
-  - mkdir build && pushd build && cmake -DBUILD_TESTS=ON -DBUILD_EXAMPLES=ON -DBUILD_HISTOGRAMMER=ON -DBUILD_AUTOLEARNING=ON -DCMAKE_CXX_COMPILER=$CXX_COMPILER -DCMAKE_C_COMPILER=$C_COMPILER .. && popd
+  - mkdir build && pushd build && cmake -DSLT_BUILD_TESTS=ON -DSLT_BUILD_EXAMPLES=ON -DSLT_BUILD_HISTOGRAMMER=ON -DSLT_BUILD_AUTOLEARNING=ON -DCMAKE_CXX_COMPILER=$CXX_COMPILER -DCMAKE_C_COMPILER=$C_COMPILER .. && popd
   - cmake --build ./build
   - build/sltbench_unittests
