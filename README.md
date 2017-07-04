@@ -19,7 +19,7 @@ The closest and the most famous analog is googlebench - microbenchmarking
 library from Google engineers.
 
 The key features of `sltbench` are:
-* sltbench is about *4.7x times faster* than googlebench.
+* sltbench is about *4.7x times faster* than googlebench (test execution time).
 * sltbench produces results with less timing error, which really matters for
 performance results reproducibility. About 5x times improvement for testing
 dataset.
