@@ -15,7 +15,7 @@ void JsonReporter::ReportBenchmarkStarted()
 
 void JsonReporter::ReportBenchmarkFinished()
 {
-	std::cout << "]" << std::flush;
+	std::cout << "]" << std::endl;
 }
 
 void JsonReporter::Report(
