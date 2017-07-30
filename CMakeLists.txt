@@ -2,6 +2,7 @@ cmake_minimum_required (VERSION 3.5.0)
 
 project (sltbench)
 
+
 # options
 option(SLT_BUILD_TESTS "SLT_BUILD_TESTS" OFF)
 option(SLT_BUILD_EXAMPLES "SLT_BUILD_EXAMPLES" OFF)
@@ -90,25 +91,23 @@ set_target_properties(sltbench PROPERTIES
 	CXX_STANDARD_REQUIRED YES
 	CXX_EXTENSIONS NO)
 
-target_include_directories(sltbench
-	PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
-	PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_include_directories(sltbench PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")
+
+target_include_directories(sltbench PUBLIC
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+	$<INSTALL_INTERFACE:include>)
 
 # install static lib
 install(
 	TARGETS sltbench
-	LIBRARY DESTINATION lib
-	ARCHIVE DESTINATION lib
-	RUNTIME DESTINATION bin
-)
-install(
-	FILES ${SLTBENCH_LIB_PUBLIC_HEADERS}
-	DESTINATION include/sltbench
-)
-install(
-	FILES ${SLTBENCH_LIB_PUBLIC_IMPL_HEADERS}
-	DESTINATION include/sltbench/impl
-)
+	EXPORT  sltbench
+	LIBRARY  DESTINATION lib
+	ARCHIVE  DESTINATION lib
+	RUNTIME  DESTINATION bin
+	INCLUDES DESTINATION include)
+
+install(DIRECTORY include DESTINATION "${CMAKE_INSTALL_PREFIX}")
+install(EXPORT sltbench DESTINATION "${CMAKE_INSTALL_PREFIX}")
 
 # unit tests
 if (SLT_BUILD_TESTS)
