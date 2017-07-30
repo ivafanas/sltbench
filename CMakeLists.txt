@@ -107,7 +107,10 @@ install(
 	INCLUDES DESTINATION include)
 
 install(DIRECTORY include DESTINATION "${CMAKE_INSTALL_PREFIX}")
-install(EXPORT sltbench DESTINATION "${CMAKE_INSTALL_PREFIX}")
+
+install(FILES sltbench-config.cmake DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake")
+
+install(EXPORT sltbench DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/sltbench")
 
 # unit tests
 if (SLT_BUILD_TESTS)
