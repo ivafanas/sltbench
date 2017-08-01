@@ -24,7 +24,7 @@ build_script:
   - cd ..
 
 test_script:
-  - cd build\%configuration%
+  - cd build\tests\%configuration%
   - sltbench_unittests.exe
 
 artifacts:

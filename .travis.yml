@@ -55,4 +55,4 @@ before_install:
 script:
   - mkdir build && pushd build && cmake -DSLT_BUILD_TESTS=ON -DSLT_BUILD_EXAMPLES=ON -DSLT_BUILD_HISTOGRAMMER=ON -DSLT_BUILD_AUTOLEARNING=ON -DCMAKE_CXX_COMPILER=$CXX_COMPILER -DCMAKE_C_COMPILER=$C_COMPILER .. && popd
   - cmake --build ./build
-  - build/sltbench_unittests
+  - build/tests/sltbench_unittests
