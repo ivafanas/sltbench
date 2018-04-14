@@ -88,6 +88,7 @@ void Init(int argc, char **argv)
 	Env::Instance().SetArgs(argc, argv);
 }
 
+//! @return 0 is all runners successfully completed, 1 otherwise
 int Run()
 {
 	ProcessRunWarnings();
@@ -106,9 +107,8 @@ int Run()
 	const auto runners = GetRunners();
 	for (const auto& runner : runners)
 	{
-		const bool crashed = runner->Run(reporter, filter);
-		if (crashed)
-			was_crash = true;
+		const bool ok = runner->Run(reporter, filter);
+		was_crash |= !ok;
 	}
 	reporter.ReportBenchmarkFinished();
 	return was_crash ? 1 : 0;

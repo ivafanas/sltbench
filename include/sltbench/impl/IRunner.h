@@ -98,6 +98,7 @@ private:
 	}
 
 	//! run benchmark for all input values and report result
+	//! @return true if all runs successfully completed.
 	bool Run(BenchmarkT& bm, reporter::IReporter& reporter)
 	{
 		bm.Prepare();
@@ -127,6 +128,7 @@ private:
 public:
 
 	//! run all registered benchmarks of type BenchmarkT
+	//! @return true is none of runs crashed
 	virtual bool Run(reporter::IReporter& reporter, IFilter& filter) override
 	{
 		auto& bms = BenchmarksContainer<BenchmarkT>::Instance().GetAll();
