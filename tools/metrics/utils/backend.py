@@ -27,7 +27,7 @@ class BackendSLTBench:
     def __init__(self, install_path):
         self.install_path = install_path
         self.is_header_only = False
-        self.static_lib_name = 'sltbench_static'
+        self.static_lib_name = 'sltbench'
         self.required_static_libs = []
         self.maincpp_code = _SLTBENCH_CPPMAIN
         self.option_reporter = '--reporter=json'
