@@ -40,11 +40,12 @@ def _make_compare_item(i_prev, i_next):
         msg = 'Cannot compare, no result for {}'.format(i_prev.name)
         raise RuntimeError(msg)
 
-    r = 1
-    if i_next.time:
-        r = float(i_prev.time) / i_next.time
-
-    return _CompareItemT(name=i_prev.name, prev=i_prev.time, next=i_next.time, ratio=r)
+    ratio = 1.0 if not i_next.time else float(i_prev.time) / i_next.time
+    return _CompareItemT(
+        name=i_prev.name,
+        prev=i_prev.time,
+        next=i_next.time,
+        ratio=ratio)
 
 
 def _report(compare_result, args):

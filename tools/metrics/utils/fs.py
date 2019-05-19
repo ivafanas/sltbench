@@ -5,11 +5,7 @@ import os
 @contextmanager
 def make_temp_dir(parent_dir=None):
     # choose parent dir
-    target_dir = None
-    if parent_dir:
-        target_dir = parent_dir
-    else:
-        target_dir = os.getcwd()
+    target_dir = parent_dir if parent_dir else os.getcwd()
 
     # create temp directory
     import tempfile

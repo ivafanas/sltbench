@@ -1,6 +1,7 @@
-
-
 from collections import namedtuple
+from xml.dom import minidom
+
+import json
 
 
 _Res = namedtuple('BenchmarkResult', 'name,time')
@@ -19,7 +20,6 @@ class PerfResultsParserSLTBench:
                     return '{}/{}'.format(item['name'], item['arg'])
                 return item['name']
 
-            import json
             root = json.load(f)
             rv = [_Res(name=make_name(x), time=x['time(ns)']) for x in root]
             rv.sort(key=lambda x: x.name)
@@ -33,7 +33,6 @@ class PerfResultsParserGoogleBench:
 
     def parse(self, file):
         with open(file, 'r') as f:
-            import json
             root = json.load(f)['benchmarks']
             rv = [_Res(name=x['name'], time=x['real_time']) for x in root]
             rv.sort(key=lambda x: x.name)
@@ -51,7 +50,6 @@ class PerfResultsParserNonius:
                 return _Res(name=i.attributes['name'].value,
                             time=int(float(i.attributes['time'].value) * 1e9))
 
-            from xml.dom import minidom
             doc = minidom.parse(f)
             rv = [make_res(x) for x in doc.getElementsByTagName('testcase')]
             rv.sort(key=lambda x: x.name)
