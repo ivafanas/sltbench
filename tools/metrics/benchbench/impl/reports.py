@@ -10,37 +10,38 @@ FMT_ALL = [FMT_JSON, FMT_CSV, FMT_READABLE]
 
 def _report_json(result, options):
     import json
-    res = {}
-    res['mean_err_percent'] = result.mean_err
-    res['max_err_percent'] = result.max_err
-    res['bench_time_sec'] = result.bench_time
+    res = {
+        'mean_err_percent': result.mean_err,
+        'max_err_percent': result.max_err,
+        'bench_time_sec': result.bench_time,
+    }
     if options.moreinfo:
-        res['functions'] = []
-        for func in result.functions:
-            item = {'name': func.name, 'avr': func.avr, 'err': func.err}
-            res['functions'].append(item)
+        res['functions'] = [{'name': f.name, 'avr': f.avr, 'err': f.err}
+                            for f in result.functions]
     return json.dumps(res, sort_keys=True, indent=2)
 
 
 def _report_csv(result, options):
-    lines = []
-    lines.append('bench_time_sec,{}'.format(result.bench_time))
-    lines.append('mean_err_percent,{}'.format(result.mean_err))
-    lines.append('max_err_percent,{}'.format(result.max_err))
+    lines = [
+        'bench_time_sec,{}'.format(result.bench_time),
+        'mean_err_percent,{}'.format(result.mean_err),
+        'max_err_percent,{}'.format(result.max_err),
+    ]
     if options.moreinfo:
-        for f in result.functions:
-            lines.append('{},{},{}'.format(f.name, f.avr, f.err))
+        lines += ['{},{},{}'.format(f.name, f.avr, f.err)
+                  for f in result.functions]
     return '\n'.join(lines)
 
 
 def _report_readable(result, options):
-    lines = []
-    lines.append('bench_time_sec: {}'.format(result.bench_time))
-    lines.append('mean_err_percent: {}'.format(result.mean_err))
-    lines.append('max_err_percent: {}'.format(result.max_err))
+    lines = [
+        'bench_time_sec: {}'.format(result.bench_time),
+        'mean_err_percent: {}'.format(result.mean_err),
+        'max_err_percent: {}'.format(result.max_err),
+    ]
     if options.moreinfo:
-        for f in result.functions:
-            lines.append('{:<30}{:>15}{:>8.4f}'.format(f.name, f.avr, f.err))
+        lines += ['{:<30}{:>15}{:>8.4f}'.format(f.name, f.avr, f.err)
+                  for f in result.functions]
     return '\n'.join(lines)
 
 
