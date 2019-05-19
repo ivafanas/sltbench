@@ -1,7 +1,5 @@
 #include <sltbench/impl/Verdict.h>
 
-#include <iostream>
-
 
 namespace sltbench {
 
