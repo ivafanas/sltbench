@@ -4,6 +4,8 @@
 #include <chrono>
 #include <fstream>
 #include <iostream>
+#include <iterator>
+#include <stdexcept>
 #include <vector>
 
 
@@ -27,16 +29,21 @@ void HistogramBuilder::BuildFor(void(*fun)(), const std::string& filename)
 
 	// out them to .dat-file
 	{
-		std::ofstream of(filename + ".dat");
-		for (auto i : results)
-		{
-			of << i << '\n';
-		}
+		const auto datfile = filename + ".dat";
+		std::ofstream of(datfile);
+		if (!of)
+			throw std::runtime_error("ERROR: failed to open " + datfile + " on write");
+
+		std::copy(results.begin(), results.end(), std::ostream_iterator<int64_t>(of, "\n"));
 	}
 
 	// prepare gnuplot histogram builder script
 	{
-		std::ofstream of(filename + ".plt");
+		const auto pltfile = filename + ".plt";
+		std::ofstream of(pltfile);
+		if (!of)
+			throw std::runtime_error("ERROR: failed to open " + pltfile + " on write");
+
 		of << "reset\n";
 		of << "n=100\n";
 		of << "max=" << results.back() << '\n';

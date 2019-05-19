@@ -1,5 +1,7 @@
 #include "HistogramBuilder.h"
 
+#include <exception>
+#include <iostream>
 #include <set>
 
 
@@ -12,9 +14,16 @@ static void InsertToSetSorted()
 
 int main(int argc, char **argv)
 {
-	sltbench::analytics::HistogramBuilder histogram_builder;
-
-	histogram_builder.BuildFor(&InsertToSetSorted, "inserttosetsorted");
+	try
+	{
+		sltbench::analytics::HistogramBuilder histogram_builder;
+		histogram_builder.BuildFor(&InsertToSetSorted, "inserttosetsorted");
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << e.what() << std::endl;
+		return 1;
+	}
 
 	return 0;
 }
