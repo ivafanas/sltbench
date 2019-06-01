@@ -35,8 +35,8 @@ namespace sltbench {
 MeasureAlgo::MeasureAlgo(Conf conf) noexcept
 	: conf_(std::move(conf))
 	, required_spot_size_(0)
-	, result_(0)
 	, accumulated_execution_time_(nanoseconds::zero())
+	, result_(0)
 {
 }
 
