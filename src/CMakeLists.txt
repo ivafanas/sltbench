@@ -74,7 +74,7 @@ set_target_properties(sltbench PROPERTIES
 	CXX_EXTENSIONS NO)
 
 if (MSVC)
-	target_compile_options (sltbench PRIVATE /Wall /WX /sdl)
+	target_compile_options (sltbench PRIVATE /W4 /WX /sdl)
 else ()
 	target_compile_options (sltbench PRIVATE -Wall -Wextra -Werror -Wpedantic)
 endif ()
