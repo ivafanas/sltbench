@@ -8,7 +8,7 @@
 namespace sltbench {
 
 Config::Config()
-	: is_measure_required_pred_([](std::chrono::nanoseconds ns) { return true; })
+	: is_measure_required_pred_([](std::chrono::nanoseconds) { return true; })
 {
 	measure_conf_.precision_percents = 5;
 	measure_conf_.max_execution_time = std::chrono::minutes(1);
