@@ -73,6 +73,12 @@ set_target_properties(sltbench PROPERTIES
 	CXX_STANDARD_REQUIRED YES
 	CXX_EXTENSIONS NO)
 
+if (MSVC)
+	target_compile_options (sltbench PRIVATE /Wall /WX /sdl)
+else ()
+	target_compile_options (sltbench PRIVATE -Wall -Wextra -Werror -Wpedantic)
+endif ()
+
 target_include_directories(sltbench PUBLIC
 	$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
 	$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
