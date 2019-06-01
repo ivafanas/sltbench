@@ -14,7 +14,7 @@ namespace sltbench {
 		template<typename C> static no  test(...);\
 	public:\
 		static constexpr bool value = sizeof(test<T>(0)) == sizeof(yes);\
-	};
+	}
 
 SLTBENCH_PRIVATE_DEFINE_CHECKER_HAS_INNER_TYPEDEF(ArgType);
 SLTBENCH_PRIVATE_DEFINE_CHECKER_HAS_INNER_TYPEDEF(Type);
