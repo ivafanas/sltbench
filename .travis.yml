@@ -17,6 +17,9 @@ matrix:
     - os: osx
 
 script:
-  - mkdir build && pushd build && cmake -DSLT_BUILD_TESTS=ON -DSLT_BUILD_EXAMPLES=ON -DSLT_BUILD_HISTOGRAMMER=ON -DSLT_BUILD_AUTOLEARNING=ON .. && popd
-  - cmake --build ./build --parallel
-  - build/tests/sltbench_unittests
+  - mkdir build 
+  - cd build
+  - cmake -DSLT_BUILD_TESTS=ON -DSLT_BUILD_EXAMPLES=ON -DSLT_BUILD_HISTOGRAMMER=ON -DSLT_BUILD_AUTOLEARNING=ON ..
+  - if [ "${TRAVIS_OS_NAME}" == "linux" ]; then cmake --build . --parallel; fi
+  - if [ "${TRAVIS_OS_NAME}" == "osx" ]; then make -j$(sysctl -n hw.ncpu); fi
+  - ./tests/sltbench_unittests
