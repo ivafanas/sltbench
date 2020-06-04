@@ -89,12 +89,12 @@ void Env::SetArgs(const int argc, char **argv)
 	InitConfig(argc, argv);
 }
 
-int Env::GetArgc() const
+int Env::GetArgc() const noexcept
 {
 	return argc_;
 }
 
-char **Env::GetArgv() const
+char **Env::GetArgv() const noexcept
 {
 	return argv_;
 }

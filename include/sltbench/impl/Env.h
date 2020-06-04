@@ -9,13 +9,13 @@ public:
 	static Env& Instance();
 
 private:
-	Env() {}
-	~Env() {}
+	Env() noexcept = default;
+	~Env() noexcept = default;
 
 public:
 	void SetArgs(int argc, char **argv);
-	int GetArgc() const;
-	char** GetArgv() const;
+	int GetArgc() const noexcept;
+	char** GetArgv() const noexcept;
 
 private:
 	int argc_ = 0;
