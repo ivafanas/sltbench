@@ -138,9 +138,9 @@ LearningCheckResult MakeLearningCheck(MeasureAlgo::Conf conf, LearningReporter& 
 	return rv;
 }
 
-
-
-size_t GenerateCandidateSpotSize(size_t unstable_spot_size, size_t stable_spot_size)
+size_t GenerateCandidateSpotSize(
+	const size_t unstable_spot_size,
+	const size_t stable_spot_size)
 {
 	if (unstable_spot_size >= stable_spot_size)
 		return stable_spot_size;
@@ -195,7 +195,9 @@ std::unique_ptr<MeasureAlgo::Conf> GenerateCandidateConf(
 			found_diff = true;
 			rv.dot_params.insert(
 				rv.dot_params.begin(),
-				MeasureAlgo::Conf::DOTParam{ stable_conf.dot_params[ind].min_time, GenerateCandidateSpotSize(unstable_spot, stable_spot) });
+				MeasureAlgo::Conf::DOTParam{
+					stable_conf.dot_params[ind].min_time,
+					GenerateCandidateSpotSize(unstable_spot, stable_spot) });
 		}
 		else
 		{
@@ -219,7 +221,12 @@ std::ostream& operator << (std::ostream& os, const MeasureAlgo::Conf& conf)
 	os << "  dot_params: {\n";
 	for (const auto& dot_param : conf.dot_params)
 	{
-		os << "    { " << dot_param.required_spot_size << ", " << TimeToHRStr(dot_param.min_time) << "}\n";
+		os
+			<< "    { "
+			<< dot_param.required_spot_size
+			<< ", "
+			<< TimeToHRStr(dot_param.min_time)
+			<< "}\n";
 	}
 	os << "  }\n";
 	os << "}\n";
@@ -335,13 +342,17 @@ int main(int argc, char **argv)
 					}
 					else
 					{
-						target_segment = cand_conf->dot_params[n].min_time <= ns && ns < cand_conf->dot_params[n-1].min_time;
+						target_segment =
+							cand_conf->dot_params[n].min_time <= ns &&
+							cand_conf->dot_params[n-1].min_time > ns;
 					}
 
 					// check that n-th segment params differs between candidate and stable
 					if (target_segment)
 					{
-						return cand_conf->dot_params[n].required_spot_size != stable_conf.dot_params[n].required_spot_size;
+						return
+							cand_conf->dot_params[n].required_spot_size !=
+							stable_conf.dot_params[n].required_spot_size;
 					}
 				}
 				return false;
@@ -353,16 +364,20 @@ int main(int argc, char **argv)
 
 			const auto check_res = MakeLearningCheck(*cand_conf, custom_reporter);
 
-			const auto learn_ind = IndexOfLearningDOTParam(cand_conf->dot_params, stable_conf.dot_params);
+			const auto learn_ind = IndexOfLearningDOTParam(
+				cand_conf->dot_params,
+				stable_conf.dot_params);
 			if (check_res.is_stable)
 			{
 				std::cout << "  ok: configuration is stable";
-				stable_conf.dot_params[learn_ind].required_spot_size = cand_conf->dot_params[learn_ind].required_spot_size;
+				stable_conf.dot_params[learn_ind].required_spot_size =
+					cand_conf->dot_params[learn_ind].required_spot_size;
 			}
 			else
 			{
 				std::cout << "  DENY: configuration is unstable";
-				unstable_conf.dot_params[learn_ind].required_spot_size = cand_conf->dot_params[learn_ind].required_spot_size;
+				unstable_conf.dot_params[learn_ind].required_spot_size =
+					cand_conf->dot_params[learn_ind].required_spot_size;
 			}
 			std::cout << std::endl;
 		}
