@@ -233,7 +233,7 @@ std::ostream& operator << (std::ostream& os, const MeasureAlgo::Conf& conf)
 	return os;
 }
 
-static void heatup_function()
+void heatup_function()
 {
 	const size_t count = 1024 * 1024;
 	std::vector<unsigned> vec;
@@ -243,7 +243,7 @@ static void heatup_function()
 	std::sort(vec.begin(), vec.end());
 }
 
-static void heatup()
+void heatup()
 {
 	const std::chrono::nanoseconds heatup_limit = std::chrono::seconds(7);
 	std::chrono::nanoseconds heating_time(0);
