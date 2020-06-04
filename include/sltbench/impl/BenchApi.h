@@ -99,9 +99,6 @@ class EmptyArgsGenerator
 public:
 	typedef Type ArgType;
 
-	EmptyArgsGenerator() = default;
-	~EmptyArgsGenerator() = default;
-
 	std::vector<ArgType> Generate(int , char **) { return{}; }
 };
 
