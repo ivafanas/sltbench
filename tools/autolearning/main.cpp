@@ -80,7 +80,6 @@ TimingMap CollectResultsForRun(LearningReporter& reporter)
 	return reporter.GetResults();
 }
 
-
 //! check whether configuration is stable
 struct LearningCheckResult
 {
@@ -152,13 +151,11 @@ size_t GenerateCandidateSpotSize(size_t unstable_spot_size, size_t stable_spot_s
 	return (unstable_spot_size + stable_spot_size) / 2;
 }
 
-
 //! whether the new spot candidate can be generated
 bool IsSpotSizeLearned(size_t unstable_stop_size, size_t stable_spot_size)
 {
 	return unstable_stop_size + 1 >= stable_spot_size;
 }
-
 
 //! which time segment is being learned
 size_t IndexOfLearningDOTParam(
