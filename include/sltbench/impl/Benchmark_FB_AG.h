@@ -35,7 +35,7 @@ public:
 		const char *name,
 		FunctionT function,
 		FixtureBuilderT builder,
-		std::vector<ArgT> args)
+		std::vector<ArgT>&& args)
 		: name_(name)
 		, function_(function)
 		, builder_(builder)

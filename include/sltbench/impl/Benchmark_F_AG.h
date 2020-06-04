@@ -29,7 +29,7 @@ public:
 	Benchmark_F_AG(
 		const char *name,
 		FunctionT function,
-		std::vector<typename GeneratorT::ArgType> args)
+		std::vector<typename GeneratorT::ArgType>&& args)
 		: name_(name)
 		, function_(function)
 		, args_(std::move(args))
