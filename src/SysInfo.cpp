@@ -9,7 +9,7 @@ using namespace std::chrono;
 
 namespace {
 
-nanoseconds CalcTimerResolutionAttempt()
+nanoseconds CalcTimerResolutionAttempt() noexcept
 {
 	const auto start_ts = std::chrono::high_resolution_clock::now();
 	while (true)
@@ -20,7 +20,7 @@ nanoseconds CalcTimerResolutionAttempt()
 	}
 }
 
-nanoseconds CalcTimerResolution()
+nanoseconds CalcTimerResolution() noexcept
 {
 	std::array<nanoseconds, 4> resolutions;
 	for (int i = 0; i < 4; ++i)
@@ -39,12 +39,12 @@ SysInfo& SysInfo::Instance()
 	return instance;
 }
 
-SysInfo::SysInfo()
+SysInfo::SysInfo() noexcept
 	: timer_resolution_(CalcTimerResolution())
 {
 }
 
-std::chrono::nanoseconds SysInfo::GetTimerResolution() const
+std::chrono::nanoseconds SysInfo::GetTimerResolution() const noexcept
 {
 	return timer_resolution_;
 }

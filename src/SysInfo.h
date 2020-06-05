@@ -11,10 +11,10 @@ public:
 	static SysInfo& Instance();
 
 private:
-	SysInfo();
+	SysInfo() noexcept;
 
 public:
-	std::chrono::nanoseconds GetTimerResolution() const;
+	std::chrono::nanoseconds GetTimerResolution() const noexcept;
 
 private:
 	std::chrono::nanoseconds timer_resolution_;
