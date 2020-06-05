@@ -7,9 +7,7 @@
 using namespace std::chrono;
 
 
-namespace {
-
-nanoseconds CalcTimerResolutionAttempt() noexcept
+static nanoseconds CalcTimerResolutionAttempt() noexcept
 {
 	const auto start_ts = std::chrono::high_resolution_clock::now();
 	while (true)
@@ -20,15 +18,13 @@ nanoseconds CalcTimerResolutionAttempt() noexcept
 	}
 }
 
-nanoseconds CalcTimerResolution() noexcept
+static nanoseconds CalcTimerResolution() noexcept
 {
 	std::array<nanoseconds, 4> resolutions;
 	for (int i = 0; i < 4; ++i)
 		resolutions[i] = CalcTimerResolutionAttempt();
 	return *std::min_element(resolutions.begin(), resolutions.end());
 }
-
-} // namespace
 
 
 namespace sltbench {
