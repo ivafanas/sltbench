@@ -12,7 +12,7 @@ namespace reporter {
 
 struct IReporter
 {
-	virtual ~IReporter() {}
+	virtual ~IReporter() noexcept = default;
 
 	/*!
 		Report timing started.
