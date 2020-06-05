@@ -16,8 +16,7 @@ int main(int argc, char **argv)
 {
 	try
 	{
-		sltbench::analytics::HistogramBuilder histogram_builder;
-		histogram_builder.BuildFor(&InsertToSetSorted, "inserttosetsorted");
+		BuildHistogramFor(&InsertToSetSorted, "inserttosetsorted");
 	}
 	catch (const std::exception& e)
 	{

@@ -9,10 +9,7 @@
 #include <vector>
 
 
-namespace sltbench {
-namespace analytics {
-
-void HistogramBuilder::BuildFor(void(*fun)(), const std::string& filename)
+void BuildHistogramFor(void(*fun)(), const std::string& filename)
 {
 	// get results
 	std::vector<int64_t> results;
@@ -63,5 +60,3 @@ void HistogramBuilder::BuildFor(void(*fun)(), const std::string& filename)
 	}
 }
 
-} // namespace sltbench
-} // namespace analytics
