@@ -52,11 +52,6 @@ reporter::IReporter& Config::GetReporter()
 	return *reporter_;
 }
 
-IConfigPrivate& Config::GetPrivate()
-{
-	return *this;
-}
-
 void Config::SetMeasureAlgoConf(MeasureAlgo::Conf conf)
 {
 	measure_conf_ = std::move(conf);

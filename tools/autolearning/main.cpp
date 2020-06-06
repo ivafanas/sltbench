@@ -273,7 +273,7 @@ int main(int argc, char **argv)
 
 	// we did the custom heatup, so
 	// heatup-per-run is not required
-	GetConfig().GetPrivate().SetHeatupRequired(false);
+	Config::Instance().SetHeatupRequired(false);
 
 	MeasureAlgo::Conf stable_conf;
 	stable_conf.precision_percents = 5;
@@ -313,6 +313,9 @@ int main(int argc, char **argv)
 		{ std::chrono::nanoseconds::zero(), 20 }
 	};
 
+	// TODO: SetMeasureRequiredPred is not supported more
+	//       make clear how to organize autolearning utility
+	//       without affecting end user
 	// check that stable_conf is really stable
 	std::cout << "check stable conf is really stable:\n" << stable_conf;
 	Config::Instance().SetMeasureRequiredPred([](std::chrono::nanoseconds) { return true; });

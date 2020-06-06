@@ -1,6 +1,6 @@
-#include <sltbench/impl/IConfig.h>
 #include <sltbench/impl/SingleMeasureAlgo.h>
 
+#include "Config.h"
 #include "SysInfo.h"
 
 #include <algorithm>
@@ -66,7 +66,7 @@ nanoseconds Measure(const SingleMeasureFun& measure_func, const EstimationResult
 {
 	const auto calls_count = estimation.recommended_calls_count;
 
-	const auto measure_algo = GetConfig().GetPrivate().CreateMeasureAlgo();
+	const auto measure_algo = Config::Instance().CreateMeasureAlgo();
 	measure_algo->SetEstimationResult(estimation);
 	while (measure_algo->NeedMoreTiming())
 	{

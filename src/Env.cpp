@@ -1,6 +1,6 @@
 #include <sltbench/impl/Env.h>
-#include <sltbench/impl/IConfig.h>
 
+#include "Config.h"
 #include "Filters.h"
 #include "ProgramOptions.h"
 #include "Reporters.h"
@@ -31,7 +31,7 @@ void InitConfig(const int argc, char **argv)
 			filter_expr,
 			std::regex_constants::basic | std::regex_constants::icase );
 		auto filter = std::unique_ptr<IFilter>(new RegexFilter(std::move(re)));
-		GetConfig().GetPrivate().SetFilter(std::move(filter));
+		Config::Instance().SetFilter(std::move(filter));
 	}
 
 	// setup if heatup required
@@ -39,9 +39,9 @@ void InitConfig(const int argc, char **argv)
 	if (!heatup_value.empty())
 	{
 		if (heatup_value == "off" || heatup_value == "OFF")
-			GetConfig().GetPrivate().SetHeatupRequired(false);
+			Config::Instance().SetHeatupRequired(false);
 		else if (heatup_value == "on" || heatup_value == "ON")
-			GetConfig().GetPrivate().SetHeatupRequired(true);
+			Config::Instance().SetHeatupRequired(true);
 		else
 		{
 			std::cerr << "ERROR: Unknown heatup option value: " << heatup_value << '\n';
@@ -54,11 +54,11 @@ void InitConfig(const int argc, char **argv)
 	if (!reporter_value.empty())
 	{
 		if (reporter_value == "csv")
-			GetConfig().SetReporter(make_uniq<reporter::CsvReporter>());
+			Config::Instance().SetReporter(make_uniq<reporter::CsvReporter>());
 		else if (reporter_value == "json")
-			GetConfig().SetReporter(make_uniq<reporter::JsonReporter>());
+			Config::Instance().SetReporter(make_uniq<reporter::JsonReporter>());
 		else if (reporter_value == "console")
-			GetConfig().SetReporter(make_uniq<reporter::ConsoleReporter>());
+			Config::Instance().SetReporter(make_uniq<reporter::ConsoleReporter>());
 		else
 		{
 			std::cerr << "ERROR: unknown reporter: " << reporter_value << '\n';

@@ -93,7 +93,7 @@ int Run()
 {
 	ProcessRunWarnings();
 
-	if (GetConfig().GetPrivate().IsHeatupRequired())
+	if (Config::Instance().IsHeatupRequired())
 	{
 		// some kind of dark magic: heatup core and scheduler
 		heatup();

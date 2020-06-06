@@ -1,6 +1,7 @@
 #pragma once
 
 #include <sltbench/impl/IConfig.h>
+#include <sltbench/impl/IFilter.h>
 #include <sltbench/impl/IMeasureAlgo.h>
 
 #include "MeasureAlgo.h"
@@ -13,36 +14,28 @@ namespace sltbench {
 
 class Config final
 	: public IConfig
-	, public IConfigPrivate
 {
 public:
 	static Config& Instance();
 
-private:
-	Config();
-	virtual ~Config() override;
-
 public: // IConfig
 	IConfig& SetReporter(std::unique_ptr<reporter::IReporter> reporter) override;
-	IConfigPrivate& GetPrivate() override;
-
-public: // IConfigPrivate
-	std::unique_ptr<IMeasureAlgo> CreateMeasureAlgo() override;
-	bool IsMeasureRequired(std::chrono::nanoseconds estimation_time) override;
-	IFilter& GetFilter() override;
-	void SetFilter(std::unique_ptr<IFilter> filter) override;
-	void SetHeatupRequired(bool heatup_required) override;
-	bool IsHeatupRequired() override;
-
 
 public:
+	std::unique_ptr<IMeasureAlgo> CreateMeasureAlgo();
+	bool IsMeasureRequired(std::chrono::nanoseconds estimation_time);
+	IFilter& GetFilter();
+	void SetFilter(std::unique_ptr<IFilter> filter);
+	void SetHeatupRequired(bool heatup_required);
+	bool IsHeatupRequired();
 	void SetMeasureAlgoConf(MeasureAlgo::Conf conf);
 	void SetMeasureRequiredPred(std::function<bool(std::chrono::nanoseconds)> pred);
-
-public:
 	reporter::IReporter& GetReporter();
 
 private:
+	Config();
+	~Config() override;
+
 	std::unique_ptr<reporter::IReporter> reporter_;
 	std::unique_ptr<IFilter> filter_;
 	MeasureAlgo::Conf measure_conf_;

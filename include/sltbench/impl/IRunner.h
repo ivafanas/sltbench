@@ -1,7 +1,6 @@
 #pragma once
 
 #include "BenchmarksContainer.h"
-#include "IConfig.h"
 #include "IFilter.h"
 #include "IReporter.h"
 #include "SingleMeasureAlgo.h"
@@ -77,17 +76,7 @@ private:
 			if (estimation.verdict == sma::EstimationResult::Verdict::CANNOT_BE_PRECISE)
 				rv.verdict = Verdict::IMPRECISE;
 
-			// opt for autolearning: check whether we need to benchmark function
-			// in production it is always true
-			bool need_measure = GetConfig().GetPrivate().IsMeasureRequired(estimation.result);
-			if (!need_measure)
-			{
-				rv.time_ns = std::chrono::nanoseconds(1);
-			}
-			else
-			{
-				rv.time_ns = sma::Measure(measure_func, estimation);
-			}
+			rv.time_ns = sma::Measure(measure_func, estimation);
 		}
 		catch (const std::exception&)
 		{
