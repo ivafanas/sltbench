@@ -8,8 +8,7 @@ bool NullFilter::ShouldRunBenchmark(const std::string&)
 	return true;
 }
 
-
-RegexFilter::RegexFilter(std::regex re)
+RegexFilter::RegexFilter(std::regex re) noexcept
 	: re_(std::move(re))
 {
 }

@@ -11,11 +11,11 @@ class NullFilter final
 	: public IFilter
 {
 public:
-	NullFilter() = default;
-	virtual ~NullFilter() override = default;
+	NullFilter() noexcept = default;
+	~NullFilter() noexcept override = default;
 
 public: // IFilter
-	virtual bool ShouldRunBenchmark(const std::string& benchmark_name) override;
+	bool ShouldRunBenchmark(const std::string& benchmark_name) override;
 };
 
 
@@ -23,11 +23,11 @@ class RegexFilter final
 	: public IFilter
 {
 public:
-	RegexFilter(std::regex re);
-	virtual ~RegexFilter() override = default;
+	RegexFilter(std::regex re) noexcept;
+	~RegexFilter() noexcept override = default;
 
 public: // IFilter
-	virtual bool ShouldRunBenchmark(const std::string& benchmark_name) override;
+	bool ShouldRunBenchmark(const std::string& benchmark_name) override;
 
 private:
 	std::regex re_;
