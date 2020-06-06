@@ -48,9 +48,7 @@ set(SLTBENCH_LIB_SOURCES
 	SingleMeasureAlgo.cpp
 	SysInfo.cpp
 	SysInfo.h
-	Verdict.cpp
-	WarningsMessages.h
-	WarningsMessages.cpp)
+	Verdict.cpp)
 
 # split source files into nested source groups by subfolder
 foreach(source IN LISTS SLTBENCH_LIB_SOURCES)

@@ -1,13 +1,20 @@
 #include "Reporters.h"
 
-#include "WarningsMessages.h"
-
+#include <cstdio>
 #include <iomanip>
 #include <iostream>
 
 
 namespace sltbench {
 namespace reporter {
+
+static void PrintWarning(const RunWarning)
+{
+	// there is just a single warning in the library now
+	std::fputs("WARNING: sltbench is compiled in debug mode. "
+	           "Performance results might be not relevant.\n",
+	           stderr);
+}
 
 void ConsoleReporter::ReportBenchmarkStarted()
 {
@@ -35,9 +42,9 @@ void ConsoleReporter::Report(
 		<< std::right << std::setw(20) << timing_result.count() << std::endl;
 }
 
-void ConsoleReporter::ReportWarning(RunWarning warning)
+void ConsoleReporter::ReportWarning(const RunWarning warning)
 {
-	std::cerr << "WARNING: " << MessageForWarning(warning) << std::endl;
+	PrintWarning(warning);
 }
 
 void CsvReporter::ReportBenchmarkStarted()
@@ -62,9 +69,9 @@ void CsvReporter::Report(
 		<< timing_result.count() << std::endl;
 }
 
-void CsvReporter::ReportWarning(RunWarning warning)
+void CsvReporter::ReportWarning(const RunWarning warning)
 {
-	std::cerr << "WARNING: " << MessageForWarning(warning) << std::endl;
+	PrintWarning(warning);
 }
 
 void JsonReporter::ReportBenchmarkStarted()
@@ -99,9 +106,9 @@ void JsonReporter::Report(
 	is_any_result_reported_ = true;
 }
 
-void JsonReporter::ReportWarning(RunWarning warning)
+void JsonReporter::ReportWarning(const RunWarning warning)
 {
-	std::cerr << "WARNING: " << MessageForWarning(warning) << std::endl;
+	PrintWarning(warning);
 }
 
 } // namespace reporter
