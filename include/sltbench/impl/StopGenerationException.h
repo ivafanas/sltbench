@@ -1,6 +1,6 @@
 #pragma once
 
-#include <stdexcept>
+#include <exception>
 
 
 namespace sltbench {
@@ -9,11 +9,7 @@ class StopGenerationException
 	: public std::exception
 {
 public:
-	StopGenerationException() noexcept
-	{}
-
-public:
-	virtual const char * what() const noexcept override
+	const char * what() const noexcept override
 	{
 		return "generation was stopped";
 	}
