@@ -1,11 +1,9 @@
 #include <sltbench/impl/Env.h>
 #include <sltbench/impl/IConfig.h>
 
-#include "ConsoleReporter.h"
-#include "CsvReporter.h"
 #include "Filters.h"
-#include "JsonReporter.h"
 #include "ProgramOptions.h"
+#include "Reporters.h"
 
 #include <iostream>
 #include <memory>

@@ -1,8 +1,8 @@
 #include "Config.h"
 
-#include "ConsoleReporter.h"
 #include "Filters.h"
 #include "MeasureAlgo.h"
+#include "Reporters.h"
 
 
 namespace sltbench {

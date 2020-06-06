@@ -29,16 +29,10 @@ set(SLTBENCH_LIB_SOURCES
 	BenchApi.cpp
 	Config.cpp
 	Config.h
-	ConsoleReporter.cpp
-	ConsoleReporter.h
-	CsvReporter.cpp
-	CsvReporter.h
 	DoNotOptimize.cpp
 	Env.cpp
 	Filters.cpp
 	Filters.h
-	JsonReporter.cpp
-	JsonReporter.h
 	MAResultsContainer.cpp
 	MAResultsContainer.h
 	MeasureAlgo.cpp
@@ -47,6 +41,8 @@ set(SLTBENCH_LIB_SOURCES
 	ProcedureBenchmark.h
 	ProgramOptions.cpp
 	ProgramOptions.h
+	Reporters.cpp
+	Reporters.h
 	Runner.cpp
 	Runner.h
 	SingleMeasureAlgo.cpp

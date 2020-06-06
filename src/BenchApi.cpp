@@ -3,8 +3,8 @@
 #include <sltbench/impl/IRunner.h>
 
 #include "Config.h"
-#include "ConsoleReporter.h"
 #include "ProcedureBenchmark.h"
+#include "Reporters.h"
 #include "Runner.h"
 
 #include <chrono>
