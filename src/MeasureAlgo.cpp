@@ -40,8 +40,7 @@ MeasureAlgo::MeasureAlgo(Conf conf) noexcept
 {
 }
 
-MeasureAlgo::~MeasureAlgo() noexcept
-{}
+MeasureAlgo::~MeasureAlgo() noexcept = default;
 
 void MeasureAlgo::SetEstimationResult(const single_measure_algo::EstimationResult& estimation)
 {
