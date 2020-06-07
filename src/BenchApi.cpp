@@ -41,21 +41,11 @@ void heatup()
 	}
 }
 
-bool IsCompiledInDebug()
-{
-#ifndef NDEBUG
-	return true;
-#else
-	return false;
-#endif
-}
-
 void ProcessRunWarnings()
 {
-	auto& reporter = Config::Instance().GetReporter();
-
-	if (IsCompiledInDebug())
-		reporter.ReportWarning(RunWarning::DEBUG_BUILD);
+#ifndef NDEBUG
+	Config::Instance().GetReporter().ReportWarning(RunWarning::DEBUG_BUILD);
+#endif
 }
 
 } // namespace
