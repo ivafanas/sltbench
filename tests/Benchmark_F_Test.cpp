@@ -49,7 +49,7 @@ TEST(Benchmark_F, GetNameShouldReturnBenchmarkName)
 {
 	BM<Fixture> bm("name", &stub_func);
 
-	EXPECT_EQ("name", bm.GetName());
+	EXPECT_EQ("name", std::string(bm.name));
 }
 
 TEST(Benchmark_F, MeasureCallsFunction)

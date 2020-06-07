@@ -20,7 +20,7 @@ TEST(ProcedureBenchmark, GetNameReturnsBenchmarkName)
 {
 	sltbench::ProcedureBenchmark bm("name", &stub_func);
 
-	EXPECT_EQ("name", bm.GetName());
+	EXPECT_EQ("name", std::string(bm.name));
 }
 
 TEST(ProcedureBenchmark, HasArgsToProcessReturnsTrue)

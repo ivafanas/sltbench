@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Env.h"
+#include "IBenchmark.h"
 #include "Optional.h"
 
 #include <chrono>
@@ -12,14 +13,14 @@
 namespace sltbench {
 
 template<typename GeneratorT>
-class Benchmark_AG
+class Benchmark_AG : public IBenchmark
 {
 public:
 	typedef void (*FunctionT)(const typename GeneratorT::ArgType&);
 
 public:
 	Benchmark_AG(const char *name, FunctionT function)
-		: name_(name)
+		: IBenchmark(name, /*supports_multicall*/ true)
 		, function_(function)
 	{
 	}
@@ -28,19 +29,14 @@ public:
 		const char *name,
 		FunctionT function,
 		std::vector<typename GeneratorT::ArgType>&& args)
-		: name_(name)
+		: IBenchmark(name, /*supports_multicall*/ true)
 		, function_(function)
 		, args_(std::move(args))
 	{
 	}
 
 public:
-	const std::string& GetName() const
-	{
-		return name_;
-	}
-
-	std::chrono::nanoseconds Measure(size_t calls_count)
+	std::chrono::nanoseconds Measure(size_t calls_count) override
 	{
 		const auto& arg = args_[current_arg_index_];
 
@@ -53,12 +49,7 @@ public:
 			: std::chrono::nanoseconds(0);
 	}
 
-	bool SupportsMulticall() const
-	{
-		return true;
-	}
-
-	void Prepare()
+	void Prepare() override
 	{
 		// args_ is empty means they must be generated with generator,
 		// otherwise they are given from origin and must not be changed
@@ -74,7 +65,7 @@ public:
 		current_arg_index_ = 0;
 	}
 
-	void Finalize()
+	void Finalize() override
 	{
 		// if args_generator_ exists, we must regenerate args_
 		// on the next Prepare, otherwise, leave them as-is
@@ -86,17 +77,17 @@ public:
 		}
 	}
 
-	bool HasArgsToProcess()
+	bool HasArgsToProcess() override
 	{
 		return current_arg_index_ < args_.size();
 	}
 
-	void OnArgProcessed()
+	void OnArgProcessed() override
 	{
 		++current_arg_index_;
 	}
 
-	std::string CurrentArgAsString()
+	std::string CurrentArgAsString() override
 	{
 		std::ostringstream os;
 		os << args_[current_arg_index_];
@@ -104,7 +95,6 @@ public:
 	}
 
 private:
-	std::string name_;
 	FunctionT function_;
 	scoped_optional<GeneratorT> args_generator_opt_;
 	std::vector<typename GeneratorT::ArgType> args_;

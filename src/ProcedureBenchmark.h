@@ -1,6 +1,7 @@
 #pragma once
 
 #include <sltbench/impl/BenchApi.h>
+#include <sltbench/impl/IBenchmark.h>
 
 #include <chrono>
 #include <string>
@@ -8,23 +9,20 @@
 
 namespace sltbench {
 
-class ProcedureBenchmark
+class ProcedureBenchmark : public IBenchmark
 {
 public:
 	ProcedureBenchmark(const char *name, SLTFun function);
 
 public:
-	const std::string& GetName() const;
-	std::chrono::nanoseconds Measure(size_t calls_count);
-	bool SupportsMulticall() const;
-	void Prepare();
-	void Finalize();
-	bool HasArgsToProcess();
-	void OnArgProcessed();
-	std::string CurrentArgAsString();
+	std::chrono::nanoseconds Measure(size_t calls_count) override;
+	void Prepare() override;
+	void Finalize() override;
+	bool HasArgsToProcess() override;
+	void OnArgProcessed() override;
+	std::string CurrentArgAsString() override;
 
 private:
-	std::string name_;
 	SLTFun function_;
 	bool measured_ = false;
 };

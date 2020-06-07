@@ -7,14 +7,9 @@ using namespace std::chrono;
 namespace sltbench {
 
 ProcedureBenchmark::ProcedureBenchmark(const char *name, SLTFun function)
-	: name_(name)
+	: IBenchmark(name, /*supports_multicall*/ true)
 	, function_(function)
 {
-}
-
-const std::string& ProcedureBenchmark::GetName() const
-{
-	return name_;
 }
 
 nanoseconds ProcedureBenchmark::Measure(size_t calls_count)
@@ -27,11 +22,6 @@ nanoseconds ProcedureBenchmark::Measure(size_t calls_count)
 		final_tp > start_tp
 		? duration_cast<nanoseconds>(final_tp - start_tp)
 		: nanoseconds(0);;
-}
-
-bool ProcedureBenchmark::SupportsMulticall() const
-{
-	return true;
 }
 
 void ProcedureBenchmark::Prepare()

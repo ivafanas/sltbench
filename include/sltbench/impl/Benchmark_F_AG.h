@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Env.h"
+#include "IBenchmark.h"
 #include "Optional.h"
 
 #include <chrono>
@@ -12,7 +13,7 @@
 namespace sltbench {
 
 template<typename FixtureT, typename GeneratorT>
-class Benchmark_F_AG
+class Benchmark_F_AG : public IBenchmark
 {
 public:
 	typedef typename FixtureT::Type FixT;
@@ -21,7 +22,7 @@ public:
 
 public:
 	Benchmark_F_AG(const char *name, FunctionT function)
-		: name_(name)
+		: IBenchmark(name, /*supports_multicall*/ false)
 		, function_(function)
 	{
 	}
@@ -30,19 +31,14 @@ public:
 		const char *name,
 		FunctionT function,
 		std::vector<typename GeneratorT::ArgType>&& args)
-		: name_(name)
+		: IBenchmark(name, /*supports_multicall*/ false)
 		, function_(function)
 		, args_(std::move(args))
 	{
 	}
 
 public:
-	const std::string& GetName() const
-	{
-		return name_;
-	}
-
-	std::chrono::nanoseconds Measure(size_t)
+	std::chrono::nanoseconds Measure(size_t) override
 	{
 		const auto& arg = args_[current_arg_index_];
 
@@ -61,12 +57,7 @@ public:
 		return rv;
 	}
 
-	bool SupportsMulticall() const
-	{
-		return false;
-	}
-
-	void Prepare()
+	void Prepare() override
 	{
 		fixture_opt_.emplace();
 
@@ -84,7 +75,7 @@ public:
 		current_arg_index_ = 0;
 	}
 
-	void Finalize()
+	void Finalize() override
 	{
 		fixture_opt_.reset();
 
@@ -98,17 +89,17 @@ public:
 		}
 	}
 
-	bool HasArgsToProcess()
+	bool HasArgsToProcess() override
 	{
 		return current_arg_index_ < args_.size();
 	}
 
-	void OnArgProcessed()
+	void OnArgProcessed() override
 	{
 		++current_arg_index_;
 	}
 
-	std::string CurrentArgAsString()
+	std::string CurrentArgAsString() override
 	{
 		std::ostringstream os;
 		os << args_[current_arg_index_];
@@ -116,7 +107,6 @@ public:
 	}
 
 private:
-	std::string name_;
 	FunctionT function_;
 	scoped_optional<FixtureT> fixture_opt_;
 	scoped_optional<GeneratorT> args_generator_opt_;

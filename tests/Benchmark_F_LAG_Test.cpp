@@ -68,7 +68,7 @@ using BM = sltbench::Benchmark_F_LAG<Fixture, Generator>;
 TEST(Benchmark_F_LAG, GetNameReturnsBenchmarkName)
 {
 	BM<Fixture, IncGenerator> bm("name", &stub_func);
-	EXPECT_EQ("name", bm.GetName());
+	EXPECT_EQ("name", std::string(bm.name));
 }
 
 TEST(Benchmark_F_LAG, MeasureCallsFunction)

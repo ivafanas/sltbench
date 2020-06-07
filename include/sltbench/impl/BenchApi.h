@@ -12,7 +12,6 @@
 #include "DoNotOptimize.h"
 #include "Descriptor.h"
 #include "IConfig.h"
-#include "IRunner.h"
 #include "StaticAssertsUtil.h"
 #include "StopGenerationException.h"
 
@@ -60,10 +59,7 @@ Descriptor *RegisterBenchmark_FB(
 	FixtureT(*fixture_builder)())
 {
 	using BM = Benchmark_FB<FixtureT>;
-	BenchmarksContainer<BM>::Instance().Add(
-		std::unique_ptr<BM>(new BM(name, func, fixture_builder)));
-
-	Runner<BM>::Register();
+	RegisterBenchmark(new BM(name, func, fixture_builder));
 
 	static Descriptor dscr;
 	return &dscr;
@@ -82,10 +78,7 @@ template<typename FixtureT>
 Descriptor *RegisterBenchmark_F(const char *name, void (*func)(typename FixtureT::Type&))
 {
 	using BM = Benchmark_F<FixtureT>;
-	BenchmarksContainer<BM>::Instance().Add(
-		std::unique_ptr<BM>(new BM(name, func)));
-
-	Runner<BM>::Register();
+	RegisterBenchmark(new BM(name, func));
 
 	static Descriptor dscr;
 	return &dscr;
@@ -119,10 +112,7 @@ Descriptor *RegisterBenchmark_A(
 	std::vector<ArgumentT> args)
 {
 	using BM = Benchmark_AG<EmptyArgsGenerator<ArgumentT>>;
-	BenchmarksContainer<BM>::Instance().Add(
-		std::unique_ptr<BM>(new BM(name, func, std::move(args))));
-
-	Runner<BM>::Register();
+	RegisterBenchmark(new BM(name, func, std::move(args)));
 
 	static Descriptor dscr;
 	return &dscr;
@@ -143,10 +133,7 @@ Descriptor *RegisterBenchmark_AG(
 	void (*func)(const typename GeneratorT::ArgType&))
 {
 	using BM = Benchmark_AG<GeneratorT>;
-	BenchmarksContainer<BM>::Instance().Add(
-		std::unique_ptr<BM>(new BM(name, func)));
-
-	Runner<BM>::Register();
+	RegisterBenchmark(new BM(name, func));
 
 	static Descriptor dscr;
 	return &dscr;
@@ -167,10 +154,7 @@ Descriptor *RegisterBenchmark_LAG(
 	void (*func)(const typename GeneratorT::ArgType&))
 {
 	using BM = Benchmark_LAG<GeneratorT>;
-	BenchmarksContainer<BM>::Instance().Add(
-		std::unique_ptr<BM>(new BM(name, func)));
-
-	Runner<BM>::Register();
+	RegisterBenchmark(new BM(name, func));
 
 	static Descriptor dscr;
 	return &dscr;
@@ -194,10 +178,7 @@ Descriptor *RegisterBenchmark_F_A(
 	std::vector<ArgumentT> args_vec)
 {
 	using BM = Benchmark_F_AG<FixtureT, EmptyArgsGenerator<ArgumentT>>;
-	BenchmarksContainer<BM>::Instance().Add(
-		std::unique_ptr<BM>(new BM(name, func, std::move(args_vec))));
-
-	Runner<BM>::Register();
+	RegisterBenchmark(new BM(name, func, std::move(args_vec)));
 
 	static Descriptor dscr;
 	return &dscr;
@@ -220,10 +201,7 @@ Descriptor *RegisterBenchmark_FB_A(
 	std::vector<ArgumentT> args_vec)
 {
 	using BM = Benchmark_FB_AG<FixtureT, EmptyArgsGenerator<ArgumentT>>;
-	BenchmarksContainer<BM>::Instance().Add(
-		std::unique_ptr<BM>(new BM(name, func, fixture_builder, std::move(args_vec))));
-
-	Runner<BM>::Register();
+	RegisterBenchmark(new BM(name, func, fixture_builder, std::move(args_vec)));
 
 	static Descriptor dscr;
 	return &dscr;
@@ -245,10 +223,7 @@ Descriptor *RegisterBenchmark_F_AG(
 	void (*func)(typename FixtureT::Type&, const typename GeneratorT::ArgType&))
 {
 	using BM = Benchmark_F_AG<FixtureT, GeneratorT>;
-	BenchmarksContainer<BM>::Instance().Add(
-		std::unique_ptr<BM>(new BM(name, func)));
-
-	Runner<BM>::Register();
+	RegisterBenchmark(new BM(name, func));
 
 	static Descriptor dscr;
 	return &dscr;
@@ -271,10 +246,7 @@ Descriptor *RegisterBenchmark_FB_AG(
 	FixtureT(*fixture_builder)(const typename GeneratorT::ArgType&))
 {
 	using BM = Benchmark_FB_AG<FixtureT, GeneratorT>;
-	BenchmarksContainer<BM>::Instance().Add(
-		std::unique_ptr<BM>(new BM(name, func, fixture_builder)));
-
-	Runner<BM>::Register();
+	RegisterBenchmark(new BM(name, func, fixture_builder));
 
 	static Descriptor dscr;
 	return &dscr;
@@ -296,10 +268,7 @@ Descriptor *RegisterBenchmark_F_LAG(
 	void (*func)(typename FixtureT::Type&, const typename GeneratorT::ArgType&))
 {
 	using BM = Benchmark_F_LAG<FixtureT, GeneratorT>;
-	BenchmarksContainer<BM>::Instance().Add(
-		std::unique_ptr<BM>(new BM(name, func)));
-
-	Runner<BM>::Register();
+	RegisterBenchmark(new BM(name, func));
 
 	static Descriptor dscr;
 	return &dscr;
@@ -322,10 +291,7 @@ Descriptor *RegisterBenchmark_FB_LAG(
 	FixtureT(*fixture_builder)(const typename GeneratorT::ArgType&))
 {
 	using BM = Benchmark_FB_LAG<FixtureT, GeneratorT>;
-	BenchmarksContainer<BM>::Instance().Add(
-		std::unique_ptr<BM>(new BM(name, func, fixture_builder)));
-
-	Runner<BM>::Register();
+	RegisterBenchmark(new BM(name, func, fixture_builder));
 
 	static Descriptor dscr;
 	return &dscr;

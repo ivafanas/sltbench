@@ -60,7 +60,7 @@ TEST(Benchmark_FB_LAG, GetNameShouldReturnBenchmarkName)
 {
 	BM<int, IncGenerator> bm("name", &stub_func, &make_fixture);
 
-	EXPECT_EQ("name", bm.GetName());
+	EXPECT_EQ("name", std::string(bm.name));
 }
 
 TEST(Benchmark_FB_LAG, MeasureCallsFunction)

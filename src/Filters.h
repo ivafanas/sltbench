@@ -1,6 +1,6 @@
 #pragma once
 
-#include <sltbench/impl/IFilter.h>
+#include "IFilter.h"
 
 #include <regex>
 
@@ -15,7 +15,7 @@ public:
 	~NullFilter() noexcept override = default;
 
 public: // IFilter
-	bool ShouldRunBenchmark(const std::string& benchmark_name) override;
+	bool ShouldRunBenchmark(const char* benchmark_name) override;
 };
 
 
@@ -27,7 +27,7 @@ public:
 	~RegexFilter() noexcept override = default;
 
 public: // IFilter
-	bool ShouldRunBenchmark(const std::string& benchmark_name) override;
+	bool ShouldRunBenchmark(const char* benchmark_name) override;
 
 private:
 	std::regex re_;

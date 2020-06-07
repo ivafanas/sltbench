@@ -1,9 +1,11 @@
 #include "Filters.h"
 
+#include <cstring>
+
 
 namespace sltbench {
 
-bool NullFilter::ShouldRunBenchmark(const std::string&)
+bool NullFilter::ShouldRunBenchmark(const char*)
 {
 	return true;
 }
@@ -13,9 +15,11 @@ RegexFilter::RegexFilter(std::regex re) noexcept
 {
 }
 
-bool RegexFilter::ShouldRunBenchmark(const std::string& bench_name)
+bool RegexFilter::ShouldRunBenchmark(const char* benchmark_name)
 {
-	return std::regex_match(bench_name.begin(), bench_name.end(), re_);
+	return std::regex_match(benchmark_name,
+	                        benchmark_name + std::strlen(benchmark_name),
+	                        re_);
 }
 
 } // namespace sltbench

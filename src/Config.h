@@ -1,9 +1,9 @@
 #pragma once
 
 #include <sltbench/impl/IConfig.h>
-#include <sltbench/impl/IFilter.h>
 #include <sltbench/impl/IMeasureAlgo.h>
 
+#include "IFilter.h"
 #include "MeasureAlgo.h"
 
 #include <memory>

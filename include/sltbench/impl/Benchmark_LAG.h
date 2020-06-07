@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Env.h"
+#include "IBenchmark.h"
 #include "Optional.h"
 #include "StopGenerationException.h"
 
@@ -12,7 +13,7 @@
 namespace sltbench {
 
 template<typename GeneratorT>
-class Benchmark_LAG
+class Benchmark_LAG : public IBenchmark
 {
 public:
 	typedef typename GeneratorT::ArgType ArgT;
@@ -20,18 +21,13 @@ public:
 
 public:
 	Benchmark_LAG(const char *name, FunctionT function)
-		: name_(name)
+		: IBenchmark(name, /*supports_multicall*/ true)
 		, function_(function)
 	{
 	}
 
 public:
-	const std::string& GetName() const
-	{
-		return name_;
-	}
-
-	std::chrono::nanoseconds Measure(size_t calls_count)
+	std::chrono::nanoseconds Measure(size_t calls_count) override
 	{
 		const auto& arg = arg_opt_.get();
 
@@ -44,12 +40,7 @@ public:
 			: std::chrono::nanoseconds(0);
 	}
 
-	bool SupportsMulticall() const
-	{
-		return true;
-	}
-
-	void Prepare()
+	void Prepare() override
 	{
 		const auto argc = Env::Instance().GetArgc();
 		const auto argv = Env::Instance().GetArgv();
@@ -58,23 +49,23 @@ public:
 		PopArg();
 	}
 
-	void Finalize()
+	void Finalize() override
 	{
 		generator_opt_.reset();
 		arg_opt_.reset();
 	}
 
-	bool HasArgsToProcess()
+	bool HasArgsToProcess() override
 	{
 		return arg_opt_.is_initialized();
 	}
 
-	void OnArgProcessed()
+	void OnArgProcessed() override
 	{
 		PopArg();
 	}
 
-	std::string CurrentArgAsString()
+	std::string CurrentArgAsString() override
 	{
 		std::ostringstream os;
 		os << arg_opt_.get();
@@ -95,7 +86,6 @@ private:
 	}
 
 private:
-	std::string name_;
 	FunctionT function_;
 	scoped_optional<GeneratorT> generator_opt_;
 	scoped_optional<ArgT> arg_opt_;

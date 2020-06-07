@@ -16,10 +16,9 @@ set(SLTBENCH_LIB_SOURCES
 	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/DoNotOptimize.h"
 	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/Env.h"
 	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/IConfig.h"
-	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/IFilter.h"
+	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/IBenchmark.h"
 	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/IMeasureAlgo.h"
 	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/IReporter.h"
-	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/IRunner.h"
 	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/Optional.h"
 	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/RunWarnings.h"
 	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/SingleMeasureAlgo.h"
@@ -27,12 +26,16 @@ set(SLTBENCH_LIB_SOURCES
 	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/StopGenerationException.h"
 	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/Verdict.h"
 	BenchApi.cpp
+	BenchmarksContainer.cpp
+	BenchmarksContainerPrivate.h
 	Config.cpp
 	Config.h
 	DoNotOptimize.cpp
 	Env.cpp
 	Filters.cpp
 	Filters.h
+	IBenchmark.cpp
+	IFilter.h
 	MAResultsContainer.cpp
 	MAResultsContainer.h
 	MeasureAlgo.cpp
@@ -43,8 +46,6 @@ set(SLTBENCH_LIB_SOURCES
 	ProgramOptions.h
 	Reporters.cpp
 	Reporters.h
-	Runner.cpp
-	Runner.h
 	SingleMeasureAlgo.cpp
 	SysInfo.cpp
 	SysInfo.h

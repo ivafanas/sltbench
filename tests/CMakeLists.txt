@@ -13,8 +13,7 @@ add_executable(sltbench_unittests
 	MeasureAlgoTest.cpp
 	ProcedureBenchmarkTest.cpp
 	ProgramOptionsTest.cpp
-	SingleMeasureAlgoTest.cpp
-	RunnerTest.cpp)
+	SingleMeasureAlgoTest.cpp)
 
 add_dependencies(sltbench_unittests sltbench)
 

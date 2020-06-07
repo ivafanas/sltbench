@@ -1,5 +1,7 @@
 #pragma once
 
+#include "IBenchmark.h"
+
 #include <chrono>
 #include <string>
 
@@ -7,7 +9,7 @@
 namespace sltbench {
 
 template<typename FixtureT>
-class Benchmark_FB
+class Benchmark_FB : public IBenchmark
 {
 public:
 	typedef void(*FunctionT)(FixtureT&);
@@ -15,14 +17,14 @@ public:
 
 public:
 	Benchmark_FB(const char *name, FunctionT function, FixtureBuilderT builder)
-		: name_(name)
+		: IBenchmark(name, /*supports_multicall*/ false)
 		, function_(function)
 		, builder_(builder)
 	{
 	}
 
 public:
-	std::chrono::nanoseconds Measure(size_t)
+	std::chrono::nanoseconds Measure(size_t) override
 	{
 		auto fixture = builder_();
 
@@ -37,16 +39,13 @@ public:
 		return rv;
 	}
 
-	const std::string& GetName() const { return name_; }
-	bool SupportsMulticall() const { return false; }
-	void Prepare() { measured_ = false; }
-	void Finalize() {}
-	bool HasArgsToProcess() { return !measured_; }
-	void OnArgProcessed() { measured_ = true; }
-	std::string CurrentArgAsString() { return{}; }
+	void Prepare() override { measured_ = false; }
+	void Finalize() override {}
+	bool HasArgsToProcess() override { return !measured_; }
+	void OnArgProcessed() override { measured_ = true; }
+	std::string CurrentArgAsString() override { return{}; }
 
 private:
-	std::string name_;
 	FunctionT function_;
 	FixtureBuilderT builder_;
 	bool measured_ = false;

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "IBenchmark.h"
 #include "Optional.h"
 
 #include <chrono>
@@ -9,25 +10,20 @@
 namespace sltbench {
 
 template<typename FixtureT>
-class Benchmark_F
+class Benchmark_F : public IBenchmark
 {
 public:
 	typedef void(*FunctionT)(typename FixtureT::Type&);
 
 public:
 	Benchmark_F(const char *name, FunctionT function)
-		: name_(name)
+		: IBenchmark(name, /*supports_multicall*/ false)
 		, function_(function)
 	{
 	}
 
 public:
-	const std::string& GetName() const
-	{
-		return name_;
-	}
-
-	std::chrono::nanoseconds Measure(size_t)
+	std::chrono::nanoseconds Measure(size_t) override
 	{
 		auto& fix = fixture_opt_.get().SetUp();
 
@@ -44,39 +40,33 @@ public:
 		return rv;
 	}
 
-	bool SupportsMulticall() const
-	{
-		return false;
-	}
-
-	void Prepare()
+	void Prepare() override
 	{
 		fixture_opt_.emplace();
 		measured_ = false;
 	}
 
-	void Finalize()
+	void Finalize() override
 	{
 		fixture_opt_.reset();
 	}
 
-	bool HasArgsToProcess()
+	bool HasArgsToProcess() override
 	{
 		return !measured_;
 	}
 
-	void OnArgProcessed()
+	void OnArgProcessed() override
 	{
 		measured_ = true;
 	}
 
-	std::string CurrentArgAsString()
+	std::string CurrentArgAsString() override
 	{
 		return{};
 	}
 
 private:
-	std::string name_;
 	scoped_optional<FixtureT> fixture_opt_;
 	FunctionT function_;
 	bool measured_ = false;

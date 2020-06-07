@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Env.h"
+#include "IBenchmark.h"
 #include "Optional.h"
 
 #include <chrono>
@@ -13,7 +14,7 @@
 namespace sltbench {
 
 template<typename FixtureT, typename GeneratorT>
-class Benchmark_FB_AG
+class Benchmark_FB_AG : public IBenchmark
 {
 public:
 	typedef typename GeneratorT::ArgType ArgT;
@@ -25,7 +26,7 @@ public:
 		const char *name,
 		FunctionT function,
 		FixtureBuilderT builder)
-		: name_(name)
+		: IBenchmark(name, /*supports_multicall*/ false)
 		, function_(function)
 		, builder_(builder)
 	{
@@ -36,7 +37,7 @@ public:
 		FunctionT function,
 		FixtureBuilderT builder,
 		std::vector<ArgT>&& args)
-		: name_(name)
+		: IBenchmark(name, /*supports_multicall*/ false)
 		, function_(function)
 		, builder_(builder)
 		, args_(std::move(args))
@@ -44,7 +45,7 @@ public:
 	}
 
 public:
-	std::chrono::nanoseconds Measure(size_t)
+	std::chrono::nanoseconds Measure(size_t) override
 	{
 		const auto& arg = args_[current_arg_index_];
 
@@ -61,17 +62,7 @@ public:
 		return rv;
 	}
 
-	const std::string& GetName() const
-	{
-		return name_;
-	}
-
-	bool SupportsMulticall() const
-	{
-		return false;
-	}
-
-	void Prepare()
+	void Prepare() override
 	{
 		// args_ is empty means they must be generated with generator,
 		// otherwise they are given from origin and must not be changed
@@ -87,7 +78,7 @@ public:
 		current_arg_index_ = 0;
 	}
 
-	void Finalize()
+	void Finalize() override
 	{
 		// if args_generator_ exists, we must regenerate args_
 		// on the next Prepare, otherwise, leave them as-is
@@ -99,17 +90,17 @@ public:
 		}
 	}
 
-	bool HasArgsToProcess()
+	bool HasArgsToProcess() override
 	{
 		return current_arg_index_ < args_.size();
 	}
 
-	void OnArgProcessed()
+	void OnArgProcessed() override
 	{
 		++current_arg_index_;
 	}
 
-	std::string CurrentArgAsString()
+	std::string CurrentArgAsString() override
 	{
 		std::ostringstream os;
 		os << args_[current_arg_index_];
@@ -117,7 +108,6 @@ public:
 	}
 
 private:
-	std::string name_;
 	FunctionT function_;
 	FixtureBuilderT builder_;
 	scoped_optional<GeneratorT> args_generator_opt_;
