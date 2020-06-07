@@ -39,9 +39,9 @@ void InitConfig(const int argc, char **argv)
 	if (!heatup_value.empty())
 	{
 		if (heatup_value == "off" || heatup_value == "OFF")
-			Config::Instance().SetHeatupRequired(false);
+			Config::Instance().is_heatup_required = false;
 		else if (heatup_value == "on" || heatup_value == "ON")
-			Config::Instance().SetHeatupRequired(true);
+			Config::Instance().is_heatup_required = true;
 		else
 		{
 			std::cerr << "ERROR: Unknown heatup option value: " << heatup_value << '\n';

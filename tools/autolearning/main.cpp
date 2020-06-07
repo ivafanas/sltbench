@@ -279,7 +279,7 @@ int main(int argc, char **argv)
 
 	// we did the custom heatup, so
 	// heatup-per-run is not required
-	Config::Instance().SetHeatupRequired(false);
+	Config::Instance().is_heatup_required = false;
 
 	MeasureAlgo::Conf stable_conf;
 	stable_conf.precision_percents = 5;

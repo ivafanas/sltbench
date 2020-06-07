@@ -93,7 +93,7 @@ int Run()
 {
 	ProcessRunWarnings();
 
-	if (Config::Instance().IsHeatupRequired())
+	if (Config::Instance().is_heatup_required)
 	{
 		// some kind of dark magic: heatup core and scheduler
 		heatup();
