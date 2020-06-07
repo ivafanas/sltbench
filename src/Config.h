@@ -25,8 +25,8 @@ public:
 
 	std::unique_ptr<IMeasureAlgo> CreateMeasureAlgo();
 	IFilter& GetFilter();
-	void SetFilter(std::unique_ptr<IFilter> filter);
-	void SetMeasureAlgoConf(MeasureAlgo::Conf conf);
+	void SetFilter(std::unique_ptr<IFilter> filter) noexcept;
+	void SetMeasureAlgoConf(MeasureAlgo::Conf conf) noexcept;
 	reporter::IReporter& GetReporter();
 
 private:

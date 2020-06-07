@@ -51,7 +51,7 @@ reporter::IReporter& Config::GetReporter()
 	return *reporter_;
 }
 
-void Config::SetMeasureAlgoConf(MeasureAlgo::Conf conf)
+void Config::SetMeasureAlgoConf(MeasureAlgo::Conf conf) noexcept
 {
 	measure_conf_ = std::move(conf);
 }
@@ -70,7 +70,7 @@ IFilter& Config::GetFilter()
 	return *filter_;
 }
 
-void Config::SetFilter(std::unique_ptr<IFilter> filter)
+void Config::SetFilter(std::unique_ptr<IFilter> filter) noexcept
 {
 	filter_ = std::move(filter);
 }
