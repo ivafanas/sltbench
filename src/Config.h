@@ -18,7 +18,7 @@ public:
 	static Config& Instance();
 
 public: // IConfig
-	IConfig& SetReporter(std::unique_ptr<reporter::IReporter> reporter) override;
+	IConfig& SetReporter(std::unique_ptr<reporter::IReporter> reporter) noexcept override;
 
 public:
 	bool is_heatup_required = true;

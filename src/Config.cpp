@@ -34,7 +34,7 @@ Config& Config::Instance()
 	return config;
 }
 
-IConfig& Config::SetReporter(std::unique_ptr<reporter::IReporter> reporter)
+IConfig& Config::SetReporter(std::unique_ptr<reporter::IReporter> reporter) noexcept
 {
 	reporter_ = std::move(reporter);
 	return *this;
