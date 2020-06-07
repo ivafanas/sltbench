@@ -35,7 +35,6 @@ set(SLTBENCH_LIB_SOURCES
 	Filters.cpp
 	Filters.h
 	IBenchmark.cpp
-	IFilter.h
 	MAResultsContainer.cpp
 	MAResultsContainer.h
 	MeasureAlgo.cpp

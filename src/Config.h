@@ -3,7 +3,7 @@
 #include <sltbench/impl/IConfig.h>
 #include <sltbench/impl/IMeasureAlgo.h>
 
-#include "IFilter.h"
+#include "Filters.h"
 #include "MeasureAlgo.h"
 
 #include <memory>
@@ -21,7 +21,7 @@ public: // IConfig
 	IConfig& SetReporter(std::unique_ptr<reporter::IReporter> reporter) noexcept override;
 
 public:
-	std::unique_ptr<IFilter> filter;
+	std::unique_ptr<RegexFilter> filter;
 	bool is_heatup_required = true;
 
 	std::unique_ptr<IMeasureAlgo> CreateMeasureAlgo();

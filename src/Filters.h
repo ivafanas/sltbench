@@ -1,21 +1,17 @@
 #pragma once
 
-#include "IFilter.h"
-
 #include <regex>
 
 
 namespace sltbench {
 
-class RegexFilter final
-	: public IFilter
+class RegexFilter
 {
 public:
 	RegexFilter(std::regex re) noexcept;
-	~RegexFilter() noexcept override = default;
+	~RegexFilter() noexcept = default;
 
-public: // IFilter
-	bool ShouldRunBenchmark(const char* benchmark_name) override;
+	bool ShouldRunBenchmark(const char* benchmark_name);
 
 private:
 	std::regex re_;
