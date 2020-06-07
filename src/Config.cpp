@@ -24,9 +24,7 @@ Config::Config()
 	};
 }
 
-Config::~Config()
-{
-}
+Config::~Config() noexcept = default;
 
 Config& Config::Instance()
 {

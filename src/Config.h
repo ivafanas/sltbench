@@ -31,7 +31,7 @@ public:
 
 private:
 	Config();
-	~Config() override;
+	~Config() noexcept override;
 
 	std::unique_ptr<reporter::IReporter> reporter_;
 	std::unique_ptr<IFilter> filter_;
