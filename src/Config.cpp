@@ -1,6 +1,5 @@
 #include "Config.h"
 
-#include "Filters.h"
 #include "MeasureAlgo.h"
 #include "Reporters.h"
 
@@ -57,20 +56,6 @@ void Config::SetMeasureAlgoConf(MeasureAlgo::Conf conf) noexcept
 std::unique_ptr<IMeasureAlgo> Config::CreateMeasureAlgo()
 {
 	return std::unique_ptr<MeasureAlgo>(new MeasureAlgo(measure_conf_));
-}
-
-IFilter& Config::GetFilter()
-{
-	if (!filter_)
-	{
-		filter_.reset(new NullFilter());
-	}
-	return *filter_;
-}
-
-void Config::SetFilter(std::unique_ptr<IFilter> filter) noexcept
-{
-	filter_ = std::move(filter);
 }
 
 } // namespace sltbench

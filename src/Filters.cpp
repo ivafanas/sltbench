@@ -5,11 +5,6 @@
 
 namespace sltbench {
 
-bool NullFilter::ShouldRunBenchmark(const char*)
-{
-	return true;
-}
-
 RegexFilter::RegexFilter(std::regex re) noexcept
 	: re_(std::move(re))
 {

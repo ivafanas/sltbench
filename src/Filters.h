@@ -7,18 +7,6 @@
 
 namespace sltbench {
 
-class NullFilter final
-	: public IFilter
-{
-public:
-	NullFilter() noexcept = default;
-	~NullFilter() noexcept override = default;
-
-public: // IFilter
-	bool ShouldRunBenchmark(const char* benchmark_name) override;
-};
-
-
 class RegexFilter final
 	: public IFilter
 {

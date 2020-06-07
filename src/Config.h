@@ -21,11 +21,10 @@ public: // IConfig
 	IConfig& SetReporter(std::unique_ptr<reporter::IReporter> reporter) noexcept override;
 
 public:
+	std::unique_ptr<IFilter> filter;
 	bool is_heatup_required = true;
 
 	std::unique_ptr<IMeasureAlgo> CreateMeasureAlgo();
-	IFilter& GetFilter();
-	void SetFilter(std::unique_ptr<IFilter> filter) noexcept;
 	void SetMeasureAlgoConf(MeasureAlgo::Conf conf) noexcept;
 	reporter::IReporter& GetReporter();
 
@@ -34,7 +33,6 @@ private:
 	~Config() noexcept override;
 
 	std::unique_ptr<reporter::IReporter> reporter_;
-	std::unique_ptr<IFilter> filter_;
 	MeasureAlgo::Conf measure_conf_;
 };
 

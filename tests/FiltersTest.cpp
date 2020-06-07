@@ -2,16 +2,6 @@
 
 #include "src/Filters.h"
 
-
-TEST(NullFilter, ShouldNotFilter)
-{
-	sltbench::NullFilter filter;
-
-	EXPECT_TRUE(filter.ShouldRunBenchmark(""));
-	EXPECT_TRUE(filter.ShouldRunBenchmark("benchmark"));
-	EXPECT_TRUE(filter.ShouldRunBenchmark("12345"));
-}
-
 TEST(RegexFilter, ShouldFilterByBasicRegex)
 {
 	sltbench::RegexFilter filter(std::regex(".*mybench.*"));

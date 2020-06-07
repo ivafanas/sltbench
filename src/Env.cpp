@@ -30,8 +30,7 @@ void InitConfig(const int argc, char **argv)
 		std::regex re(
 			filter_expr,
 			std::regex_constants::basic | std::regex_constants::icase );
-		auto filter = std::unique_ptr<IFilter>(new RegexFilter(std::move(re)));
-		Config::Instance().SetFilter(std::move(filter));
+		Config::Instance().filter.reset(new RegexFilter(std::move(re)));
 	}
 
 	// setup if heatup required

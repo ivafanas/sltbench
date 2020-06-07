@@ -149,12 +149,12 @@ int Run()
 
 	bool was_crash = false;
 	auto& reporter = Config::Instance().GetReporter();
-	auto& filter = Config::Instance().GetFilter();
+	auto* filter = Config::Instance().filter.get();
 
 	reporter.ReportBenchmarkStarted();
 	for (auto* benchmark : GetRegisteredBenchmarks())
 	{
-		if (!filter.ShouldRunBenchmark(benchmark->name))
+		if (filter && !filter->ShouldRunBenchmark(benchmark->name))
 			continue;
 
 		const bool ok = ::Run(*benchmark, reporter);
