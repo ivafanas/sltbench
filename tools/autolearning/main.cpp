@@ -256,6 +256,12 @@ void heatup()
 	}
 }
 
+template<typename Predicate>
+void SetMeasureRequiredPredicate(Predicate&& p)
+{
+	// TODO: implement this without affecting end user
+}
+
 } // namespace
 
 
@@ -318,7 +324,7 @@ int main(int argc, char **argv)
 	//       without affecting end user
 	// check that stable_conf is really stable
 	std::cout << "check stable conf is really stable:\n" << stable_conf;
-	Config::Instance().SetMeasureRequiredPred([](std::chrono::nanoseconds) { return true; });
+	SetMeasureRequiredPredicate([](std::chrono::nanoseconds) { return true; });
 	bool is_stable_conf_stable = MakeLearningCheck(stable_conf, custom_reporter).is_stable;
 	if (is_stable_conf_stable)
 	{
@@ -331,7 +337,7 @@ int main(int argc, char **argv)
 				break;
 
 			// filter functions that do not fit into diff between candidate and stable
-			Config::Instance().SetMeasureRequiredPred([&](std::chrono::nanoseconds ns) {
+			SetMeasureRequiredPredicate([&](std::chrono::nanoseconds ns) {
 				const size_t dots_count = cand_conf->dot_params.size();
 				for (size_t i = 0; i < dots_count; ++i)
 				{

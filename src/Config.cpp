@@ -8,7 +8,6 @@
 namespace sltbench {
 
 Config::Config()
-	: is_measure_required_pred_([](std::chrono::nanoseconds) { return true; })
 {
 	measure_conf_.precision_percents = 5;
 	measure_conf_.max_execution_time = std::chrono::minutes(1);
@@ -60,16 +59,6 @@ void Config::SetMeasureAlgoConf(MeasureAlgo::Conf conf)
 std::unique_ptr<IMeasureAlgo> Config::CreateMeasureAlgo()
 {
 	return std::unique_ptr<MeasureAlgo>(new MeasureAlgo(measure_conf_));
-}
-
-bool Config::IsMeasureRequired(std::chrono::nanoseconds estimation_time)
-{
-	return is_measure_required_pred_(estimation_time);
-}
-
-void Config::SetMeasureRequiredPred(std::function<bool(std::chrono::nanoseconds)> pred)
-{
-	is_measure_required_pred_ = std::move(pred);
 }
 
 IFilter& Config::GetFilter()
