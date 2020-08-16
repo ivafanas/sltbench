@@ -1,8 +1,7 @@
 #include "Reporters.h"
 
 #include <cstdio>
-#include <iomanip>
-#include <iostream>
+#include <type_traits>
 
 
 namespace sltbench {
@@ -18,11 +17,7 @@ static void PrintWarning(const RunWarning)
 
 void ConsoleReporter::ReportBenchmarkStarted()
 {
-	std::cout
-		<< std::left << std::setw(60) << "benchmark"
-		<< std::left << std::setw(25) << "arg"
-		<< std::left << std::setw(9) << "status"
-		<< std::right << std::setw(20) << "time(ns)" << std::endl;
+	std::printf("%60s%25s%9s%20s\n", "benchmark", "arg", "status", "time(ns)");
 }
 
 void ConsoleReporter::ReportBenchmarkFinished()
@@ -35,11 +30,15 @@ void ConsoleReporter::Report(
 	Verdict verdict,
 	std::chrono::nanoseconds timing_result)
 {
-	std::cout
-		<< std::left << std::setw(60) << name
-		<< std::left << std::setw(25) << params
-		<< std::left << std::setw(9) << ToString(verdict)
-		<< std::right << std::setw(20) << timing_result.count() << std::endl;
+	const std::string verdict_str = ToString(verdict);
+	const long long timing_result_value =
+		static_cast<long long>(timing_result.count());
+	std::printf(
+		"%60s%25s%9s%20lld\n",
+		name.c_str(),
+		params.c_str(),
+		verdict_str.c_str(),
+		timing_result_value);
 }
 
 void ConsoleReporter::ReportWarning(const RunWarning warning)
@@ -49,7 +48,7 @@ void ConsoleReporter::ReportWarning(const RunWarning warning)
 
 void CsvReporter::ReportBenchmarkStarted()
 {
-	std::cout << "benchmark,arg,status,time(ns)\n";
+	std::puts("benchmark,arg,status,time(ns)");
 }
 
 void CsvReporter::ReportBenchmarkFinished()
@@ -62,11 +61,15 @@ void CsvReporter::Report(
 	Verdict verdict,
 	std::chrono::nanoseconds timing_result)
 {
-	std::cout
-		<< name << ','
-		<< params << ','
-		<< ToString(verdict) << ','
-		<< timing_result.count() << std::endl;
+	const std::string verdict_str = ToString(verdict);
+	const long long timing_result_value =
+		static_cast<long long>(timing_result.count());
+	std::printf(
+		"%s,%s,%s,%lld\n",
+		name.c_str(),
+		params.c_str(),
+		verdict_str.c_str(),
+		timing_result_value);
 }
 
 void CsvReporter::ReportWarning(const RunWarning warning)
@@ -76,12 +79,12 @@ void CsvReporter::ReportWarning(const RunWarning warning)
 
 void JsonReporter::ReportBenchmarkStarted()
 {
-	std::cout << "[\n";
+	std::puts("[");
 }
 
 void JsonReporter::ReportBenchmarkFinished()
 {
-	std::cout << "]" << std::endl;
+	std::puts("]");
 }
 
 void JsonReporter::Report(
@@ -91,17 +94,22 @@ void JsonReporter::Report(
 	std::chrono::nanoseconds timing_result)
 {
 	if (is_any_result_reported_)
-	{
-		std::cout << ",\n";
-	}
+		std::puts(",");
 
-	std::cout
-		<< "{\n"
-		<< "  \"name\": \"" << name << "\",\n"
-		<< "  \"arg\": \"" << params << "\",\n"
-		<< "  \"status\": \"" << ToString(verdict) << "\",\n"
-		<< "  \"time(ns)\": " << timing_result.count() << '\n'
-		<< "}" << std::endl;
+	const std::string verdict_str = ToString(verdict);
+	const long long timing_result_value =
+		static_cast<long long>(timing_result.count());
+	std::printf(
+		"{\n"
+		"  \"name\": \"%s\",\n"
+		"  \"arg\": \"%s\",\n"
+		"  \"status\": \"%s\",\n"
+		"  \"time(ns)\": %lld\n"
+		"}\n",
+		name.c_str(),
+		params.c_str(),
+		verdict_str.c_str(),
+		timing_result_value);
 
 	is_any_result_reported_ = true;
 }
