@@ -27,8 +27,8 @@ void ConsoleReporter::ReportBenchmarkFinished()
 void ConsoleReporter::Report(
 	const std::string& name,
 	const std::string& params,
-	Verdict verdict,
-	std::chrono::nanoseconds timing_result)
+	const Verdict verdict,
+	const std::chrono::nanoseconds timing_result)
 {
 	const std::string verdict_str = ToString(verdict);
 	const long long timing_result_value =
@@ -58,8 +58,8 @@ void CsvReporter::ReportBenchmarkFinished()
 void CsvReporter::Report(
 	const std::string& name,
 	const std::string& params,
-	Verdict verdict,
-	std::chrono::nanoseconds timing_result)
+	const Verdict verdict,
+	const std::chrono::nanoseconds timing_result)
 {
 	const std::string verdict_str = ToString(verdict);
 	const long long timing_result_value =
@@ -90,8 +90,8 @@ void JsonReporter::ReportBenchmarkFinished()
 void JsonReporter::Report(
 	const std::string& name,
 	const std::string& params,
-	Verdict verdict,
-	std::chrono::nanoseconds timing_result)
+	const Verdict verdict,
+	const std::chrono::nanoseconds timing_result)
 {
 	if (is_any_result_reported_)
 		std::puts(",");
