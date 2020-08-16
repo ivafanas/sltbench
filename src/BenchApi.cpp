@@ -8,9 +8,9 @@
 #include "Reporters.h"
 
 #include <chrono>
+#include <exception>
 #include <iostream>
 #include <memory>
-#include <stdexcept>
 
 
 using namespace sltbench;
