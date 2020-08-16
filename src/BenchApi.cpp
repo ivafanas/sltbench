@@ -11,7 +11,6 @@
 #include <iostream>
 #include <memory>
 #include <stdexcept>
-#include <vector>
 
 
 using namespace sltbench;
@@ -19,12 +18,11 @@ using namespace sltbench;
 static void heatup_function()
 {
 	// some unuseful staff here
-	const size_t count = 1024 * 1024;
-	std::vector<unsigned> vec;
-	vec.reserve(count);
-	for (size_t i = 0; i < count; ++i)
-		vec.push_back(i % 1024);
-	vec.erase(vec.begin());
+	for (int i = 3; i != 10; ++i)
+		for (int j = 3; j != 10; ++j)
+			for (int k = 3; k != 10; ++k)
+				if (i * i * i + j * j * j == k * k * k)
+					std::puts("wow, Fermat theorem has been disproven!");
 }
 
 static void heatup()
