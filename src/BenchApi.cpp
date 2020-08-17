@@ -22,7 +22,7 @@ static void heatup_function()
 		for (int j = 3; j != 10; ++j)
 			for (int k = 3; k != 10; ++k)
 				if (i * i * i + j * j * j == k * k * k)
-					std::puts("wow, Fermat theorem has been disproven!");
+					std::puts("Fermat theorem has been disproven!");
 }
 
 static void heatup()
