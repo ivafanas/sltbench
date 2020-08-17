@@ -5,7 +5,6 @@
 
 
 namespace sltbench {
-namespace single_measure_algo {
 
 using SingleMeasureFun = std::function<std::chrono::nanoseconds(size_t)>;
 
@@ -49,5 +48,4 @@ std::chrono::nanoseconds Measure(
 	const SingleMeasureFun& measure_func,
 	const EstimationResult& estimation);
 
-} // namespace single_measure_algo
 } // namespace sltbench

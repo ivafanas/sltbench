@@ -25,17 +25,17 @@ static sltbench::MeasureAlgo::Conf MakeConf()
 	return rv;
 }
 
-static sltbench::single_measure_algo::SingleMeasureResult MakeOneCallSMR(nanoseconds res_time)
+static sltbench::SingleMeasureResult MakeOneCallSMR(nanoseconds res_time)
 {
-	sltbench::single_measure_algo::SingleMeasureResult rv;
+	sltbench::SingleMeasureResult rv;
 	rv.result = res_time;
 	rv.total_time = res_time;
 	return rv;
 }
 
-static sltbench::single_measure_algo::EstimationResult MakeOneCallER(nanoseconds res_time)
+static sltbench::EstimationResult MakeOneCallER(nanoseconds res_time)
 {
-	sltbench::single_measure_algo::EstimationResult rv;
+	sltbench::EstimationResult rv;
 	rv.result = res_time;
 	rv.total_time = res_time;
 	rv.recommended_calls_count = 1;

@@ -55,8 +55,6 @@ namespace {
 
 static RunResult Run(IBenchmark& bm)
 {
-	namespace sma = single_measure_algo;
-
 	RunResult rv;
 
 	// user-defined functions might throw exceptions
@@ -68,12 +66,12 @@ static RunResult Run(IBenchmark& bm)
 		};
 
 		// estimate execution time
-		const auto estimation = sma::Estimate(measure_func, bm.supports_multicall);
+		const auto estimation = Estimate(measure_func, bm.supports_multicall);
 
-		if (estimation.verdict == sma::EstimationResult::Verdict::CANNOT_BE_PRECISE)
+		if (estimation.verdict == EstimationResult::Verdict::CANNOT_BE_PRECISE)
 			rv.verdict = Verdict::IMPRECISE;
 
-		rv.time_ns = sma::Measure(measure_func, estimation);
+		rv.time_ns = Measure(measure_func, estimation);
 	}
 	catch (const std::exception&)
 	{

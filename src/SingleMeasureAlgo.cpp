@@ -9,17 +9,12 @@ using namespace std::chrono;
 
 
 namespace sltbench {
-namespace single_measure_algo {
-namespace {
 
-nanoseconds GetMinExecutionTimeForPreciseResult()
+static nanoseconds GetMinExecutionTimeForPreciseResult()
 {
 	// timer error should be at max 0.5% of function execution time
 	return SysInfo::Instance().GetTimerResolution() * 200;
 }
-
-} // namespace
-
 
 EstimationResult Estimate(const SingleMeasureFun& measure_func, const bool enable_multicall)
 {
@@ -79,5 +74,4 @@ nanoseconds Measure(const SingleMeasureFun& measure_func, const EstimationResult
 	return measure_algo.GetResult();
 }
 
-} // namespace single_measure_algo
 } // namespace sltbench
