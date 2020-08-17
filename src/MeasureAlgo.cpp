@@ -7,9 +7,8 @@ using namespace std::chrono;
 
 
 namespace sltbench {
-namespace {
 
-size_t CalcRequiredSpotSize(
+static size_t CalcRequiredSpotSize(
 	const MeasureAlgo::Conf& conf,
 	nanoseconds first_res) noexcept
 {
@@ -25,12 +24,6 @@ size_t CalcRequiredSpotSize(
 	const size_t c_default_spot_size = 26;
 	return !rv ? c_default_spot_size : rv;
 }
-
-} // namespace
-} // namespace sltbench
-
-
-namespace sltbench {
 
 MeasureAlgo::MeasureAlgo(Conf conf) noexcept
 	: conf_(std::move(conf))
