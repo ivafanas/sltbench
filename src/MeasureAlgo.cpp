@@ -47,7 +47,7 @@ void MeasureAlgo::SetEstimationResult(const EstimationResult& estimation)
 	AddTimingResult(mr);
 }
 
-bool MeasureAlgo::NeedMoreTiming()
+bool MeasureAlgo::NeedMoreTiming() noexcept
 {
 	if (accumulated_execution_time_ > conf_.max_execution_time)
 		return false;
@@ -72,7 +72,7 @@ void MeasureAlgo::AddTimingResult(const SingleMeasureResult& result)
 	}
 }
 
-nanoseconds MeasureAlgo::GetResult()
+nanoseconds MeasureAlgo::GetResult() noexcept
 {
 	if (result_ != 0)
 	{

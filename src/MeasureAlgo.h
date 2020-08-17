@@ -34,9 +34,9 @@ public:
 	~MeasureAlgo() noexcept;
 
 	void SetEstimationResult(const EstimationResult& estimation);
-	bool NeedMoreTiming();
+	bool NeedMoreTiming() noexcept;
 	void AddTimingResult(const SingleMeasureResult& result);
-	std::chrono::nanoseconds GetResult();
+	std::chrono::nanoseconds GetResult() noexcept;
 
 private:
 	Conf conf_;
