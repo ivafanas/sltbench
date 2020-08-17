@@ -8,10 +8,10 @@ namespace sltbench {
 
 Config::Config()
 {
-	measure_conf_.precision_percents = 5;
-	measure_conf_.max_execution_time = std::chrono::minutes(1);
-	measure_conf_.min_execution_time = std::chrono::milliseconds(200);
-	measure_conf_.dot_params = {
+	measure_conf.precision_percents = 5;
+	measure_conf.max_execution_time = std::chrono::minutes(1);
+	measure_conf.min_execution_time = std::chrono::milliseconds(200);
+	measure_conf.dot_params = {
 		{ std::chrono::seconds(3), 1 },
 		{ std::chrono::milliseconds(100), 3 },
 		{ std::chrono::milliseconds(50),  4 },
@@ -46,16 +46,6 @@ reporter::IReporter& Config::GetReporter()
 	}
 
 	return *reporter_;
-}
-
-void Config::SetMeasureAlgoConf(MeasureAlgo::Conf conf) noexcept
-{
-	measure_conf_ = std::move(conf);
-}
-
-std::unique_ptr<IMeasureAlgo> Config::CreateMeasureAlgo()
-{
-	return std::unique_ptr<MeasureAlgo>(new MeasureAlgo(measure_conf_));
 }
 
 } // namespace sltbench

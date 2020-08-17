@@ -1,6 +1,6 @@
 #pragma once
 
-#include <sltbench/impl/IMeasureAlgo.h>
+#include "SingleMeasureAlgo.h"
 
 #include <memory>
 #include <vector>
@@ -10,7 +10,7 @@ namespace sltbench {
 
 class MAResultsContainer;
 
-class MeasureAlgo final : public IMeasureAlgo
+class MeasureAlgo
 {
 public:
 	struct Conf
@@ -33,11 +33,10 @@ public:
 	MeasureAlgo(Conf conf) noexcept;
 	~MeasureAlgo() noexcept;
 
-public: // IMeasureAlgo
-	void SetEstimationResult(const single_measure_algo::EstimationResult& estimation) override;
-	bool NeedMoreTiming() override;
-	void AddTimingResult(const single_measure_algo::SingleMeasureResult& result) override;
-	std::chrono::nanoseconds GetResult() override;
+	void SetEstimationResult(const single_measure_algo::EstimationResult& estimation);
+	bool NeedMoreTiming();
+	void AddTimingResult(const single_measure_algo::SingleMeasureResult& result);
+	std::chrono::nanoseconds GetResult();
 
 private:
 	Conf conf_;

@@ -1,6 +1,5 @@
-#include <sltbench/impl/SingleMeasureAlgo.h>
-
 #include "Config.h"
+#include "SingleMeasureAlgo.h"
 #include "SysInfo.h"
 
 #include <algorithm>
@@ -66,18 +65,18 @@ nanoseconds Measure(const SingleMeasureFun& measure_func, const EstimationResult
 {
 	const auto calls_count = estimation.recommended_calls_count;
 
-	const auto measure_algo = Config::Instance().CreateMeasureAlgo();
-	measure_algo->SetEstimationResult(estimation);
-	while (measure_algo->NeedMoreTiming())
+	MeasureAlgo measure_algo{Config::Instance().measure_conf};
+	measure_algo.SetEstimationResult(estimation);
+	while (measure_algo.NeedMoreTiming())
 	{
 		const auto time_ns = measure_func(calls_count);
 
 		SingleMeasureResult mr;
 		mr.total_time = time_ns;
 		mr.result = std::max<nanoseconds>(nanoseconds(1), time_ns / calls_count);
-		measure_algo->AddTimingResult(mr);
+		measure_algo.AddTimingResult(mr);
 	}
-	return measure_algo->GetResult();
+	return measure_algo.GetResult();
 }
 
 } // namespace single_measure_algo

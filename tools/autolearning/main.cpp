@@ -90,7 +90,7 @@ struct LearningCheckResult
 LearningCheckResult MakeLearningCheck(MeasureAlgo::Conf conf, LearningReporter& reporter)
 {
 	const auto precisoion_percents = conf.precision_percents;
-	Config::Instance().SetMeasureAlgoConf(std::move(conf));
+	Config::Instance().measure_conf = std::move(conf);
 
 	TimingMap timing_mins;
 	TimingMap timing_maxs;

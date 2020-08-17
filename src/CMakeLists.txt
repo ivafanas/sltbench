@@ -17,11 +17,9 @@ set(SLTBENCH_LIB_SOURCES
 	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/Env.h"
 	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/IConfig.h"
 	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/IBenchmark.h"
-	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/IMeasureAlgo.h"
 	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/IReporter.h"
 	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/Optional.h"
 	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/RunWarnings.h"
-	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/SingleMeasureAlgo.h"
 	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/StaticAssertsUtil.h"
 	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/StopGenerationException.h"
 	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/Verdict.h"
@@ -46,6 +44,7 @@ set(SLTBENCH_LIB_SOURCES
 	Reporters.cpp
 	Reporters.h
 	SingleMeasureAlgo.cpp
+	SingleMeasureAlgo.h
 	SysInfo.cpp
 	SysInfo.h
 	Verdict.cpp)

@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include <sltbench/impl/SingleMeasureAlgo.h>
+#include "src/SingleMeasureAlgo.h"
 
 #include <chrono>
 
