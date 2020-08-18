@@ -1,7 +1,6 @@
 #include "SysInfo.h"
 
 #include <algorithm>
-#include <array>
 
 
 using namespace std::chrono;
@@ -20,13 +19,13 @@ static nanoseconds CalcTimerResolutionAttempt() noexcept
 
 static nanoseconds CalcTimerResolution() noexcept
 {
-	const std::array<nanoseconds, 4> resolutions{
+	const nanoseconds resolutions[4] = {
 		CalcTimerResolutionAttempt(),
 		CalcTimerResolutionAttempt(),
 		CalcTimerResolutionAttempt(),
 		CalcTimerResolutionAttempt()
 	};
-	return *std::min_element(resolutions.begin(), resolutions.end());
+	return *std::min_element(resolutions, resolutions + 4);
 }
 
 
