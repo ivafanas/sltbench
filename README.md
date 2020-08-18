@@ -15,22 +15,22 @@ functions are unstable itself, nothing helps), but it tends to.
 
 # Why sltbench
 
-The closest and the most famous analog is googlebench - microbenchmarking
+The closest and the most famous analogue is googlebench - microbenchmarking
 library from Google engineers.
 
-The key features of `sltbench` are:
+Key features of `sltbench` are:
 * sltbench is about *4.7x times faster* than googlebench (test execution time).
-* sltbench produces results with less timing error, which really matters for
+* sltbench produces results with less timing error, which matters for
 performance results reproducibility. About 5x times improvement for testing
 dataset.
 * Supports correct mutable fixtures.
 * Supports lazy arguments generation including reading from file,
-  autogeneration etc.. (critical for large  input datasets which does not fit
-  into RAM all together, but perfectly fit one by one)
+  autogeneration etc.. (critical for large input datasets which does not fit
+  into RAM all together)
 * Output customization, separate tools for performance results comparison and
   more.
 
-(The results below are obtained on 4 cores i7-2600 CPU @ 3.40GHz, 8Gb RAM
+(Results below are obtained on 4 cores i7-2600 CPU @ 3.40GHz, 8Gb RAM
 for sltbench dataset; see "Metrics" section for details; see "How to benchmark"
 section for instructions)
 
@@ -40,16 +40,13 @@ section for instructions)
 | average rel error, % |  0.4%  |    5.6%   |  2.6%|
 | maximum rel error, % |  2.9%  |   15.1%   | 60%  |
 
-4.7x times speedup sounds extremely effective for projects where performance is
-super critical, tested meticulously and benchmarking takes about several hours
-or even days (for our project it was about a week).
+4.7x times speedup might be useful for projects with big performance tests count. For the original project regression performance testing tooks about a week and testing time reduction matters.
 
 Less relative error means:
 * Less false speedups/slowdowns you get during testing. Economy of developer
   time.
 * More precise performance changes may be obtained. If testing tool provides
-  15% relative error you cannot measure 10% speedup, but having 3% relative
-  error 10% speedup can be detected.
+  15% relative error than 10% speedup couldn't be measured.
 
 
 # Motivating example
