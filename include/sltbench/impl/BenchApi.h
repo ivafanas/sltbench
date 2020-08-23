@@ -1,5 +1,6 @@
 #pragma once
 
+#include "BenchCoreApi.h"
 #include "Benchmark_AG.h"
 #include "Benchmark_F.h"
 #include "Benchmark_F_AG.h"
@@ -9,8 +10,6 @@
 #include "Benchmark_FB_LAG.h"
 #include "Benchmark_LAG.h"
 #include "BenchmarksContainer.h"
-#include "DoNotOptimize.h"
-#include "Descriptor.h"
 #include "IConfig.h"
 #include "StaticAssertsUtil.h"
 #include "StopGenerationException.h"
@@ -20,30 +19,6 @@
 
 
 namespace sltbench {
-
-typedef void(*SLTFun)();
-
-
-//! calls Init and Run
-int Main(int argc, char **argv);
-
-
-//! initialize benchmark from command line options
-void Init(int argc, char **argv);
-
-
-//! run benchmarking tool
-int Run();
-
-
-/*!
-	Register function for benchmarking
-
-	\param name - function name
-	\param func - function for benchmarking
-*/
-Descriptor *RegisterBenchmark(const char *name, SLTFun func);
-
 
 /*!
 	Register function with simplified fixture builder for benchmarking
@@ -309,17 +284,11 @@ Descriptor *RegisterBenchmark_FB_LAG(
 #define SLT_FUN_RETT(fun) sltbench::function_traits<decltype(&fun)>::return_t
 #define SLT_FUN_ARGT(fun, arg_index) sltbench::function_traits<decltype(&fun)>::argument<(arg_index)>::type
 
-#define SLT_CONCATENATE_2_IMPL(s1, s2) s1##s2
-#define SLT_CONCATENATE_2(s1, s2) SLT_CONCATENATE_2_IMPL(s1, s2)
-
 #define SLT_DECLARE_UNIQUE_CONFIG() \
 	::sltbench::IConfig& SLT_CONCATENATE_2(conf_,__LINE__)
 
-#define SLT_DECLARE_DESCR_FUNCTION(func) ::sltbench::Descriptor* SLT_CONCATENATE_2(desc_##func,__LINE__)
 #define SLT_DECLARE_DESCR_FUNCTION_WITH_FIXTURE(func, fixture) ::sltbench::Descriptor* SLT_CONCATENATE_2(desc___fix_##fixture##func,__LINE__)
 #define SLT_DECLARE_DESCR_FUNCTION_WITH_FIXTURE_BUILDER(func, fixture_builder) ::sltbench::Descriptor* SLT_CONCATENATE_2(desc___fix_builder_##fixture_builder##func,__LINE__)
-
-#define SLT_REGISTER_FUNCTION(func) ::sltbench::RegisterBenchmark(#func, func)
 
 #define SLT_REGISTER_FUNCTION_WITH_ARGS(func, args_vec) \
 	::sltbench::RegisterBenchmark_A(#func, func, args_vec)

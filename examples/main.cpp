@@ -1,3 +1,3 @@
-#include <sltbench/Bench.h>
+#include <sltbench/BenchCore.h>
 
 SLTBENCH_MAIN();

@@ -2,7 +2,9 @@
 set(SLTBENCH_PUBLIC_HEADERS_PATH "${PROJECT_SOURCE_DIR}/include")
 set(SLTBENCH_LIB_SOURCES
 	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/Bench.h"
+	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/BenchCore.h"
 	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/BenchApi.h"
+	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/BenchCoreApi.h"
 	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/BenchmarksContainer.h"
 	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/Benchmark_AG.h"
 	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/Benchmark_F.h"

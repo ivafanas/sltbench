@@ -1,38 +1,7 @@
 #pragma once
 
+#include "BenchCore.h"
 #include "impl/BenchApi.h"
-
-
-/*!
-	Register function to benchmark
-
-	This benchmark is preferable if:
-		* benchmarking function does not require input
-		  or input is known at compile time
-		* initialization is not required
-
-	\param func - function without arguments
-
-	\example
-	\code
-
-		void func()
-		{
-			// code to benchmark
-			// ...
-		}
-		SLTBENCH_FUNCTION(func);
-
-	\endcode
-
-	\warning
-		Further functions registered with the same name
-		even in other source files will be ignored.
-		sltbench ensures unique name for functions to
-		guarantee the same functions order per run.
-*/
-#define SLTBENCH_FUNCTION(func) \
-	static SLT_DECLARE_DESCR_FUNCTION(func) = SLT_REGISTER_FUNCTION(func);
 
 
 /*!
@@ -731,19 +700,6 @@
 	SLT_STATIC_ASSERT_IS_FIXTURE_BUILDER_FOR_ARGS(fixture_builder, generator::ArgType); \
 	static SLT_DECLARE_DESCR_FUNCTION_WITH_FIXTURE_BUILDER(func, fixture_builder) = \
 		SLT_REGISTER_FUNCTION_WITH_FIXTURE_BUILDER_AND_LAZY_ARGS_GENERATOR(func, fixture_builder, generator);
-
-
-/*!
-	Entry point
-
-	Defines 'main()' which initializes sltbench and runs benchmarks
-*/
-#define SLTBENCH_MAIN() \
-	int main(int argc, char **argv) \
-	{ \
-		return ::sltbench::Main(argc, argv); \
-	}
-
 
 //
 // customization

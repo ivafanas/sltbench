@@ -194,3 +194,26 @@ SLTBENCH_FUNCTION_WITH_FIXTURE_BUILDER(BM_my_fast_push_back, make_my_fixture);
 
 Method 2 is definitely not ideal: at least, overhead on `for` loop and
 function calls should be kept in mind.
+
+
+## Compilation speedup
+
+The cheapest to compile and the most popular part of sltbench is extracted to `BenchCore.h` header. It significantly reduces compilation cost of sltbench code layer in comparison to `Bench.h`. "Core" functionality covers:
+
+* benchmarking of functions without arguments (`SLTBENCH_FUNCTION`)
+* benchmark driver start (`SLTBENCH_MAIN`)
+
+
+```
+// #include <sltbench/Bench.h>  // compiles slower
+#include <sltbench/BenchCore.h>  // compiles faster
+
+void BM_fun()
+{
+    // ...
+}
+SLTBENCH_FUNCTION(BM_fun);  // ok, simple function benchmark is core API
+
+SLTBENCH_MAIN();  // ok, driver start is core API
+```
+

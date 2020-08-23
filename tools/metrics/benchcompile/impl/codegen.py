@@ -1,6 +1,6 @@
 
 _SLTBENCH_TEST_TMPL_SIMPLE = '''
-#include <sltbench/Bench.h>
+#include <sltbench/BenchCore.h>
 
 static void simple_{uid}()
 {{
