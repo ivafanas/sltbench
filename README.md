@@ -33,8 +33,8 @@ dataset.
 ### measure time
 
 (Results below are obtained on 4 cores i7-2600 CPU @ 3.40GHz, 8Gb RAM
-for sltbench dataset; see "Metrics" section for details; see "How to benchmark"
-section for instructions)
+for sltbench dataset; see "Metrics" section for details; see
+[How to benchmark](doc/howtobenchmark.md) section for instructions)
 
 |                      |sltbench|googlebench|nonius|
 |----------------------|:------:|:---------:|:----:|
