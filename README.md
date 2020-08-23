@@ -50,6 +50,22 @@ Less relative error means:
 * More precise performance changes may be obtained. If testing tool provides
   15% relative error than 10% speedup couldn't be measured.
 
+### compilation time
+
+Sltbench contains improvements on compilation time of benchmarks (not library!)
+for the most popular api since 2.4.0. Benchmarks for functions without arguments
+and driver launch might be implemented in a more lightweight manner. See
+[Advanced user guide](doc/advanced_user_guide.md) for explanation how to reuse
+improvements.
+
+(benchcompile metric results below are obtained on Intel(R) Core(TM) i5-8400 CPU
+@ 2.80GHz, clang-6.0.0, dataset=simple for optimized cases only)
+
+|                    | compilation time, sec |
+|--------------------|:---------------------:|
+| sltbench 2.4.0     | 2.5                   |
+| googlebench v1.5.1 | 16.5                  |
+
 
 # Motivating example
 
