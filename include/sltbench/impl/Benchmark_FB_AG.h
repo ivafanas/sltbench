@@ -70,8 +70,8 @@ public:
 		{
 			args_generator_opt_.emplace();
 
-			const auto argc = Env::Instance().GetArgc();
-			const auto argv = Env::Instance().GetArgv();
+			const auto argc = GetArgc();
+			const auto argv = GetArgv();
 			args_ = args_generator_opt_.get().Generate(argc, argv);
 		}
 

@@ -32,6 +32,7 @@ set(SLTBENCH_LIB_SOURCES
 	Config.h
 	DoNotOptimize.cpp
 	Env.cpp
+	EnvImpl.h
 	Filters.cpp
 	Filters.h
 	IBenchmark.cpp

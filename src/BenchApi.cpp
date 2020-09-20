@@ -1,9 +1,9 @@
 #include <sltbench/impl/BenchApi.h>
-#include <sltbench/impl/Env.h>
 #include <sltbench/impl/Verdict.h>
 
 #include "BenchmarksContainerPrivate.h"
 #include "Config.h"
+#include "EnvImpl.h"
 #include "ProcedureBenchmark.h"
 #include "Reporters.h"
 
@@ -129,7 +129,7 @@ int Main(int argc, char **argv)
 
 void Init(int argc, char **argv)
 {
-	Env::Instance().SetArgs(argc, argv);
+	SetArgs(argc, argv);
 }
 
 //! @return 0 is all runners successfully completed, 1 otherwise

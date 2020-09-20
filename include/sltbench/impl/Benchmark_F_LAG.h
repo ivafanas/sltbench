@@ -51,8 +51,8 @@ public:
 	{
 		fixture_opt_.emplace();
 
-		const auto argc = Env::Instance().GetArgc();
-		const auto argv = Env::Instance().GetArgv();
+		const auto argc = GetArgc();
+		const auto argv = GetArgv();
 		generator_opt_.emplace(argc, argv);
 
 		PopArg();

@@ -2,10 +2,12 @@
 
 #include <sltbench/Bench.h>
 
+#include "src/EnvImpl.h"
+
 
 int main(int argc, char **argv)
 {
-	sltbench::Env::Instance().SetArgs(argc, argv);
+	sltbench::SetArgs(argc, argv);
 
 	::testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();

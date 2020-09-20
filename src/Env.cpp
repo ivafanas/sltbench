@@ -1,5 +1,7 @@
 #include <sltbench/impl/Env.h>
 
+#include "EnvImpl.h"
+
 #include "Config.h"
 #include "Filters.h"
 #include "ProgramOptions.h"
@@ -9,6 +11,16 @@
 #include <memory>
 #include <stdexcept>
 
+
+static int g_argc = -1;
+static char** g_argv = nullptr;
+
+
+static void ensureCmdLineArgsInitialized()
+{
+	if (g_argc == -1)
+		throw std::runtime_error("command line args are not initialized yet");
+}
 
 namespace sltbench {
 namespace {
@@ -72,28 +84,26 @@ void InitConfig(const int argc, char **argv)
 
 namespace sltbench {
 
-Env& Env::Instance()
+void SetArgs(int argc, char** argv)
 {
-	static Env inst;
-	return inst;
-}
-
-void Env::SetArgs(const int argc, char **argv)
-{
-	argc_ = argc;
-	argv_ = argv;
+	g_argc = argc;
+	g_argv = argv;
 
 	InitConfig(argc, argv);
 }
 
-int Env::GetArgc() const noexcept
+int GetArgc()
 {
-	return argc_;
+	ensureCmdLineArgsInitialized();
+
+	return g_argc;
 }
 
-char **Env::GetArgv() const noexcept
+char** GetArgv()
 {
-	return argv_;
+	ensureCmdLineArgsInitialized();
+
+	return g_argv;
 }
 
 } // namespace sltbench

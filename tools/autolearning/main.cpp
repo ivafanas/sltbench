@@ -2,6 +2,7 @@
 #include <sltbench/impl/Env.h>
 
 #include "src/Config.h"
+#include "src/EnvImpl.h"
 #include "src/MeasureAlgo.h"
 
 #include <algorithm>
@@ -269,7 +270,7 @@ void SetMeasureRequiredPredicate(Predicate&& p)
 
 int main(int argc, char **argv)
 {
-	Env::Instance().SetArgs(argc, argv);
+	SetArgs(argc, argv);
 
 	auto& config = Config::Instance();
 	auto& reporter = config.GetReporter();
