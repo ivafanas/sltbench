@@ -12,9 +12,11 @@
 #include <stdexcept>
 
 
+using namespace sltbench;
+
+
 static int g_argc = -1;
 static char** g_argv = nullptr;
-
 
 static void ensureCmdLineArgsInitialized()
 {
@@ -22,16 +24,13 @@ static void ensureCmdLineArgsInitialized()
 		throw std::runtime_error("command line args are not initialized yet");
 }
 
-namespace sltbench {
-namespace {
-
 template<typename T>
 std::unique_ptr<T> make_uniq()
 {
 	return std::unique_ptr<T>(new T);
 }
 
-void InitConfig(const int argc, char **argv)
+static void InitConfig(const int argc, char **argv)
 {
 	auto options_to_values = BuildProgramOptions(argc, argv);
 
@@ -77,9 +76,6 @@ void InitConfig(const int argc, char **argv)
 		}
 	}
 }
-
-} // namespace
-} // namespace sltbench
 
 
 namespace sltbench {
