@@ -11,6 +11,7 @@ add_executable(sltbench_unittests
 	main.cpp
 	MAResultsContainerTest.cpp
 	MeasureAlgoTest.cpp
+	OptionalTest.cpp
 	ProcedureBenchmarkTest.cpp
 	ProgramOptionsTest.cpp
 	SingleMeasureAlgoTest.cpp)
