@@ -39,7 +39,7 @@ void MeasureAlgo::SetEstimationResult(const EstimationResult& estimation)
 {
 	required_spot_size_ = CalcRequiredSpotSize(conf_, estimation.result);
 
-	results_container_.reset(new MAResultsContainer);
+	results_container_.emplace();
 
 	SingleMeasureResult mr;
 	mr.result = estimation.result;
@@ -55,7 +55,7 @@ bool MeasureAlgo::NeedMoreTiming() noexcept
 	if (accumulated_execution_time_ < conf_.min_execution_time)
 		return true;
 
-	result_ = results_container_->GetMinSpotValue(
+	result_ = results_container_.get().GetMinSpotValue(
 		required_spot_size_,
 		conf_.precision_percents);
 
@@ -68,7 +68,7 @@ void MeasureAlgo::AddTimingResult(const SingleMeasureResult& result)
 	{
 		accumulated_execution_time_ += result.total_time;
 
-		results_container_->Add(result.result.count());
+		results_container_.get().Add(result.result.count());
 	}
 }
 
@@ -83,8 +83,8 @@ nanoseconds MeasureAlgo::GetResult() noexcept
 	{
 		// bad case - timeout or out of retry count
 		// then return best result
-		if (results_container_)
-			return nanoseconds(results_container_->GetBest());
+		if (results_container_.is_initialized())
+			return nanoseconds(results_container_.get().GetBest());
 
 		// looks someone wants to see result
 		// without timing, well...

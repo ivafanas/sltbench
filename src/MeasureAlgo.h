@@ -1,14 +1,15 @@
 #pragma once
 
+#include "MAResultsContainer.h"
 #include "SingleMeasureAlgo.h"
 
-#include <memory>
+#include <sltbench/impl/Optional.h>
+
 #include <vector>
 
 
 namespace sltbench {
 
-class MAResultsContainer;
 
 class MeasureAlgo
 {
@@ -43,7 +44,7 @@ private:
 	size_t required_spot_size_;
 	std::chrono::nanoseconds accumulated_execution_time_;
 	uint64_t result_;
-	std::unique_ptr<MAResultsContainer> results_container_;
+	scoped_optional<MAResultsContainer> results_container_;
 };
 
 } // namespace sltbench
