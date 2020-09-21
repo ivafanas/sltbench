@@ -1,6 +1,7 @@
 #pragma once
 
 #include <sltbench/impl/IConfig.h>
+#include <sltbench/impl/Optional.h>
 
 #include "Filters.h"
 #include "MeasureAlgo.h"
@@ -20,7 +21,7 @@ public: // IConfig
 	IConfig& SetReporter(std::unique_ptr<reporter::IReporter> reporter) noexcept override;
 
 public:
-	std::unique_ptr<RegexFilter> filter;
+	scoped_optional<RegexFilter> filter;
 	MeasureAlgo::Conf measure_conf;
 	bool is_heatup_required = true;
 

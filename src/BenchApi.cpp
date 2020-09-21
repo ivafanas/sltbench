@@ -145,7 +145,7 @@ int Run()
 
 	bool was_crash = false;
 	auto& reporter = Config::Instance().GetReporter();
-	auto* filter = Config::Instance().filter.get();
+	auto* filter = Config::Instance().filter.get_ptr();
 
 	reporter.ReportBenchmarkStarted();
 	for (auto* benchmark : GetRegisteredBenchmarks())

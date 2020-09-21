@@ -38,10 +38,9 @@ static void InitConfig(const int argc, char **argv)
 	const auto filter_expr = options_to_values["--filter"];
 	if (!filter_expr.empty())
 	{
-		std::regex re(
-			filter_expr,
-			std::regex_constants::basic | std::regex_constants::icase );
-		Config::Instance().filter.reset(new RegexFilter(std::move(re)));
+		Config::Instance().filter.emplace(
+			std::regex(filter_expr,
+			           std::regex_constants::basic | std::regex_constants::icase));
 	}
 
 	// setup if heatup required
