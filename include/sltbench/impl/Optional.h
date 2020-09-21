@@ -77,6 +77,16 @@ public:
 		return *addr();
 	}
 
+	const T* get_ptr() const
+	{
+		return is_initialized_ ? &get() : nullptr;
+	}
+
+	T* get_ptr()
+	{
+		return is_initialized_ ? &get() : nullptr;
+	}
+
 private:
 	T* addr() const
 	{
