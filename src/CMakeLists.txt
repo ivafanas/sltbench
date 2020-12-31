@@ -25,6 +25,7 @@ set(SLTBENCH_LIB_SOURCES
 	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/StaticAssertsUtil.h"
 	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/StopGenerationException.h"
 	"${SLTBENCH_PUBLIC_HEADERS_PATH}/sltbench/impl/Verdict.h"
+	Algorithms.h
 	BenchApi.cpp
 	BenchmarksContainer.cpp
 	BenchmarksContainerPrivate.h

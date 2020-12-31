@@ -38,3 +38,21 @@ unstable results for the first test cases.
 # May lead to unstable first test cases.
 ./my_benchmark.exe --heatup off
 ```
+
+
+# List registered benchmarks and its arguments
+
+Use `--list` option to enumerate registered benchmarks with its arguments
+line-by-line and quit. Benchmarking is not performed with `--list` option.
+
+Example:
+
+```bash
+$ ./my_benchmark.exe --list
+function_x/x_arg1
+function_x/x_arg2
+function_x/x_arg3
+function_y
+function_z/z_arg1
+function_z/z_arg2
+```

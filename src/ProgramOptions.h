@@ -2,11 +2,18 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
 
 namespace sltbench {
 
-//! Build option-to-value map from command line args
-std::map<std::string, std::string> BuildProgramOptions(int argc, char **argv);
+struct ProgramOptions
+{
+	std::vector<std::string> switches;
+	std::map<std::string, std::string> named_values;
+};
+
+//! Parse command line args
+ProgramOptions ParseCommandLine(int argc, char **argv);
 
 } // namespace sltbench

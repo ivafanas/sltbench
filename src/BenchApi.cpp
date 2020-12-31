@@ -8,6 +8,7 @@
 #include "Reporters.h"
 
 #include <chrono>
+#include <cstdio>
 #include <exception>
 #include <iostream>
 #include <memory>
@@ -41,7 +42,11 @@ static void heatup()
 static void ProcessRunWarnings()
 {
 #ifndef NDEBUG
-	Config::Instance().GetReporter().ReportWarning(RunWarning::DEBUG_BUILD);
+	auto& config = Config::Instance();
+
+	const bool should_benchmark = !config.list_benchmarks;
+	if (should_benchmark)
+		config.GetReporter().ReportWarning(RunWarning::DEBUG_BUILD);
 #endif
 }
 
@@ -107,6 +112,27 @@ static bool Run(IBenchmark& bm, reporter::IReporter& reporter)
 	return ok;
 }
 
+static void ListBenchmark(IBenchmark& bm)
+{
+	bm.Prepare();
+	while (bm.HasArgsToProcess())
+	{
+		const std::string arg_str = bm.CurrentArgAsString();
+		if (!arg_str.empty())
+			std::printf("%s/%s\n", bm.name, arg_str.c_str());
+		else
+			std::puts(bm.name);
+		bm.OnArgProcessed();
+	}
+	bm.Finalize();
+}
+
+static void ListBenchmarks()
+{
+	for (auto* benchmark : GetRegisteredBenchmarks())
+		ListBenchmark(*benchmark);
+}
+
 namespace sltbench {
 
 int Main(int argc, char **argv)
@@ -137,15 +163,24 @@ int Run()
 {
 	ProcessRunWarnings();
 
-	if (Config::Instance().is_heatup_required)
+	auto& config = Config::Instance();
+
+	// enumerate registered benchmarks and quit in |list| mode
+	if (config.list_benchmarks)
+	{
+		ListBenchmarks();
+		return 0;
+	}
+
+	if (config.is_heatup_required)
 	{
 		// some kind of dark magic: heatup core and scheduler
 		heatup();
 	}
 
 	bool was_crash = false;
-	auto& reporter = Config::Instance().GetReporter();
-	auto* filter = Config::Instance().filter.get_ptr();
+	auto& reporter = config.GetReporter();
+	auto* filter = config.filter.get_ptr();
 
 	reporter.ReportBenchmarkStarted();
 	for (auto* benchmark : GetRegisteredBenchmarks())

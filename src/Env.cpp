@@ -2,6 +2,7 @@
 
 #include "EnvImpl.h"
 
+#include "Algorithms.h"
 #include "Config.h"
 #include "Filters.h"
 #include "ProgramOptions.h"
@@ -32,10 +33,14 @@ std::unique_ptr<T> make_uniq()
 
 static void InitConfig(const int argc, char **argv)
 {
-	auto options_to_values = BuildProgramOptions(argc, argv);
+	auto options = ParseCommandLine(argc, argv);
+
+	// setup if benchmarks listing is requested
+	if (contains(options.switches, "--list"))
+		Config::Instance().list_benchmarks = true;
 
 	// setup test cases filter
-	const auto filter_expr = options_to_values["--filter"];
+	const auto filter_expr = options.named_values["--filter"];
 	if (!filter_expr.empty())
 	{
 		Config::Instance().filter.emplace(
@@ -44,7 +49,7 @@ static void InitConfig(const int argc, char **argv)
 	}
 
 	// setup if heatup required
-	const auto heatup_value = options_to_values["--heatup"];
+	const auto heatup_value = options.named_values["--heatup"];
 	if (!heatup_value.empty())
 	{
 		if (heatup_value == "off" || heatup_value == "OFF")
@@ -59,7 +64,7 @@ static void InitConfig(const int argc, char **argv)
 	}
 
 	// setup output format
-	const auto reporter_value = options_to_values["--reporter"];
+	const auto reporter_value = options.named_values["--reporter"];
 	if (!reporter_value.empty())
 	{
 		if (reporter_value == "csv")

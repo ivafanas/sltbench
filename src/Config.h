@@ -24,6 +24,7 @@ public:
 	scoped_optional<RegexFilter> filter;
 	MeasureAlgo::Conf measure_conf;
 	bool is_heatup_required = true;
+	bool list_benchmarks = false;
 
 	reporter::IReporter& GetReporter();
 
