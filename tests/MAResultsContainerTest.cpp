@@ -2,9 +2,20 @@
 
 #include "src/MAResultsContainer.h"
 
+#include <cstdint>
+#include <initializer_list>
+
 
 using namespace sltbench;
 
+static MAResultsContainer MakeContainer(
+	std::initializer_list<std::uint64_t> values)
+{
+	MAResultsContainer cont;
+	for (const auto value : values)
+		cont.Add(value);
+	return cont;
+}
 
 TEST(MAResultsContainer, GetBestIsZeroForEmptyContainer)
 {
@@ -14,26 +25,17 @@ TEST(MAResultsContainer, GetBestIsZeroForEmptyContainer)
 
 TEST(MAResultsContainer, GetBestIsMinimumForSingleResultContainer)
 {
-	MAResultsContainer cont;
-	cont.Add(50);
-	EXPECT_EQ(50u, cont.GetBest());
+	EXPECT_EQ(50u, MakeContainer({ 50u }).GetBest());
 }
 
 TEST(MAResultsContainer, GetBestIsMinimumForSingleElementContainer)
 {
-	MAResultsContainer cont;
-	cont.Add(50);
-	cont.Add(50);
-	EXPECT_EQ(50u, cont.GetBest());
+	EXPECT_EQ(50u, MakeContainer({ 50u, 50u }).GetBest());
 }
 
 TEST(MAResultsContainer, GetBestIsMinimumForMultiElementsContainer)
 {
-	MAResultsContainer cont;
-	cont.Add(50);
-	cont.Add(55);
-	cont.Add(60);
-	EXPECT_EQ(50u, cont.GetBest());
+	EXPECT_EQ(50u, MakeContainer({ 50u, 55u, 60u }).GetBest());
 }
 
 TEST(MAResultsContainer, GetMinSpotValueIsZeroForEmptyContainer)
@@ -44,48 +46,29 @@ TEST(MAResultsContainer, GetMinSpotValueIsZeroForEmptyContainer)
 
 TEST(MAResultsContainer, GetMinSpotValueIsZeroForContainerSizeLessThanSpot)
 {
-	MAResultsContainer cont;
-	cont.Add(50);
-	cont.Add(50);
-	EXPECT_EQ(0u, cont.GetMinSpotValue(3, 1));
+	EXPECT_EQ(0u, MakeContainer({ 50u, 50u }).GetMinSpotValue(3, 1));
 }
 
 TEST(MAResultsContainer, GetMinSpotValueIsZeroForNoSuchSpot)
 {
-	MAResultsContainer cont;
-	cont.Add(50);
-	cont.Add(50);
-	cont.Add(60);
-	cont.Add(60);
-	cont.Add(70);
+	const auto cont = MakeContainer({ 50u, 50u, 60u, 60u, 70u });
 	EXPECT_EQ(0u, cont.GetMinSpotValue(3, 1));
 }
 
 TEST(MAResultsContainer, GetMinSpotValueCorrectForSingleElementSpot)
 {
-	MAResultsContainer cont;
-	cont.Add(50);
-	cont.Add(50);
-	EXPECT_EQ(50u, cont.GetMinSpotValue(2, 1));
+	EXPECT_EQ(50u, MakeContainer({ 50u, 50u }).GetMinSpotValue(2, 1));
 }
 
 TEST(MAResultsContainer, GetMinSpotValueCorrectForMultipleUniresults)
 {
-	MAResultsContainer cont;
-	cont.Add(900);
-	cont.Add(1000);
-	cont.Add(1020);
-	cont.Add(1100);
-	EXPECT_EQ(1000, cont.GetMinSpotValue(2, 3));
+	const auto cont = MakeContainer({ 900u, 1000u, 1020u, 1100u });
+	EXPECT_EQ(1000u, cont.GetMinSpotValue(2, 3));
 }
 
 TEST(MAResultsContainer, GetMinSpotValueCorrectForMultiElementSpot)
 {
-	MAResultsContainer cont;
-	cont.Add(900);
-	cont.Add(1000);
-	cont.Add(1003);
-	cont.Add(1020);
-	cont.Add(1100);
-	EXPECT_EQ(1000, cont.GetMinSpotValue(3, 3));
+	const auto cont = MakeContainer({ 900u, 1000u, 1003u, 1020u, 1100u  });
+	EXPECT_EQ(1000u, cont.GetMinSpotValue(3, 3));
 }
+
