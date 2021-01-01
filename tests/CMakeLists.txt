@@ -14,7 +14,8 @@ add_executable(sltbench_unittests
 	OptionalTest.cpp
 	ProcedureBenchmarkTest.cpp
 	ProgramOptionsTest.cpp
-	SingleMeasureAlgoTest.cpp)
+	SingleMeasureAlgoTest.cpp
+	TestAlgorithms.h)
 
 add_dependencies(sltbench_unittests sltbench)
 

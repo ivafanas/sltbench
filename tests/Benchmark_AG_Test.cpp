@@ -1,6 +1,11 @@
 #include "gtest/gtest.h"
 
+#include "TestAlgorithms.h"
+
 #include <sltbench/Bench.h>
+
+
+using namespace sltbench;
 
 
 namespace {
@@ -33,7 +38,7 @@ void inc_calls_count(const size_t&)
 } // namespace
 
 template<typename Generator>
-using BM = sltbench::Benchmark_AG<Generator>;
+using BM = Benchmark_AG<Generator>;
 
 TEST(Benchmark_AG, GetNameReturnsBenchmarkName)
 {
@@ -99,10 +104,7 @@ TEST(Benchmark_AG, MeasureCallsFunctionWithGeneratedArg)
 	bm.Measure(1u);
 	bm.OnArgProcessed();
 
-	ASSERT_EQ(3, g_call_args.size());
-	EXPECT_EQ(1, g_call_args[0]);
-	EXPECT_EQ(2, g_call_args[1]);
-	EXPECT_EQ(3, g_call_args[2]);
+	EXPECT_TRUE(test_sequence_is(g_call_args, {1, 2, 3}));
 }
 
 TEST(Benchmark_AG, CurrentArgAsString)

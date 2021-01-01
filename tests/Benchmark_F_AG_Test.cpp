@@ -1,6 +1,11 @@
 #include "gtest/gtest.h"
 
+#include "TestAlgorithms.h"
+
 #include <sltbench/Bench.h>
+
+
+using namespace sltbench;
 
 
 namespace {
@@ -59,7 +64,7 @@ void push_back_arg_and_fix(int& fix, const size_t& arg)
 } // namespace
 
 template<typename Fixture, typename Generator>
-using BM = sltbench::Benchmark_F_AG<Fixture, Generator>;
+using BM = Benchmark_F_AG<Fixture, Generator>;
 
 TEST(Benchmark_F_AG, GetNameShouldReturnBenchmarkName)
 {
@@ -104,15 +109,8 @@ TEST(Benchmark_F_AG, MeasureCallsFunctionWithFixtureAndArg)
 	bm.Measure(1u);
 	bm.OnArgProcessed();
 
-	ASSERT_EQ(3, g_call_args.size());
-	EXPECT_EQ(1, g_call_args[0]);
-	EXPECT_EQ(2, g_call_args[1]);
-	EXPECT_EQ(3, g_call_args[2]);
-
-	ASSERT_EQ(3, g_call_fixs.size());
-	EXPECT_EQ(5, g_call_fixs[0]);
-	EXPECT_EQ(5, g_call_fixs[1]);
-	EXPECT_EQ(5, g_call_fixs[2]);
+	EXPECT_TRUE(test_sequence_is(g_call_args, {1, 2, 3}));
+	EXPECT_TRUE(test_sequence_is(g_call_fixs, {5, 5, 5}));
 }
 
 TEST(Benchmark_F_AG, CurrentArgAsString)

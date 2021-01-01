@@ -1,6 +1,11 @@
 #include "gtest/gtest.h"
 
+#include "TestAlgorithms.h"
+
 #include <sltbench/Bench.h>
+
+
+using namespace sltbench;
 
 
 namespace {
@@ -42,7 +47,7 @@ void push_back_arg(const size_t& arg)
 } // namespace
 
 template<typename Generator>
-using BM = sltbench::Benchmark_LAG<Generator>;
+using BM = Benchmark_LAG<Generator>;
 
 TEST(Benchmark_LAG, GetNameReturnsBenchmarkName)
 {
@@ -85,10 +90,7 @@ TEST(Benchmark_LAG, MeasureCallsFunctionWithGeneratedArg)
 	bm.Measure(1u);
 	bm.OnArgProcessed();
 
-	ASSERT_EQ(3, g_call_args.size());
-	EXPECT_EQ(1, g_call_args[0]);
-	EXPECT_EQ(2, g_call_args[1]);
-	EXPECT_EQ(3, g_call_args[2]);
+	EXPECT_TRUE(test_sequence_is(g_call_args, {1, 2, 3}));
 }
 
 TEST(Benchmark_LAG, CurrentArgAsString)
