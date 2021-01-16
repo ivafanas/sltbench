@@ -11,6 +11,7 @@ def _generate_project(context, path):
     TESTS_COUNT_PER_SUITE = 50
     backend = context.backend
     toolset = context.toolset
+    build_system = context.build_system
     os.chdir(path)
 
     # build sources
@@ -25,13 +26,18 @@ def _generate_project(context, path):
 
     # build makefile
     print_to_file('CMakeLists.txt', gen_cmakelists(sources, backend))
-    subprocess.call('cd {} && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER={} -DCMAKE_CXX_COMPILER={}'
-        .format(path, toolset.c_compiler, toolset.cxx_compiler), shell=True)
+    cmake_options = [
+        '-DCMAKE_BUILD_TYPE=Release',
+        '-DCMAKE_C_COMPILER={}'.format(toolset.c_compiler),
+        '-DCMAKE_CXX_COMPILER={}'.format(toolset.cxx_compiler),
+        '-G "{}"'.format(build_system.cmake_generator)]
+    subprocess.call(
+        'cd {} && cmake {}'.format(path, ' '.join(cmake_options)), shell=True)
 
 
 def _run_make(context, path):
     os.chdir(path)
-    subprocess.call(['make'], shell=True)
+    subprocess.call([context.build_system.build_command], shell=True)
 
 
 def benchmark(context):

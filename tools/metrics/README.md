@@ -76,6 +76,7 @@ have different functionality, so some tests cannot be compiled for `googlebench`
 at all, most of the tests cannot be compiled for `nonius`. The default dataset
 is the subset of tests which can be compiled for all backends.
 Use `--dataset=all` to benchmark all available `sltbench` cases.
+* `--build_system` - choose cmake generator in {`make`, `ninja`}. `make` is default value.
 
 Run the following command for detailed information:
 ```bash
