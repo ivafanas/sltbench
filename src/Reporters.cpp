@@ -17,7 +17,7 @@ static void PrintWarning(const RunWarning)
 
 void ConsoleReporter::ReportBenchmarkStarted()
 {
-	std::printf("%60s%25s%9s%20s\n", "benchmark", "arg", "status", "time(ns)");
+	std::printf("%-60s%-25s%-9s%20s\n", "benchmark", "arg", "status", "time(ns)");
 }
 
 void ConsoleReporter::ReportBenchmarkFinished()
@@ -34,7 +34,7 @@ void ConsoleReporter::Report(
 	const long long timing_result_value =
 		static_cast<long long>(timing_result.count());
 	std::printf(
-		"%60s%25s%9s%20lld\n",
+		"%-60s%-25s%-9s%20lld\n",
 		name.c_str(),
 		params.c_str(),
 		verdict_str.c_str(),
