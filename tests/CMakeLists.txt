@@ -29,5 +29,6 @@ target_include_directories(sltbench_unittests PRIVATE
 	"${PROJECT_SOURCE_DIR}/tests/gtest/googletest"
 	"${PROJECT_SOURCE_DIR}/tests/gtest/googletest/include")
 
+set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 target_link_libraries(sltbench_unittests PRIVATE sltbench ${CMAKE_THREAD_LIBS_INIT})
