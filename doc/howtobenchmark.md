@@ -16,6 +16,7 @@ First of all, make sure that (**all points are critical for stable performance r
   [this instructions](http://www.howtogeek.com/121775/how-to-force-windows-applications-to-use-a-specific-cpu/)
   to pin process to core. For linux use `taskset` and `KMP_AFFINITY`.
 * Disable [address space layout randomization](https://en.wikipedia.org/wiki/Address_space_layout_randomization)
+* [Align code](https://easyperf.net/blog/2022/09/01/Utilizing-Huge-Pages-For-Code) during compile time or runtime.
 
 ```sh
 echo 0 | sudo tee /proc/sys/kernel/randomize_va_space
